@@ -55,6 +55,8 @@ alias vold='sudo amixer set PCM -- $[$(amixer get PCM|grep -o [0-9]*%|sed 's/%//
 
 - [Linux Driver for PowerMate](http://sowerbutts.com/powermate/) (Includes LED controls)
 - [Gizmo Daemon](http://gizmod.sourceforge.net/) - lets you write Python scripts to handle/control PowerMate input
+- [Raspberry Pi, Gizmod, and PowerMate](http://sc702.blogspot.com/2015/02/raspberry-pi-gizmod-and-powermate.html)
+- [Configuring Gizmod on the Raspberry Pi](http://sc702.blogspot.com/2015/02/configuring-gizmod-on-raspberry-pi.html)
 
 ### Run on boot
 
