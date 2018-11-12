@@ -53,9 +53,8 @@ alias vold='sudo amixer set PCM -- $[$(amixer get PCM|grep -o [0-9]*%|sed 's/%//
 
 ### PowerMate Drivers
 
-- [`evrouter` Project Page](https://www.bedroomlan.org/projects/evrouter/)
-- [`evrouter` SO Answer](https://askubuntu.com/questions/138148/need-help-with-griffin-powermate-usb-volume-controller-new-64-bit-desktop-ub)
 - [Linux Driver for PowerMate](http://sowerbutts.com/powermate/) (Includes LED controls)
+- [Gizmo Daemon](http://gizmod.sourceforge.net/) - lets you write Python scripts to handle/control PowerMate input
 
 ### Run on boot
 
