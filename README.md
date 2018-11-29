@@ -58,6 +58,13 @@ alias vold='sudo amixer set PCM -- $[$(amixer get PCM|grep -o [0-9]*%|sed 's/%//
 - [Raspberry Pi, Gizmod, and PowerMate](http://sc702.blogspot.com/2015/02/raspberry-pi-gizmod-and-powermate.html)
 - [Configuring Gizmod on the Raspberry Pi](http://sc702.blogspot.com/2015/02/configuring-gizmod-on-raspberry-pi.html)
 
+```bash
+# Download Gizmod
+curl 'https://newcontinuum.dl.sourceforge.net/project/gizmod/gizmod/3.5/gizmod-3.5.tar.bz2' -0 --compressed -o ~/Downloads/gizmod-3.5.tar.bz2
+# Unzip
+tar xjvf ~/Downloads/gizmod-3.5.tar.bz2
+```
+
 ### Run on boot
 
 - `TODO:` What do I use to initialize all of these scripts on boot? The Raspberry Pi is headless; the only interface is the LED on the PowerMate
