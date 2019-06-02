@@ -87,7 +87,10 @@ autoreconf -i -f
 make
 sudo make install
 sudo systemctl enable shairport-sync
-sudo vi /usr/local/etc/shairport-sync.conf # Edit Name to "Media Cube"
+sudo vi /usr/local/etc/shairport-sync.conf 
+# Edit Name to "Media Cube"
+# Uncomment and edit "allow_session_interruption" to "yes" to allow people to takeover the speaker
+# Uncomment and edit "session_timeout" to like 20, this seems to need to be set in order for allow_session_interruption to work
 sudo reboot
 ```
 
