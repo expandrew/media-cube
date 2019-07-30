@@ -1,0 +1,11 @@
+[Unit]
+Description=Knob
+After=multi-user.target
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/python /home/pi/media-cube-cd-player/knob/main.py
+Restart=on-abort
+
+[Install]
+WantedBy=multi-user.target

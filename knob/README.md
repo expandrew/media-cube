@@ -56,3 +56,15 @@ Now it's time to figure out how to use it in a Python script
 # ... Yeah
 ```
 
+But also how the hell do you run a Python script in the background so it's always listening for inputs (and firing outputs)?
+
+```bash
+# Write a service definition: knob.service
+# TODO: This is still in progress
+
+# Copy the service definition into the right place
+cp knob.service /lib/systemd/system/
+
+# Start the service
+sudo servicectl enable knob.service
+```
