@@ -79,11 +79,11 @@ tar xjvf ~/Downloads/gizmod-3.5.tar.bz2
 **Commands**
 
 ```bash
-sudo apt-get install autoconf automake avahi-daemon build-essential git libasound2-dev libavahi-client-dev libconfig-dev libdaemon-dev libpopt-dev libssl-dev libtool xmltoman
+sudo apt-get install autoconf automake avahi-daemon avahi-discover avahi-utils build-essential git libasound2-dev libavahi-client-dev libavahi-glib-dev libconfig-dev libdaemon-dev libpopt-dev libssl-dev libtool xmltoman
 git clone https://github.com/mikebrady/shairport-sync.git
 cd shairport-sync
 autoreconf -i -f
-./configure --with-alsa --with-avahi --with-ssl=openssl --with-systemd --with-metadata
+./configure --with-alsa --with-avahi --with-ssl=openssl --with-systemd --with-metadata --with-dbus-interface
 make
 sudo make install
 sudo systemctl enable shairport-sync
