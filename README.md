@@ -53,21 +53,7 @@ alias vold='sudo amixer set PCM -- $[$(amixer get PCM|grep -o [0-9]*%|sed 's/%//
 
 ### PowerMate Drivers
 
-- [Linux Driver for PowerMate](http://sowerbutts.com/powermate/) (Includes LED controls)
-- [Gizmo Daemon](http://gizmod.sourceforge.net/) - lets you write Python scripts to handle/control PowerMate input
-- [Raspberry Pi, Gizmod, and PowerMate](http://sc702.blogspot.com/2015/02/raspberry-pi-gizmod-and-powermate.html)
-- [Configuring Gizmod on the Raspberry Pi](http://sc702.blogspot.com/2015/02/configuring-gizmod-on-raspberry-pi.html)
-
-```bash
-# Download Gizmod
-curl 'https://newcontinuum.dl.sourceforge.net/project/gizmod/gizmod/3.5/gizmod-3.5.tar.bz2' -0 --compressed -o ~/Downloads/gizmod-3.5.tar.bz2
-# Unzip
-tar xjvf ~/Downloads/gizmod-3.5.tar.bz2
-```
-
-### Run on boot
-
-- `TODO:` What do I use to initialize all of these scripts on boot? The Raspberry Pi is headless; the only interface is the LED on the PowerMate
+- [bethebunny/powermate](https://github.com/bethebunny/powermate) - Small Python framework for scripting interactions with Griffin PowerMate
 
 
 ### AirPlay
@@ -87,7 +73,7 @@ autoreconf -i -f
 make
 sudo make install
 sudo systemctl enable shairport-sync
-sudo vi /usr/local/etc/shairport-sync.conf 
+sudo vi /usr/local/etc/shairport-sync.conf
 # Edit Name to "Media Cube"
 # Uncomment and edit "allow_session_interruption" to "yes" to allow people to takeover the speaker
 # Uncomment and edit "session_timeout" to like 20, this seems to need to be set in order for allow_session_interruption to work
