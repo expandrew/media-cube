@@ -19,6 +19,18 @@ Knob handles input/output for Media Cube
 - **CD player**: basic playback and eject
 - **pyradio**: WNYC stream
 
+## General input/command mappings
+
+| Input                               | Command |
+|-------------------------------------|------------|
+| press                               | play/pause |
+| rotate clockwise                    | volume up |
+| rotate counter clockwise            | volume down |
+| press and rotate clockwise          | next track |
+| press and rotate counter clockwise  | previous track |
+| long press                          | disconnect/eject/reset |
+| double press                        | "secondary mode" |
+
 ## Development Log
 What I did to install the Nuimo drivers on Raspberry Pi:
 ```bash
