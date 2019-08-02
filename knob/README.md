@@ -60,6 +60,11 @@ sudo nuimoctl --discover # finds Nuimos connected, copy the MAC jk it's d1:b3:e3
 sudo nuimoctl --connect d1:b3:e3:66:75:61 # paste MAC
 # All the above is just for fun to make sure it's working so now if stuff shows up it's good
 
+# Set up PowerMate so we can read events (from https://github.com/bethebunny/powermate#setup)
+sudo groupadd input
+sudo usermod -a -G input "$USER"
+echo 'KERNEL=="event*", NAME="input/%k", MODE="660", GROUP="input"' | sudo tee -a /etc/udev/rules.d/99-input.rules
+sudo reboot
 ```
 
 Now it's time to figure out how to use it in a Python script
