@@ -2,7 +2,7 @@
 """
 This is the main runner for the knob service
 """
-from powermate import PowerMateBase, LedEvent, MAX_BRIGHTNESS
+from powermate.powermate import PowerMateBase, LedEvent, MAX_BRIGHTNESS
 
 class ExamplePowerMate(PowerMateBase):
   def __init__(self, path):
