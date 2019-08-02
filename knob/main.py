@@ -3,11 +3,11 @@
 This is the main runner for the knob service
 """
 
-import knob.commands as commands
-import knob.external_applications as external_applications
-import knob.mappings as mappings
-import knob.state as state
-import knob.ui as ui
+from time import sleep
 
-
-print('Hello Knob')
+try:
+    while True:
+        print "Hello World"
+        sleep(5)
+except KeyboardInterrupt, e:
+    print "Stopping..."
