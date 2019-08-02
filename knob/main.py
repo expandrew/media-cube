@@ -2,6 +2,7 @@
 """
 This is the main runner for the knob service
 """
+import glob
 from powermate.powermate import PowerMateBase, LedEvent, MAX_BRIGHTNESS
 
 class ExamplePowerMate(PowerMateBase):
