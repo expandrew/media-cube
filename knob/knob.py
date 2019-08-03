@@ -19,7 +19,7 @@ class ShairportSyncPowermate(PowerMateBase):
     return ps
 
   def short_press(self):
-    ps = get_player_state()
+    ps = self.get_player_state()
 
     if ps == 'Playing':
       bus.Pause()
@@ -34,19 +34,19 @@ class ShairportSyncPowermate(PowerMateBase):
 
   def rotate(self, rotation):
     if rotation < 1:
-      bus.VolumeDown()
-      print('Volume Down')
+      # bus.VolumeDown()
+      print('Volume Down', rotation)
     else:
-      bus.VolumeUp()
-      print('Volume Up')
+      # bus.VolumeUp()
+      print('Volume Up', rotation)
 
   def push_rotate(self, rotation):
     if rotation < 1:
-      bus.Previous()
-      print('Previous')
+      # bus.Previous()
+      print('Previous', rotation)
     else:
-      bus.Next()
-      print('Next')
+      # bus.Next()
+      print('Next', rotation)
 
 
 if __name__ == '__main__':
