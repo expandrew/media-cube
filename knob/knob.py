@@ -13,10 +13,18 @@ class ShairportSyncPowermate(PowerMateBase):
     self._pulsing = self._playing
     self._brightness = MAX_BRIGHTNESS
 
-  def short_press(self):
-    bus.PlayPause()
+  def get_player_state(self):
     ps = bus.PlayerState
     self._playing = ps == 'Playing'
+    return ps
+
+  def short_press(self):
+    ps = get_player_state()
+
+    if ps == 'Playing':
+      bus.Pause()
+    else:
+      bus.Play()
     print(ps)
 
   # def long_press(self):
