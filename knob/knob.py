@@ -25,7 +25,6 @@ class ShairportSyncPowermate(PowerMateBase):
       bus.Pause()
     else:
       bus.Play()
-    print(ps)
 
   # def long_press(self):
   #   print('Reset')
@@ -34,19 +33,15 @@ class ShairportSyncPowermate(PowerMateBase):
 
   def rotate(self, rotation):
     if rotation < 1:
-      # bus.VolumeDown()
-      print('Volume Down', rotation)
+      bus.VolumeDown()
     else:
-      # bus.VolumeUp()
-      print('Volume Up', rotation)
+      bus.VolumeUp()
 
   def push_rotate(self, rotation):
     if rotation < 1:
-      # bus.Previous()
-      print('Previous', rotation)
+      bus.Previous()
     else:
-      # bus.Next()
-      print('Next', rotation)
+      bus.Next()
 
 
 if __name__ == '__main__':

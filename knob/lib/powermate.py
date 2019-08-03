@@ -219,7 +219,6 @@ class PowerMateEventHandler(EventHandler):
         else:
           return self.short_press()
     elif event.type == ROTATE:
-      print('DEBUG: Rotate: {}'.format(event.value))
       if self.button:
         self.__rotated = True
         return self.push_rotate(event.value)
