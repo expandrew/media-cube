@@ -1,5 +1,5 @@
 dev:
-	python knob.py
+	python3 knob.py
 
 start:
 	sudo systemctl start knob.service
