@@ -11,7 +11,7 @@ class ShairportSyncPowermate(PowerMateBase):
     super(ShairportSyncPowermate, self).__init__(path)
     self._playing = bus.PlayerState == 'Playing'
     self._pulsing = self._playing
-    self._brightness = MAX_BRIGHTNESS
+    LedEvent(brightness=200)
 
   def get_player_state(self):
     ps = bus.PlayerState
