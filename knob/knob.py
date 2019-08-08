@@ -11,7 +11,7 @@ class ShairportSyncPowermate(PowerMateBase):
     super(ShairportSyncPowermate, self).__init__(path)
     self._playing = bus.PlayerState == 'Playing'
     self._pulsing = self._playing
-    LedEvent(brightness=200)
+    LedEvent(brightness=128)
 
   def get_player_state(self):
     ps = bus.PlayerState
@@ -23,13 +23,15 @@ class ShairportSyncPowermate(PowerMateBase):
 
     if ps == 'Playing':
       bus.Pause()
+      return LedEvent(brightness=128)
     else:
       bus.Play()
+      return LedEvent.pulse()
 
-  # def long_press(self):
-  #   print('Reset')
-  #   self._playing = bus.PlayerState
-  #   return LedEvent(brightness=0)
+  def long_press(self):
+    print('Reset')
+    bus.Pause()
+    return LedEvent(brightness=0)
 
   def rotate(self, rotation):
     if rotation < 1:
