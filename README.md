@@ -80,6 +80,69 @@ sudo vi /usr/local/etc/shairport-sync.conf
 sudo reboot
 ```
 
+### Spotify
+
+Headless Spotify for control with `knob` library
+
+[spotifyd install instructions for Raspberry Pi](https://github.com/Spotifyd/spotifyd/wiki/Installing-on-a-Raspberry-Pi)
+
+```bash
+# Had to reinstall unzip for some reason
+sudo apt-get install unzip
+
+# Grab the repo
+cd ~
+wget https://github.com/Spotifyd/spotifyd/releases/download/v0.2.5/spotifyd-2019-02-25-armv6.zip # had to use 0.2.5 because the current version is compiled for ARMv7 and my pi is too old to run this architecture and I don't know how to recompile it so meh
+unzip spotifyd-2019-02-25-armv6.zip # Now you have ~/spotifyd available
+
+# Create configuration file
+sudo nano ~/spotifyd.conf
+
+# Paste in the following and save/exit:
+: '
+[global]
+username = 1283883
+password = "(Get Spotify password from 1Password)"
+backend = alsa
+device = default
+mixer = PCM
+volume-control = alsa
+device_name = "MediaCube"
+bitrate = 160
+cache_path = cache_directory
+volume-normalisation = true
+normalisation-pregain = -10
+'
+
+# Create systemctl service file
+sudo nano /etc/systemd/system/spotifyd.service
+
+# Paste in the following
+: '
+[Unit]
+Description=Spotify Connect daemon for MediaCube
+Documentation=https://github.com/Spotifyd/spotifyd
+Wants=sound.target
+After=sound.target
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+ExecStart=/home/pi/spotifyd --no-daemon --config /home/pi/spotifyd.conf
+Restart=always
+RestartSec=12
+
+[Install]
+WantedBy=default.target
+'
+
+# Start the service
+sudo systemctl daemon-reload
+sudo systemctl enable spotifyd
+sudo systemctl start spotifyd
+
+# Connect to MediaCube on Spotify Connect and music should be playing
+```
 
 ---
 
