@@ -53,7 +53,7 @@ class Knob(PowerMateBase):
 if __name__ == '__main__':
   # Get Spotify  authentication token
   spotify_auth_token = util.prompt_for_user_token(
-    scope='user-modify-playback-state',
+    scope='user-read-playback-state user-modify-playback-state',
     username=SPOTIFY_USER_NAME,
     client_id=SPOTIFY_CLIENT_ID,
     client_secret=SPOTIFY_CLIENT_SECRET,
