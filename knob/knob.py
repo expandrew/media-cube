@@ -17,7 +17,9 @@ SPOTIFY_USER_NAME=os.environ.get('SPOTIFY_USER_NAME')
 class Knob(PowerMateBase):
   def __init__(self, path):
     super(Knob, self).__init__(path)
+    print('Thing\'s on')
     self._playing = False
+    self._volume = media_cube.get('volume_percent', 75)
     LedEvent(brightness=128)
 
   def get_player_state(self):
@@ -40,8 +42,11 @@ class Knob(PowerMateBase):
   def rotate(self, rotation):
     if rotation < 1:
       print('Volume Down')
+      self._volume -= 1
     else:
       print('Volume Up')
+      self._volume += 1
+    return sp.volume(volume_percent=self._volume, device_id='MediaCube')
 
   def push_rotate(self, rotation):
     if rotation < 1:
@@ -76,4 +81,6 @@ if __name__ == '__main__':
 
   if not powermate:
     raise Exception('PowerMate wasn\'t found in devices... we gotta stop')
+
+  print('Everything\'s good, here we go...')
   powermate.run()
