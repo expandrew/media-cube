@@ -4,6 +4,7 @@ This is the main runner for the knob service
 """
 import os
 import glob
+import alsaaudio
 import spotipy
 import spotipy.util as util
 from lib.powermate import PowerMateBase, LedEvent, MAX_BRIGHTNESS
@@ -39,6 +40,7 @@ class Knob(PowerMateBase):
     print('Reset')
     return LedEvent(brightness=0)
 
+
   def rotate(self, rotation):
     if rotation < 1:
       print('Volume Down')
@@ -46,7 +48,19 @@ class Knob(PowerMateBase):
     else:
       print('Volume Up')
       self._volume += 1
-    return sp.volume(volume_percent=self._volume, device_id='MediaCube')
+
+    # check to make sure volume is between 0-100
+    if self._volume >= 100:
+      self._volume = 100
+      print('Volume Max')
+    elif self._volume <= 0:
+      self._volume = 0
+      print('Volume Min')
+
+    mixer.setvolume(self._volume)
+
+    return print('Volume is now {}'.format(self._volume))
+
 
   def push_rotate(self, rotation):
     if rotation < 1:
@@ -56,6 +70,12 @@ class Knob(PowerMateBase):
 
 
 if __name__ == '__main__':
+  # Find PCM audio (for setting volume)
+  mixer = alsaaudio.Mixer('PCM')
+
+  if not mixer:
+    raise Exception('No PCM audio interface found... we gotta stop')
+
   # Get Spotify  authentication token
   spotify_auth_token = util.prompt_for_user_token(
       scope='user-read-playback-state user-modify-playback-state',
