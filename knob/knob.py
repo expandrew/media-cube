@@ -53,11 +53,11 @@ class Knob(PowerMateBase):
 if __name__ == '__main__':
   # Get Spotify  authentication token
   spotify_auth_token = util.prompt_for_user_token(
-    scope='user-read-playback-state user-modify-playback-state',
-    username=SPOTIFY_USER_NAME,
-    client_id=SPOTIFY_CLIENT_ID,
-    client_secret=SPOTIFY_CLIENT_SECRET,
-    redirect_uri=SPOTIFY_REDIRECT_URI)
+      scope='user-read-playback-state user-modify-playback-state',
+      username=SPOTIFY_USER_NAME,
+      client_id=SPOTIFY_CLIENT_ID,
+      client_secret=SPOTIFY_CLIENT_SECRET,
+      redirect_uri=SPOTIFY_REDIRECT_URI)
 
   if not spotify_auth_token:
     raise Exception('Spotify authentication token wasn\'t available... we gotta stop')
