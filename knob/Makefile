@@ -9,7 +9,7 @@ stop:
 
 install:
 	sudo cp knob.service /etc/systemd/system/
-	pip3 install -r requirements.txt
+	sudo pip3 install -r requirements.txt
 
 uninstall:
 	sudo rm /etc/systemd/system/knob.service
