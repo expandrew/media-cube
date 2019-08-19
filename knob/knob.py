@@ -5,6 +5,7 @@ This is the main runner for the knob service
 import os
 import glob
 import spotipy
+import spotipy.util as util
 from lib.powermate import PowerMateBase, LedEvent, MAX_BRIGHTNESS
 
 SPOTIFY_CLIENT_ID=os.environ.get('SPOTIFY_CLIENT_ID', None)
@@ -51,7 +52,7 @@ class Knob(PowerMateBase):
 
 if __name__ == '__main__':
   # Get Spotify  authentication token
-  spotify_auth_token = spotipy.util.prompt_for_user_token(
+  spotify_auth_token = util.prompt_for_user_token(
     scope='user-modify-playback-state',
     username=SPOTIFY_USER_NAME,
     client_id=SPOTIFY_CLIENT_ID,
