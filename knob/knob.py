@@ -64,7 +64,7 @@ if __name__ == '__main__':
 
   # Find MediaCube in Spotify Connect devices
   sp = spotipy.Spotify(auth=spotify_auth_token)
-  devices = sp.devices()
+  devices = sp.devices().get('devices')
   filtered = filter(lambda device: device.get(u'name') == u'MediaCube', devices) # Returns a list of objects (hopefully only one): [{}]
   media_cube = next(iter(filtered), None) # Gets first item in list or None if doesn't exist
 
