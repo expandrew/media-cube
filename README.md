@@ -91,23 +91,23 @@ Headless Spotify for control with `knob` library
 sudo apt-get install unzip
 
 # Grab the repo
-cd ~
-wget https://github.com/Spotifyd/spotifyd/releases/download/v0.2.5/spotifyd-2019-02-25-armv6.zip # had to use 0.2.5 because the current version is compiled for ARMv7 and my pi is too old to run this architecture and I don't know how to recompile it so meh
-unzip spotifyd-2019-02-25-armv6.zip # Now you have ~/spotifyd available
+cd ~/MediaCube
+wget https://github.com/Spotifyd/spotifyd/releases/download/v0.2.13/spotifyd-2019-09-15-armv6-slim.zip
+unzip spotifyd-2019-09-15-armv6-slim.zip # Now you have ~/MediaCube/spotifyd available
 
 # Create configuration file
-sudo nano ~/spotifyd.conf
+sudo nano ~/MediaCube/spotifyd.conf
 
 # Paste in the following and save/exit:
 : '
 [global]
 username = 1283883
-password = "(Get Spotify password from 1Password)"
+password = (Get Spotify password from 1Password)
 backend = alsa
 device = default
 mixer = PCM
 volume-control = alsa
-device_name = "MediaCube"
+device_name = Media Cube
 bitrate = 160
 cache_path = cache_directory
 volume-normalisation = true
@@ -120,7 +120,7 @@ sudo nano /etc/systemd/system/spotifyd.service
 # Paste in the following
 : '
 [Unit]
-Description=Spotify Connect daemon for MediaCube
+Description=Spotify Connect daemon for Media Cube
 Documentation=https://github.com/Spotifyd/spotifyd
 Wants=sound.target
 After=sound.target
@@ -128,7 +128,7 @@ Wants=network-online.target
 After=network-online.target
 
 [Service]
-ExecStart=/home/pi/spotifyd --no-daemon --config /home/pi/spotifyd.conf
+ExecStart=/home/pi/MediaCube/spotifyd --no-daemon --config-path /home/pi/MediaCube/spotifyd.conf
 Restart=always
 RestartSec=12
 
@@ -141,7 +141,7 @@ sudo systemctl daemon-reload
 sudo systemctl enable spotifyd
 sudo systemctl start spotifyd
 
-# Connect to MediaCube on Spotify Connect and music should be playing
+# Connect to Media Cube on Spotify Connect and music should be playing
 ```
 
 ---
