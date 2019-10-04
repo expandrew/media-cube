@@ -1,0 +1,12 @@
+[global]
+username = GET USERNAME FROM 1Password
+password = GET PASSWORD FROM 1Password
+backend = alsa
+device = default
+mixer = PCM
+volume-control = alsa
+device_name = Media Cube
+bitrate = 160
+cache_path = cache_directory
+volume-normalisation = true
+normalisation-pregain = -10
