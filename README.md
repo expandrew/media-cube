@@ -22,6 +22,37 @@ Pi-hole is running a DHCP server on my network so the AirPort Express DHCP is ef
 
 I added the Pi's MAC IDs (ethernet and Wi-Fi) as the two reservations at 10.0.1.10 and 10.0.1.11 so that the AirPort Express would not assign any other IPs to clients. The Pi takes care of DHCP for the rest of the clients on the network. I have IPs/host names set per MAC ID of each device on the network in Pi-hole's [DHCP settings](http://10.0.1.10/admin/settings.php?tab=piholedhcp)
 
+## spotifyd
+I installed spotifyd from the instructions on the [Spotifyd GitHub wiki](https://github.com/Spotifyd/spotifyd/wiki/Installing-on-a-Raspberry-Pi):
+
+```bash
+# Had to reinstall unzip for some reason
+sudo apt-get install unzip
+
+# Grab the spotifyd repo
+cd ~/MediaCube
+mkdir spotifyd && cd spotifyd # Make spotifyd directory
+wget https://github.com/Spotifyd/spotifyd/releases/download/v0.2.13/spotifyd-2019-09-15-armv6-slim.zip
+unzip spotifyd-2019-09-15-armv6-slim.zip # Now you have ~/MediaCube/spotifyd/spotifyd available
+
+# Create configuration file from example
+cp ~/MediaCube/spotifyd/spotifyd.conf.example ~/MediaCube/spotifyd/spotifyd.conf
+
+# Edit configuration file to add username/password:
+vi ~/MediaCube/spotifyd/spotifyd.conf # Add the credentials
+
+# Copy service file to system
+cp ~/MediaCube/spotifyd/spotifyd.service /etc/systemd/system/spotifyd.service
+
+# Start the service
+sudo systemctl daemon-reload
+sudo systemctl enable spotifyd
+sudo systemctl start spotifyd
+
+# Connect to Media Cube on Spotify Connect and music should be playing
+```
+
+
 ## openvpn
 This was set up with hints from the [Pi-Hole OpenVPN Installation](https://docs.pi-hole.net/guides/vpn/installation/) page
 
