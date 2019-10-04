@@ -82,10 +82,10 @@ def read_config(config_path):
 
 def main():
     SCRIPT_DIR = os.path.dirname(os.path.realpath(__file__))
-    path = os.path.join(SCRIPT_DIR, 'config.txt')
+    path = os.path.join(SCRIPT_DIR, 'gandi-ldns.conf')
     config = read_config(path)
     if not config:
-        sys.exit("please fill in the 'config.txt' file")
+        sys.exit("please fill in the 'gandi-ldns.conf' file")
 
     for section in config.sections():
         zone_ip = get_zone_ip(config[section])

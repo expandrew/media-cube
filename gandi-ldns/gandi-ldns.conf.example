@@ -1,0 +1,7 @@
+[local]
+apikey = (Get API key from Gandi.net: go to "Security" section in account.gandi.net)
+domain = your-domain.com
+a_name = which-subdomain-to-update
+ttl = 900
+api = https://dns.api.gandi.net/api/v5/
+host = localhost
