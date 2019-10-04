@@ -65,3 +65,22 @@ The script can be simply ran as `python3 gandi-ldns.py` and takes no arguments. 
 config.txt file in the script folder will be used.
 
 To run periodically, you can use cron or systemd timers.
+
+I used a cron job, which was set up like this:
+
+```bash
+sudo crontab -e
+
+```
+
+Add these lines to the file:
+```
+@reboot python3 /home/pi/MediaCube/gandi-ldns/gandi-ldns.py &
+*/15 * * * * python3 /home/pi/MediaCube/gandi-ldns/gandi-ldns.py
+```
+
+Then restart cron jobs:
+```bash
+sudo /etc/init.d/cron start
+sudo /etc/init.d/cron reload
+```
