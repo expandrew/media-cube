@@ -28,3 +28,22 @@ sudo systemctl start spotifyd
 
 # Connect to Media Cube on Spotify Connect and music should be playing
 ```
+
+I also added a cron job to clear out `/cache_directory` every day because it seems to fill up and throw errors. The cron job was added like this:
+
+```bash
+sudo crontab -e
+
+```
+
+Add these lines to the file:
+```
+# Clear spotifyd cache directory daily
+@daily sudo rm -rf /cache_directory
+```
+
+Then restart cron jobs:
+```bash
+sudo /etc/init.d/cron start
+sudo /etc/init.d/cron reload
+```
