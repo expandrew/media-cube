@@ -75,8 +75,9 @@ sudo crontab -e
 
 Add these lines to the file:
 ```
-@reboot python3 /home/pi/MediaCube/gandi-ldns/gandi-ldns.py &
-*/15 * * * * python3 /home/pi/MediaCube/gandi-ldns/gandi-ldns.py
+# Update Gandi LDNS on reboot and every hour
+@reboot python3 /home/pi/MediaCube/gandi-ldns/gandi-ldns.py
+@hourly python3 /home/pi/MediaCube/gandi-ldns/gandi-ldns.py
 ```
 
 Then restart cron jobs:
