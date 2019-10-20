@@ -7,6 +7,5 @@ mixer = PCM
 volume-control = alsa
 device_name = Media Cube
 bitrate = 160
-cache_path = cache_directory
 volume-normalisation = true
 normalisation-pregain = -10
