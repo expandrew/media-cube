@@ -1,5 +1,14 @@
 # spotifyd
 
+**Update 20200208:** I disabled spotifyd in favor of using the Sonos speaker and the PowerMate to control it. See [sonospowermate](../sonospowermate/) for more info. I used these commands to disable spotifyd:
+
+```bash
+sudo systemctl stop spotifyd
+sudo systemctl disable spotifyd
+```
+
+## Installation
+
 I installed spotifyd from the instructions on the [Spotifyd GitHub wiki](https://github.com/Spotifyd/spotifyd/wiki/Installing-on-a-Raspberry-Pi):
 
 ```bash
