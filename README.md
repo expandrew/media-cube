@@ -9,3 +9,4 @@ Right now it has:
 - [spotifyd](spotifyd/)
 - [openvpn](openvpn/)
 - [gandi-ldns](gandi-ldns/)
+- [sonospowermate](sonospowermate/))
