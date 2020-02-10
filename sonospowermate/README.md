@@ -46,8 +46,12 @@ Look for the config variable `VOICERSS_API_KEY`, and replace it with your access
 Set up `forever` to keep the thing running:
 
 ```shell
-$ npm install forever -g
+$ npm install forever@0.15.3 -g
+```
 
+Set up init.d entry for starting `forever`:
+
+```shell
 $ sudo vi /etc/init.d/sonospowermate
 
 # Paste the following:
@@ -81,6 +85,7 @@ exit 0
 ```
 
 Update permissions and services:
+
 ```shell
 $ sudo chmod u+x /etc/init.d/sonospowermate
 $ sudo update-rc.d sonospowermate defaults
