@@ -4,6 +4,7 @@
         "append": true,
         "watch": false,
         "script": "sonospowermate.js",
-        "sourceDir": "/home/pi/MediaCube/sonospowermate/"
+        "sourceDir": "/home/pi/MediaCube/sonospowermate/",
+        "path": "/home/pi/.forever/"
     }
 ]
