@@ -1,0 +1,9 @@
+[
+    {
+        "uid": "sonospowermate",
+        "append": true,
+        "watch": false,
+        "script": "sonospowermate.js",
+        "sourceDir": "/home/pi/MediaCube/sonospowermate/"
+    }
+]
