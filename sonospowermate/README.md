@@ -49,46 +49,16 @@ Set up `forever` to keep the thing running:
 $ npm install forever@0.15.3 -g
 ```
 
-Set up init.d entry for starting `forever`:
+Set up cronjob to start `forever` on boot:
 
 ```shell
-$ sudo vi /etc/init.d/sonospowermate
+$ sudo crontab -e
 
 # Paste the following:
-### BEGIN INIT INFO
-# Provides: sonospowermate
-# Required-Start:
-# Required-Stop:
-# Default-Start: 2 3 4 5
-# Default-Stop: 0 1 6
-# Short-Description: SonosPowermate Node App
-### END INIT INFO
+@reboot /home/pi/MediaCube/sonospowermate/forever.sh start
+# FIXME: This doesn't work properly but the idea is this 👆
 
-export PATH=$PATH:/opt/node/bin
-export NODE_PATH=$NODE_PATH:/opt/node/lib/node_modules
-export HOME=/root
-
-case "$1" in
-start)
-exec /opt/node/bin/forever start -p /home/pi/.forever --sourceDir /home/pi/MediaCube/sonospowermate sonospowermate.js
-;;
-stop)
-exec /opt/node/bin/forever stopall
-;;
-*)
-
-echo "Usage: /etc/init.d/sonospowermate {start|stop}"
-exit 1
-;;
-esac
-exit 0
-```
-
-Update permissions and services:
-
-```shell
-$ sudo chmod u+x /etc/init.d/sonospowermate
-$ sudo update-rc.d sonospowermate defaults
+# Save and exit, etc.
 ```
 
 Then things should be working!
