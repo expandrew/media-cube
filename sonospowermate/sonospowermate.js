@@ -15,7 +15,8 @@ var SonosDiscovery = require('sonos-discovery'),
     path = require('path'),
     http = require('http'),
     util = require('util'),
-    os = require('os');
+    os = require('os'),
+    env = require('dotenv').config({path: __dirname + '/.env'});
 
 // Get the LED strobing while we're discovering the Sonos topology
 powermate.setPulseSpeed(511);
@@ -36,8 +37,7 @@ var player;
 // My config variables
 var PLAYER_NAME='Media Cube Sonos'; // Sonos name on network
 var PLAY_BRIGHTNESS=100; // This is to avoid burning out the LED on my PowerMate
-var VOICERSS_API_KEY='ENTER KEY HERE';
-
+var VOICERSS_API_KEY= process.env['VOICERSS_API_KEY'];
 
 // Get our ip addressand make sure our audio container directory exists
 initialize();

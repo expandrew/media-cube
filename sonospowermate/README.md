@@ -41,7 +41,7 @@ Run `npm install` in this directory to bring in the dependencies.
 
 Edit the `sonospowermate.js` file, look for the config variable `PLAYER_NAME`, and replace it with the name of the Sonos zone you plan to control with the Powermate.
 
-Look for the config variable `VOICERSS_API_KEY`, and replace it with your access key from [voicerss.com](http://www.voicerss.org/login.aspx).
+Copy the `.env.example` file to `.env` and replace the `VOICERSS_API_KEY` with your access key from [voicerss.com](http://www.voicerss.org/login.aspx).
 
 Set up `forever` to keep the thing running:
 
