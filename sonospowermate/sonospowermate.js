@@ -35,7 +35,7 @@ var favTrack;
 var player;
 
 // My config variables
-var PLAYER_NAME='Media Cube Sonos'; // Sonos name on network
+var PLAYER_NAME='Media Cube'; // Sonos name on network
 var PLAY_BRIGHTNESS=100; // This is to avoid burning out the LED on my PowerMate
 var VOICERSS_API_KEY= process.env['VOICERSS_API_KEY'];
 
