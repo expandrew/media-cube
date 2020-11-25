@@ -11,7 +11,12 @@
 
 // import repl from 'repl';
 import { SonosManager, SonosDevice } from '@svrooij/sonos';
+import { PowerMate } from './powermate';
 
+// PowerMate things
+const powermate = new PowerMate();
+
+// Sonos things
 const manager = new SonosManager();
 
 manager.InitializeWithDiscovery(60).then(() => {
@@ -28,6 +33,7 @@ manager.InitializeWithDiscovery(60).then(() => {
   // console.info('Starting repl...');
   // const startedRepl = repl.start('>>> ');
   // startedRepl.context['manager'] = manager;
+  // startedRepl.context['powermate'] = powermate;
   // startedRepl.context['MEDIA_CUBE'] = MEDIA_CUBE;
   // startedRepl.context['BEDROOM'] = BEDROOM;
 });
