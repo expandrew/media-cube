@@ -8,6 +8,8 @@
  * - PowerMate LED state matches Sonos play/pause state
  * - Double-click PowerMate button toggles two preset Sonos groups (use case is "play in just this room, or play in both rooms")
  */
+
+// import repl from 'repl';
 import { SonosManager, SonosDevice } from '@svrooij/sonos';
 
 const manager = new SonosManager();
@@ -22,4 +24,10 @@ manager.InitializeWithDiscovery(60).then(() => {
 
   MEDIA_CUBE?.LoadDeviceData();
   BEDROOM?.LoadDeviceData();
+
+  // console.info('Starting repl...');
+  // const startedRepl = repl.start('>>> ');
+  // startedRepl.context['manager'] = manager;
+  // startedRepl.context['MEDIA_CUBE'] = MEDIA_CUBE;
+  // startedRepl.context['BEDROOM'] = BEDROOM;
 });
