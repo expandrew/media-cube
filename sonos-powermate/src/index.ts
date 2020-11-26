@@ -11,14 +11,32 @@
 
 // import repl from 'repl';
 import { SonosManager, SonosDevice } from '@svrooij/sonos';
-import { PowerMate } from './powermate';
+import { PowerMate, EVENTS as PowerMateEvents } from './powermate';
 
 // PowerMate things
 const powermate = new PowerMate();
 
-powermate.on('turn', console.log);
-powermate.on('buttonDown', console.log);
-powermate.on('buttonUp', console.log);
+powermate.on(PowerMateEvents.CLOCKWISE, () =>
+  console.log(PowerMateEvents.CLOCKWISE)
+);
+powermate.on(PowerMateEvents.PRESS_CLOCKWISE, () =>
+  console.log(PowerMateEvents.PRESS_CLOCKWISE)
+);
+powermate.on(PowerMateEvents.COUNTERCLOCKWISE, () =>
+  console.log(PowerMateEvents.COUNTERCLOCKWISE)
+);
+powermate.on(PowerMateEvents.PRESS_COUNTERCLOCKWISE, () =>
+  console.log(PowerMateEvents.PRESS_COUNTERCLOCKWISE)
+);
+powermate.on(PowerMateEvents.SINGLE_PRESS, () =>
+  console.log(PowerMateEvents.SINGLE_PRESS)
+);
+powermate.on(PowerMateEvents.LONG_PRESS, () =>
+  console.log(PowerMateEvents.LONG_PRESS)
+);
+powermate.on(PowerMateEvents.DOUBLE_PRESS, () =>
+  console.log(PowerMateEvents.DOUBLE_PRESS)
+);
 
 // Sonos things
 const manager = new SonosManager();
