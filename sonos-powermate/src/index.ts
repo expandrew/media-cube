@@ -16,6 +16,10 @@ import { PowerMate } from './powermate';
 // PowerMate things
 const powermate = new PowerMate();
 
+powermate.on('turn', console.log);
+powermate.on('buttonDown', console.log);
+powermate.on('buttonUp', console.log);
+
 // Sonos things
 const manager = new SonosManager();
 
