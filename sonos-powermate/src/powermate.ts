@@ -19,6 +19,19 @@ const getAllDevices = () => {
 };
 
 /**
+ * Events for PowerMate button and rotation
+ */
+export const EVENTS = {
+  SINGLE_PRESS: 'singlePress',
+  DOUBLE_PRESS: 'doublePress',
+  LONG_PRESS: 'longPress',
+  CLOCKWISE: 'clockwise',
+  COUNTERCLOCKWISE: 'counterclockwise',
+  PRESS_CLOCKWISE: 'pressClockwise',
+  PRESS_COUNTERCLOCKWISE: 'pressCounterclockwise',
+};
+
+/**
  * Number of found PowerMate devices
  */
 export const deviceCount = () => getAllDevices().length;
