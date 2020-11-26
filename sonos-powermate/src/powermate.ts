@@ -44,7 +44,6 @@ export const deviceCount = () => getAllDevices().length;
 export class PowerMate extends EventEmitter {
   hid: HID.HID;
   button: 0 | 1; // 0: unpressed; 1: pressed
-  position: number;
 
   constructor(index: number = 0) {
     super();
@@ -66,7 +65,6 @@ export class PowerMate extends EventEmitter {
     this.hid = new HID.HID(path);
     this.hid.read(this.interpretData.bind(this));
     this.button = 0;
-    this.position = 0; // increments up for clockwise rotation, or down for counter clockwise rotation
   }
 
   /**
@@ -94,14 +92,29 @@ export class PowerMate extends EventEmitter {
       this.button = button as 0 | 1;
     }
 
-    // Compute delta for rotation and store it on this.position
-    let delta = data[1];
-    if (delta) {
-      if (delta & 0x80) {
-        delta = -256 + delta; // counter clockwise rotation is sent as 255 (ff), so this converts it to -1
+    // Compute rotation
+    let delta = 0;
+    const rotationInput = data[1];
+    /**
+     * rotationInput
+     *
+     * Clockwise rotation starts at 1, and increases with faster input
+     * Counterclockwise rotation starts at 255, and decreases with faster input
+     *
+     * The value increases (or decreases) proportional to how fast you turn the knob
+     * ex. a fast clockwise turn can come in as 2, 3, etc.; a fast counterclockwise turn can come as 254, 253, and so on.
+     *
+     * 128 is the middle of the spectrum: if above this, then it is representing counterclockwise rotation (starting at 255)
+     * So, 0-127 is clockwise and 128-255 is counterclockwise
+     */
+    if (rotationInput) {
+      if (rotationInput > 128) {
+        delta = -256 + rotationInput; // Counterclockwise rotation is sent starting at 255 so this converts it to a meaningful negative number
+        this.emit(EVENTS.COUNTERCLOCKWISE, { delta });
+      } else {
+        delta = rotationInput; // Clockwise rotation is sent starting at 1, so it will already be a meaningful positive number
+        this.emit(EVENTS.CLOCKWISE, { delta });
       }
-      this.position += delta;
-      this.emit('turn', { delta, position: this.position });
     }
 
     // Restart the read loop
