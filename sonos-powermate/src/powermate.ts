@@ -43,7 +43,7 @@ export const deviceCount = () => getAllDevices().length;
  */
 export class PowerMate extends EventEmitter {
   hid: HID.HID;
-  button: 0 | 1; // 0: unpressed; 1: pressed
+  isPressed: boolean;
 
   constructor(index: number = 0) {
     super();
@@ -64,7 +64,7 @@ export class PowerMate extends EventEmitter {
 
     this.hid = new HID.HID(path);
     this.hid.read(this.interpretData.bind(this));
-    this.button = 0;
+    this.isPressed = false;
   }
 
   /**
@@ -85,11 +85,10 @@ export class PowerMate extends EventEmitter {
       throw new Error(error);
     }
 
-    // Compute button pressed state and store it on this.button
-    const button = data[0];
-    if (button ^ this.button) {
-      this.emit(button ? 'buttonDown' : 'buttonUp', { button });
-      this.button = button as 0 | 1;
+    // Compute isPressed
+    const isPressed = Boolean(data[0]); // data[0] comes in as 1 (pressed) or 0 (unpressed);
+    if (isPressed != this.isPressed) {
+      this.isPressed = isPressed;
     }
 
     // Compute rotation
