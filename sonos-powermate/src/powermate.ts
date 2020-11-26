@@ -43,6 +43,14 @@ const LONG_PRESS_MS = 1000;
 const DOUBLE_PRESS_MS = 300;
 
 /**
+ * LED states and their values
+ */
+export const LED_STATES = {
+  ON: 100,
+  OFF: 0,
+};
+
+/**
  * Number of found PowerMate devices
  */
 export const deviceCount = () => getAllDevices().length;
@@ -63,6 +71,7 @@ export class PowerMate extends EventEmitter {
     timer: ReturnType<typeof setTimeout> | undefined;
     isRunning: boolean;
   };
+  ledState: number;
 
   constructor(index: number = 0) {
     super();
@@ -86,6 +95,8 @@ export class PowerMate extends EventEmitter {
     this.isPressed = false;
     this.longPress = { timer: undefined, isRunning: false };
     this.doublePress = { timer: undefined, isRunning: false };
+    this.ledState = LED_STATES.ON;
+    this.setLed(this.ledState);
   }
 
   /**
