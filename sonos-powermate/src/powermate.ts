@@ -43,6 +43,15 @@ const LONG_PRESS_MS = 1000;
 const DOUBLE_PRESS_MS = 300;
 
 /**
+ * Debounce milliseconds for rotation inputs
+ *
+ * This alters the "sensitivity" of the knob rotation inputs
+ *
+ * A higher value here means it takes more turning to trigger the inputs
+ */
+const ROTATION_DEBOUNCE_MS = 100;
+
+/**
  * LED states and their values
  */
 export const LED_STATES = {
@@ -71,6 +80,10 @@ export class PowerMate extends EventEmitter {
     timer: ReturnType<typeof setTimeout> | undefined;
     isRunning: boolean;
   };
+  rotationDebounce: {
+    timer: ReturnType<typeof setTimeout> | undefined;
+    isReady: boolean;
+  };
   ledState: number;
 
   constructor(index: number = 0) {
@@ -95,6 +108,7 @@ export class PowerMate extends EventEmitter {
     this.isPressed = false;
     this.longPress = { timer: undefined, isRunning: false };
     this.doublePress = { timer: undefined, isRunning: false };
+    this.rotationDebounce = { timer: undefined, isReady: true };
     this.ledState = LED_STATES.ON;
     this.setLed(this.ledState);
   }
@@ -112,7 +126,7 @@ export class PowerMate extends EventEmitter {
    *
    * Includes:
    * - logic for long/double/single presses and events
-   * - logic for clockwise/counterclockwise rotation and events
+   * - logic for clockwise/counterclockwise rotation and events, with debounce
    *
    * @param error - Errors from the PowerMate on input
    * @param data - This comes in as a buffer but HID expects it as `number[]`.
@@ -198,22 +212,28 @@ export class PowerMate extends EventEmitter {
      */
     const computeRotation = (rotationInput: number) => {
       let delta = 0;
-      if (rotationInput) {
+      if (rotationInput && this.rotationDebounce.isReady) {
         // Clear LONG_PRESS timer when released
         clearTimeout(this.longPress.timer as NodeJS.Timeout);
         this.longPress.isRunning = false;
 
-        if (rotationInput > 128) {
-          delta = -256 + rotationInput; // Counterclockwise rotation is sent starting at 255 so this converts it to a meaningful negative number
-          this.isPressed
-            ? this.emit(EVENTS.PRESS_COUNTERCLOCKWISE, { delta })
-            : this.emit(EVENTS.COUNTERCLOCKWISE, { delta });
-        } else {
-          delta = rotationInput; // Clockwise rotation is sent starting at 1, so it will already be a meaningful positive number
-          this.isPressed
-            ? this.emit(EVENTS.PRESS_CLOCKWISE, { delta })
-            : this.emit(EVENTS.CLOCKWISE, { delta });
-        }
+        // Use debounce
+        this.rotationDebounce.isReady = false;
+        this.rotationDebounce.timer = setTimeout(() => {
+          if (rotationInput > 128) {
+            delta = -256 + rotationInput; // Counterclockwise rotation is sent starting at 255 so this converts it to a meaningful negative number
+            this.isPressed
+              ? this.emit(EVENTS.PRESS_COUNTERCLOCKWISE, { delta })
+              : this.emit(EVENTS.COUNTERCLOCKWISE, { delta });
+          } else {
+            delta = rotationInput; // Clockwise rotation is sent starting at 1, so it will already be a meaningful positive number
+            this.isPressed
+              ? this.emit(EVENTS.PRESS_CLOCKWISE, { delta })
+              : this.emit(EVENTS.CLOCKWISE, { delta });
+          }
+          // Reset debounce "ready" flag for next input
+          this.rotationDebounce.isReady = true;
+        }, ROTATION_DEBOUNCE_MS);
       }
     };
 
