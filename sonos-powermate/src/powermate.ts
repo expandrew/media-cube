@@ -52,6 +52,15 @@ const DOUBLE_PRESS_MS = 300;
 const ROTATION_DEBOUNCE_MS = 100;
 
 /**
+ * For debouncers in rotation events
+ */
+type Debouncer = {
+  timer: ReturnType<typeof setTimeout> | undefined;
+  isReady: boolean;
+  WAIT_MS: number;
+};
+
+/**
  * LED states and their values
  */
 export const LED_STATES = {
@@ -80,10 +89,7 @@ export class PowerMate extends EventEmitter {
     timer: ReturnType<typeof setTimeout> | undefined;
     isRunning: boolean;
   };
-  rotationDebounce: {
-    timer: ReturnType<typeof setTimeout> | undefined;
-    isReady: boolean;
-  };
+  rotationDebouncer: Debouncer;
   ledState: number;
 
   constructor(index: number = 0) {
@@ -108,7 +114,11 @@ export class PowerMate extends EventEmitter {
     this.isPressed = false;
     this.longPress = { timer: undefined, isRunning: false };
     this.doublePress = { timer: undefined, isRunning: false };
-    this.rotationDebounce = { timer: undefined, isReady: true };
+    this.rotationDebouncer = {
+      timer: undefined,
+      isReady: true,
+      WAIT_MS: ROTATION_DEBOUNCE_MS,
+    };
     this.ledState = LED_STATES.ON;
     this.setLed(this.ledState);
   }
@@ -212,14 +222,14 @@ export class PowerMate extends EventEmitter {
      */
     const computeRotation = (rotationInput: number) => {
       let delta = 0;
-      if (rotationInput && this.rotationDebounce.isReady) {
+      if (rotationInput && this.rotationDebouncer.isReady) {
         // Clear LONG_PRESS timer when released
         clearTimeout(this.longPress.timer as NodeJS.Timeout);
         this.longPress.isRunning = false;
 
-        // Use debounce
-        this.rotationDebounce.isReady = false;
-        this.rotationDebounce.timer = setTimeout(() => {
+        // Use debouncer
+        this.rotationDebouncer.isReady = false;
+        this.rotationDebouncer.timer = setTimeout(() => {
           if (rotationInput > 128) {
             delta = -256 + rotationInput; // Counterclockwise rotation is sent starting at 255 so this converts it to a meaningful negative number
             this.isPressed
@@ -231,8 +241,8 @@ export class PowerMate extends EventEmitter {
               ? this.emit(EVENTS.PRESS_CLOCKWISE, { delta })
               : this.emit(EVENTS.CLOCKWISE, { delta });
           }
-          // Reset debounce "ready" flag for next input
-          this.rotationDebounce.isReady = true;
+          // Reset debouncer "isReady" flag for next input
+          this.rotationDebouncer.isReady = true;
         }, ROTATION_DEBOUNCE_MS);
       }
     };
