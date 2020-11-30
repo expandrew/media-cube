@@ -10,54 +10,24 @@
  */
 
 // import repl from 'repl';
-import { SonosManager, SonosDevice } from '@svrooij/sonos';
+import { Sonos } from './sonos';
 import { PowerMate, LED_STATES, EVENTS as PowerMateEvents } from './powermate';
 
-// PowerMate things
 const powermate = new PowerMate();
+powermate.setLed(LED_STATES.ON);
 
-powermate.on(PowerMateEvents.CLOCKWISE, () =>
-  console.log(PowerMateEvents.CLOCKWISE)
-);
-powermate.on(PowerMateEvents.PRESS_CLOCKWISE, () =>
-  console.log(PowerMateEvents.PRESS_CLOCKWISE)
-);
-powermate.on(PowerMateEvents.COUNTERCLOCKWISE, () =>
-  console.log(PowerMateEvents.COUNTERCLOCKWISE)
-);
-powermate.on(PowerMateEvents.PRESS_COUNTERCLOCKWISE, () =>
-  console.log(PowerMateEvents.PRESS_COUNTERCLOCKWISE)
-);
-powermate.on(PowerMateEvents.SINGLE_PRESS, () => {
-  powermate.setLed(LED_STATES.ON);
-  console.log(PowerMateEvents.SINGLE_PRESS);
-});
-powermate.on(PowerMateEvents.LONG_PRESS, () => {
-  powermate.setLed(LED_STATES.OFF);
-  console.log(PowerMateEvents.LONG_PRESS);
-});
-powermate.on(PowerMateEvents.DOUBLE_PRESS, () =>
-  console.log(PowerMateEvents.DOUBLE_PRESS)
-);
+const sonos = new Sonos();
 
-// Sonos things
-const manager = new SonosManager();
+// Map inputs to Sonos functions
+powermate.on(PowerMateEvents.CLOCKWISE, () => sonos.volumeUp());
+powermate.on(PowerMateEvents.PRESS_CLOCKWISE, () => sonos.next());
+powermate.on(PowerMateEvents.COUNTERCLOCKWISE, () => sonos.volumeDown());
+powermate.on(PowerMateEvents.PRESS_COUNTERCLOCKWISE, () => sonos.previous());
+powermate.on(PowerMateEvents.SINGLE_PRESS, () => sonos.togglePlay());
+powermate.on(PowerMateEvents.LONG_PRESS, () => {});
+powermate.on(PowerMateEvents.DOUBLE_PRESS, () => {});
 
-manager.InitializeWithDiscovery(60).then(() => {
-  const MEDIA_CUBE: SonosDevice | undefined = manager.Devices.find(
-    d => d.Host === '10.0.1.16'
-  );
-  const BEDROOM: SonosDevice | undefined = manager.Devices.find(
-    d => d.Host === '10.0.1.17'
-  );
-
-  MEDIA_CUBE?.LoadDeviceData();
-  BEDROOM?.LoadDeviceData();
-
-  // console.info('Starting repl...');
-  // const startedRepl = repl.start('>>> ');
-  // startedRepl.context['manager'] = manager;
-  // startedRepl.context['powermate'] = powermate;
-  // startedRepl.context['MEDIA_CUBE'] = MEDIA_CUBE;
-  // startedRepl.context['BEDROOM'] = BEDROOM;
-});
+// console.info('Starting repl...');
+// const startedRepl = repl.start('>>> ');
+// startedRepl.context['sonos'] = sonos;
+// startedRepl.context['powermate'] = powermate;
