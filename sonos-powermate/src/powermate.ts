@@ -52,6 +52,13 @@ const DOUBLE_PRESS_MS = 300;
 const ROTATION_DEBOUNCE_MS = 100;
 
 /**
+ * Debounce "wait" milliseconds for press rotation inputs
+ *
+ * Press rotation should be even less sensitive than regular rotation inputs.
+ */
+const PRESS_ROTATION_WAIT_MS = 1000;
+
+/**
  * For debouncers in rotation events
  */
 type Debouncer = {
@@ -90,6 +97,7 @@ export class PowerMate extends EventEmitter {
     isRunning: boolean;
   };
   rotationDebouncer: Debouncer;
+  pressRotationDebouncer: Debouncer;
   ledState: number;
 
   constructor(index: number = 0) {
@@ -118,6 +126,11 @@ export class PowerMate extends EventEmitter {
       timer: undefined,
       isReady: true,
       WAIT_MS: ROTATION_DEBOUNCE_MS,
+    };
+    this.pressRotationDebouncer = {
+      timer: undefined,
+      isReady: true,
+      WAIT_MS: PRESS_ROTATION_WAIT_MS,
     };
     this.ledState = LED_STATES.ON;
     this.setLed(this.ledState);
@@ -233,12 +246,20 @@ export class PowerMate extends EventEmitter {
           if (rotationInput > 128) {
             delta = -256 + rotationInput; // Counterclockwise rotation is sent starting at 255 so this converts it to a meaningful negative number
             this.isPressed
-              ? this.emit(EVENTS.PRESS_COUNTERCLOCKWISE, { delta })
+              ? this.emitWithDebouncer(
+                  EVENTS.PRESS_COUNTERCLOCKWISE,
+                  { delta },
+                  this.pressRotationDebouncer
+                )
               : this.emit(EVENTS.COUNTERCLOCKWISE, { delta });
           } else {
             delta = rotationInput; // Clockwise rotation is sent starting at 1, so it will already be a meaningful positive number
             this.isPressed
-              ? this.emit(EVENTS.PRESS_CLOCKWISE, { delta })
+              ? this.emitWithDebouncer(
+                  EVENTS.PRESS_CLOCKWISE,
+                  { delta },
+                  this.pressRotationDebouncer
+                )
               : this.emit(EVENTS.CLOCKWISE, { delta });
           }
           // Reset debouncer "isReady" flag for next input
@@ -253,5 +274,23 @@ export class PowerMate extends EventEmitter {
 
     // Restart the read loop
     this.hid.read(this.interpretData.bind(this));
+  }
+
+  /**
+   * emitWithDebouncer
+   *
+   * @param event The event to emit when the debounce is ready
+   * @param data The data to send along with the event emitter
+   * @param debouncer The debouncer object with `timer`, `isReady`, and `WAIT_MS`
+   */
+  private emitWithDebouncer(event: string, data: {}, debouncer: Debouncer) {
+    if (debouncer.isReady) {
+      this.emit(event, { data });
+    }
+    // Set up debouncer for future events
+    debouncer.isReady = false;
+    debouncer.timer = setTimeout(() => {
+      debouncer.isReady = true;
+    }, debouncer.WAIT_MS);
   }
 }
