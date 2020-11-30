@@ -43,13 +43,13 @@ const LONG_PRESS_MS = 1000;
 const DOUBLE_PRESS_MS = 300;
 
 /**
- * Debounce milliseconds for rotation inputs
+ * Debounce "wait" milliseconds for rotation inputs
  *
  * This alters the "sensitivity" of the knob rotation inputs
  *
  * A higher value here means it takes more turning to trigger the inputs
  */
-const ROTATION_DEBOUNCE_MS = 100;
+const ROTATION_WAIT_MS = 100;
 
 /**
  * Debounce "wait" milliseconds for press rotation inputs
@@ -125,7 +125,7 @@ export class PowerMate extends EventEmitter {
     this.rotationDebouncer = {
       timer: undefined,
       isReady: true,
-      WAIT_MS: ROTATION_DEBOUNCE_MS,
+      WAIT_MS: ROTATION_WAIT_MS,
     };
     this.pressRotationDebouncer = {
       timer: undefined,
@@ -264,7 +264,7 @@ export class PowerMate extends EventEmitter {
           }
           // Reset debouncer "isReady" flag for next input
           this.rotationDebouncer.isReady = true;
-        }, ROTATION_DEBOUNCE_MS);
+        }, ROTATION_WAIT_MS);
       }
     };
 
