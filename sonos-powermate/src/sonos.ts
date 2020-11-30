@@ -1,5 +1,6 @@
 import { SonosDevice } from '@svrooij/sonos';
 import { EventEmitter } from 'events';
+// import { SonosManager } from '@svrooij/sonos';
 
 /**
  * My Sonos devices and their IPs
@@ -25,6 +26,7 @@ export class Sonos extends EventEmitter {
   BEDROOM: SonosDevice;
   isGrouped: boolean;
   isPlaying: boolean;
+  // manager: SonosManager;
 
   constructor() {
     super();
@@ -43,6 +45,18 @@ export class Sonos extends EventEmitter {
 
       isPlaying ? this.emit(EVENTS.PLAYING) : this.emit(EVENTS.PAUSED);
     });
+
+    // WIP: Figure out grouped state on initialize via SonosManager:
+    // this.manager = new SonosManager();
+    // this.manager.InitializeWithDiscovery(60).then(() => {
+    //   // FIXME: Add a listener for when the grouping changes outside of this app
+    //   this.manager.Devices.forEach(d => {
+    //     console.log('Start listening for event from %s', d.Name);
+    //     d.Events.on('groupname', name => {
+    //       console.log('Device %s has a new group name %s', d.Name, name);
+    //     });
+    //   });
+    // });
   }
 
   /**
@@ -89,13 +103,25 @@ export class Sonos extends EventEmitter {
    * Volume down for current group
    */
   volumeDown() {
-    this.MEDIA_CUBE.SetRelativeVolume(-2);
+    // WIP: This is inelegant; volume within groups gets out of sync - refactor
+    if (this.isGrouped) {
+      this.MEDIA_CUBE.SetRelativeVolume(-2);
+      this.BEDROOM.SetRelativeVolume(-2);
+    } else {
+      this.MEDIA_CUBE.SetRelativeVolume(-2);
+    }
   }
 
   /**
    * Volume up for current group
    */
   volumeUp() {
-    this.MEDIA_CUBE.SetRelativeVolume(2);
+    // WIP: This is inelegant; volume within groups gets out of sync - refactor
+    if (this.isGrouped) {
+      this.MEDIA_CUBE.SetRelativeVolume(2);
+      this.BEDROOM.SetRelativeVolume(2);
+    } else {
+      this.MEDIA_CUBE.SetRelativeVolume(2);
+    }
   }
 }

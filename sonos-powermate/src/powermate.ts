@@ -142,6 +142,23 @@ export class PowerMate extends EventEmitter {
    */
   setLed(brightness: number) {
     this.hid.write([0, brightness]);
+
+    // WIP: Figure out pulsing LED from example at https://github.com/sandeepmistry/node-powermate/blob/master/powermate.js
+
+    // const REPORT_ID = 0;
+    // // const REPORT_LENGTH = 9;
+    // const SET_STATIC_BRIGHTNESS = 0x01;
+    // // const SET_PULSE_ASLEEP = 0x02;
+    // // const SET_PULSE_AWAKE = 0x03;
+    // // const SET_PULSE_MODE = 0x04;
+
+    // var command = SET_STATIC_BRIGHTNESS;
+    // var featureReport = [REPORT_ID, 0x41, 1, command, 0, 0, 0, 0, 0];
+
+    // for (var i = 1; i < arguments.length; i++) {
+    //   featureReport[i + 4] = brightness;
+    // }
+    // this.hid.sendFeatureReport(featureReport);
   }
 
   /**
