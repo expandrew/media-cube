@@ -24,7 +24,7 @@ powermate.on(PowerMateEvents.PRESS_CLOCKWISE, () => sonos.next());
 powermate.on(PowerMateEvents.COUNTERCLOCKWISE, () => sonos.volumeDown());
 powermate.on(PowerMateEvents.PRESS_COUNTERCLOCKWISE, () => sonos.previous());
 powermate.on(PowerMateEvents.SINGLE_PRESS, () => sonos.togglePlay());
-powermate.on(PowerMateEvents.LONG_PRESS, () => {});
+powermate.on(PowerMateEvents.LONG_PRESS, () => sonos.toggleGroup());
 powermate.on(PowerMateEvents.DOUBLE_PRESS, () => {});
 
 // console.info('Starting repl...');

@@ -23,6 +23,25 @@ export class Sonos {
   }
 
   /**
+   * Toggle grouping of speakers between both Media Cube and Bedroom, and just Media Cube
+   */
+  toggleGroup() {
+    if (this.isGrouped) {
+      this.BEDROOM.AVTransportService.BecomeCoordinatorOfStandaloneGroup()
+        .then(() => (this.isGrouped = false))
+        .catch(error => {
+          throw new Error(error);
+        });
+    } else {
+      this.BEDROOM.JoinGroup(DEVICES['MEDIA_CUBE'].name)
+        .then(() => (this.isGrouped = true))
+        .catch(error => {
+          throw new Error(error);
+        });
+    }
+  }
+
+  /**
    * Toggle play/pause
    */
   togglePlay() {
