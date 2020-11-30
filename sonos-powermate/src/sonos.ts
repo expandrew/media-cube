@@ -1,4 +1,5 @@
 import { SonosDevice } from '@svrooij/sonos';
+import { EventEmitter } from 'events';
 
 /**
  * My Sonos devices and their IPs
@@ -9,17 +10,39 @@ const DEVICES = {
 };
 
 /**
+ * Events for Sonos play state updates
+ */
+export const EVENTS = {
+  PLAYING: 'isPlaying',
+  PAUSED: 'isPaused',
+};
+
+/**
  * The class representing my Sonos setup
  */
-export class Sonos {
+export class Sonos extends EventEmitter {
   MEDIA_CUBE: SonosDevice;
   BEDROOM: SonosDevice;
   isGrouped: boolean;
+  isPlaying: boolean;
 
   constructor() {
+    super();
     this.MEDIA_CUBE = new SonosDevice(DEVICES['MEDIA_CUBE'].ip);
     this.BEDROOM = new SonosDevice(DEVICES['BEDROOM'].ip);
     this.isGrouped = false;
+    this.isPlaying = false;
+
+    // Get current play state and update isPlaying
+    this.MEDIA_CUBE.AVTransportService.Events.on('serviceEvent', data => {
+      const isPlaying = data.TransportState === 'PLAYING';
+
+      if (this.isPlaying !== isPlaying) {
+        this.isPlaying = isPlaying;
+      }
+
+      isPlaying ? this.emit(EVENTS.PLAYING) : this.emit(EVENTS.PAUSED);
+    });
   }
 
   /**
