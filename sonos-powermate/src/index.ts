@@ -9,7 +9,6 @@
  * - Double-click PowerMate button toggles two preset Sonos groups (use case is "play in just this room, or play in both rooms")
  */
 
-// import repl from 'repl';
 import { Sonos } from './sonos';
 import { PowerMate, LED_STATES, EVENTS as PowerMateEvents } from './powermate';
 
@@ -27,6 +26,8 @@ powermate.on(PowerMateEvents.SINGLE_PRESS, () => sonos.togglePlay());
 powermate.on(PowerMateEvents.LONG_PRESS, () => sonos.toggleGroup());
 powermate.on(PowerMateEvents.DOUBLE_PRESS, () => {});
 
+// For development, uncomment
+// import repl from 'repl';
 // console.info('Starting repl...');
 // const startedRepl = repl.start('>>> ');
 // startedRepl.context['sonos'] = sonos;
