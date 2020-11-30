@@ -16,7 +16,12 @@ const powermate = new PowerMate();
 const sonos = new Sonos();
 
 // Map inputs to Sonos functions
-powermate.on(PowerMateEvents.CLOCKWISE, () => sonos.volumeUp());
+powermate.on(PowerMateEvents.CLOCKWISE, () => {
+  // Prevent changing playback volume when not playing
+  if (sonos.isPlaying) {
+    sonos.volumeUp();
+  }
+});
 powermate.on(PowerMateEvents.PRESS_CLOCKWISE, () => sonos.next());
 powermate.on(PowerMateEvents.COUNTERCLOCKWISE, () => sonos.volumeDown());
 powermate.on(PowerMateEvents.PRESS_COUNTERCLOCKWISE, () => sonos.previous());
