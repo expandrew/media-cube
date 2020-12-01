@@ -15,9 +15,7 @@
     "build": "tsdx build",
     "test": "tsdx test",
     "lint": "tsdx lint",
-    "prepare": "tsdx build",
-    "size": "size-limit",
-    "analyze": "size-limit --why"
+    "prepare": "tsdx build"
   },
   "peerDependencies": {},
   "husky": {
@@ -34,22 +32,10 @@
   "name": "sonos-powermate",
   "author": "Andrew Westling",
   "module": "dist/sonos-powermate.esm.js",
-  "size-limit": [
-    {
-      "path": "dist/sonos-powermate.cjs.production.min.js",
-      "limit": "10 KB"
-    },
-    {
-      "path": "dist/sonos-powermate.esm.js",
-      "limit": "10 KB"
-    }
-  ],
   "devDependencies": {
-    "@size-limit/preset-small-lib": "^4.9.0",
     "@types/node-hid": "^1.3.0",
     "husky": "^4.3.0",
     "repl": "^0.1.3",
-    "size-limit": "^4.9.0",
     "tsdx": "^0.14.1",
     "tslib": "^2.0.3",
     "typescript": "^4.1.2"
