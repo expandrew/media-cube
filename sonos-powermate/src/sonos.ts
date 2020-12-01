@@ -57,6 +57,16 @@ export class Sonos extends EventEmitter {
         isPlaying ? this.emit(EVENTS.PLAYING) : this.emit(EVENTS.PAUSED);
       });
 
+      // Get current grouped state and update isGrouped
+      [this.MEDIA_CUBE, this.BEDROOM].forEach(d => {
+        // Check initial group name - if it includes '+ 1' ("Media Cube + 1") then devices are grouped
+        this.isGrouped = d?.GroupName?.includes('+ 1') ? true : false;
+
+        // Subscribe to groupname events and update on changes
+        d?.Events.on('groupname', groupName => {
+          this.isGrouped = groupName.includes('+ 1') ? true : false;
+        });
+      });
     });
   }
 
