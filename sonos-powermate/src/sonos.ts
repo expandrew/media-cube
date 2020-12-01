@@ -1,6 +1,5 @@
-import { SonosDevice } from '@svrooij/sonos';
+import { SonosDevice, SonosManager } from '@svrooij/sonos';
 import { EventEmitter } from 'events';
-// import { SonosManager } from '@svrooij/sonos';
 
 /**
  * My Sonos devices and their IPs
@@ -22,41 +21,43 @@ export const EVENTS = {
  * The class representing my Sonos setup
  */
 export class Sonos extends EventEmitter {
-  MEDIA_CUBE: SonosDevice;
-  BEDROOM: SonosDevice;
+  manager: SonosManager;
+  MEDIA_CUBE: SonosDevice | undefined;
+  BEDROOM: SonosDevice | undefined;
   isGrouped: boolean;
   isPlaying: boolean;
-  // manager: SonosManager;
 
   constructor() {
     super();
-    this.MEDIA_CUBE = new SonosDevice(DEVICES['MEDIA_CUBE'].ip);
-    this.BEDROOM = new SonosDevice(DEVICES['BEDROOM'].ip);
     this.isGrouped = false;
     this.isPlaying = false;
 
-    // Get current play state and update isPlaying
-    this.MEDIA_CUBE.AVTransportService.Events.on('serviceEvent', data => {
-      const isPlaying = data.TransportState === 'PLAYING';
+    // Get device topology from SonosManager
+    this.manager = new SonosManager();
+    this.manager.InitializeWithDiscovery().then(() => {
+      this.manager.Devices.forEach(d => d.LoadDeviceData());
 
-      if (this.isPlaying !== isPlaying) {
-        this.isPlaying = isPlaying;
-      }
+      // Set up shortcut for Media Cube
+      this.MEDIA_CUBE = this.manager.Devices.find(
+        d => d.Host === DEVICES['MEDIA_CUBE'].ip
+      );
+      // Set up shortcut for Bedroom
+      this.BEDROOM = this.manager.Devices.find(
+        d => d.Host === DEVICES['BEDROOM'].ip
+      );
 
-      isPlaying ? this.emit(EVENTS.PLAYING) : this.emit(EVENTS.PAUSED);
+      // Get current play state and update isPlaying
+      this.MEDIA_CUBE?.AVTransportService.Events.on('serviceEvent', data => {
+        const isPlaying = data.TransportState === 'PLAYING';
+
+        if (this.isPlaying !== isPlaying) {
+          this.isPlaying = isPlaying;
+        }
+
+        isPlaying ? this.emit(EVENTS.PLAYING) : this.emit(EVENTS.PAUSED);
+      });
+
     });
-
-    // WIP: Figure out grouped state on initialize via SonosManager:
-    // this.manager = new SonosManager();
-    // this.manager.InitializeWithDiscovery(60).then(() => {
-    //   // FIXME: Add a listener for when the grouping changes outside of this app
-    //   this.manager.Devices.forEach(d => {
-    //     console.log('Start listening for event from %s', d.Name);
-    //     d.Events.on('groupname', name => {
-    //       console.log('Device %s has a new group name %s', d.Name, name);
-    //     });
-    //   });
-    // });
   }
 
   /**
@@ -64,13 +65,13 @@ export class Sonos extends EventEmitter {
    */
   toggleGroup() {
     if (this.isGrouped) {
-      this.BEDROOM.AVTransportService.BecomeCoordinatorOfStandaloneGroup()
+      this.BEDROOM?.AVTransportService.BecomeCoordinatorOfStandaloneGroup()
         .then(() => (this.isGrouped = false))
         .catch(error => {
           throw new Error(error);
         });
     } else {
-      this.BEDROOM.JoinGroup(DEVICES['MEDIA_CUBE'].name)
+      this.BEDROOM?.JoinGroup(DEVICES['MEDIA_CUBE'].name)
         .then(() => (this.isGrouped = true))
         .catch(error => {
           throw new Error(error);
@@ -82,21 +83,21 @@ export class Sonos extends EventEmitter {
    * Toggle play/pause
    */
   togglePlay() {
-    this.MEDIA_CUBE.TogglePlayback();
+    this.MEDIA_CUBE?.TogglePlayback();
   }
 
   /**
    * Next track
    */
   next() {
-    this.MEDIA_CUBE.Next();
+    this.MEDIA_CUBE?.Next();
   }
 
   /**
    * Previous track
    */
   previous() {
-    this.MEDIA_CUBE.Previous();
+    this.MEDIA_CUBE?.Previous();
   }
 
   /**
@@ -105,10 +106,10 @@ export class Sonos extends EventEmitter {
   volumeDown() {
     // WIP: This is inelegant; volume within groups gets out of sync - refactor
     if (this.isGrouped) {
-      this.MEDIA_CUBE.SetRelativeVolume(-2);
-      this.BEDROOM.SetRelativeVolume(-2);
+      this.MEDIA_CUBE?.SetRelativeVolume(-2);
+      this.BEDROOM?.SetRelativeVolume(-2);
     } else {
-      this.MEDIA_CUBE.SetRelativeVolume(-2);
+      this.MEDIA_CUBE?.SetRelativeVolume(-2);
     }
   }
 
@@ -118,10 +119,10 @@ export class Sonos extends EventEmitter {
   volumeUp() {
     // WIP: This is inelegant; volume within groups gets out of sync - refactor
     if (this.isGrouped) {
-      this.MEDIA_CUBE.SetRelativeVolume(2);
-      this.BEDROOM.SetRelativeVolume(2);
+      this.MEDIA_CUBE?.SetRelativeVolume(2);
+      this.BEDROOM?.SetRelativeVolume(2);
     } else {
-      this.MEDIA_CUBE.SetRelativeVolume(2);
+      this.MEDIA_CUBE?.SetRelativeVolume(2);
     }
   }
 }
