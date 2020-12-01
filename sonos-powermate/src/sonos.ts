@@ -6,6 +6,8 @@ import { EventEmitter } from 'events';
  *
  * `PRIMARY` is the main speaker (and acts as the group coordinator when grouped)
  * `SECONDARY` is the speaker that joins/leaves the group when `Sonos.toggleGroup()` is called
+ *
+ * @todo: Possibly add default volume levels for each device and use when initializing?
  */
 const DEVICES = {
   PRIMARY: { name: 'Media Cube', ip: '10.0.1.16' },
@@ -124,10 +126,8 @@ export class Sonos extends EventEmitter {
    * Volume down for current group
    */
   volumeDown() {
-    // WIP: This is inelegant; volume within groups gets out of sync - refactor
     if (this.isGrouped) {
-      this.PRIMARY_DEVICE?.SetRelativeVolume(-2);
-      this.SECONDARY_DEVICE?.SetRelativeVolume(-2);
+      this.SetRelativeVolumeForGroup(-2);
     } else {
       this.PRIMARY_DEVICE?.SetRelativeVolume(-2);
     }
@@ -137,12 +137,20 @@ export class Sonos extends EventEmitter {
    * Volume up for current group
    */
   volumeUp() {
-    // WIP: This is inelegant; volume within groups gets out of sync - refactor
     if (this.isGrouped) {
-      this.PRIMARY_DEVICE?.SetRelativeVolume(2);
-      this.SECONDARY_DEVICE?.SetRelativeVolume(2);
+      this.SetRelativeVolumeForGroup(2);
     } else {
       this.PRIMARY_DEVICE?.SetRelativeVolume(2);
     }
+  }
+
+  /**
+   * Set relative volume for each device in the group
+   * @param volume Relative volume for each speaker
+   */
+  private SetRelativeVolumeForGroup(volume: number) {
+    [this.PRIMARY_DEVICE, this.SECONDARY_DEVICE].forEach(d =>
+      d?.SetRelativeVolume(volume)
+    );
   }
 }
