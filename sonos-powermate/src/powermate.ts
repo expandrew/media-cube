@@ -68,11 +68,12 @@ type Debouncer = {
 };
 
 /**
- * LED states and their values
+ * For storing and passing around LED-related values in a structured way
  */
-export const LED_STATES = {
-  ON: 100,
-  OFF: 0,
+export type LedState = {
+  isOn?: boolean;
+  isPulsing?: boolean;
+  // pulseSpeed?: 'slow' | 'normal' | 'fast'; // TODO: Add pulseSpeed
 };
 
 /**
@@ -98,7 +99,7 @@ export class PowerMate extends EventEmitter {
   };
   rotationDebouncer: Debouncer;
   pressRotationDebouncer: Debouncer;
-  ledState: number;
+  ledState: LedState;
 
   constructor(index: number = 0) {
     super();
@@ -132,16 +133,57 @@ export class PowerMate extends EventEmitter {
       isReady: true,
       WAIT_MS: PRESS_ROTATION_WAIT_MS,
     };
-    this.ledState = LED_STATES.ON;
+    this.ledState = { isOn: true, isPulsing: false };
     this.setLed(this.ledState);
   }
 
   /**
-   * Set LED brightness on PowerMate
-   * @param brightness - a number between 0-255. Be careful though, the PowerMate's LED can be burned out by prolonged periods of full brightness
+   * Set LED on PowerMate
+   *
+   * Pass an `LedState` object and it sends the correct signal to the device to update, then updates internal ledState
    */
-  setLed(brightness: number) {
-    this.hid.write([0, brightness]);
+  setLed({ isOn, isPulsing }: LedState) {
+    // NB: I found these definitions in sandeepmistry/node-powermate
+    const commands = {
+      setBrightness: 0x01,
+      setPulseAsleep: 0x02,
+      setPulseAwake: 0x03,
+      setPulseMode: 0x04,
+    };
+
+    // Use brightness command with a fixed brightness for isOn
+    const isOnFeatureReport = [
+      0,
+      0x41,
+      1,
+      commands.setBrightness,
+      0,
+      isOn ? 100 : 0,
+      0,
+      0,
+      0,
+    ];
+
+    // Use setPulseAwake command (presumably because the host device is awake? not sleeping?) for isPulsing
+    const isPulsingFeatureReport = [
+      0,
+      0x41,
+      1,
+      commands.setPulseAwake,
+      0,
+      isPulsing ? 1 : 0,
+      0,
+      0,
+      0,
+    ];
+
+    // Send to device
+    this.hid.sendFeatureReport(isOnFeatureReport);
+    this.hid.sendFeatureReport(isPulsingFeatureReport);
+    // this.hid.sendFeatureReport(pulseSpeedFeatureReport); // TODO: Add pulseSpeed
+
+    // Update internal ledState
+    this.ledState = { isOn, isPulsing };
   }
 
   /**
@@ -158,8 +200,24 @@ export class PowerMate extends EventEmitter {
     if (error) {
       throw new Error(error);
     }
+
+    /**
+     * Deconstruct the buffer that comes back
+     *
+     * Byte 0: Button state
+     * Byte 1: Rotation delta
+     * Byte 2: ? (Always zero)
+     * Byte 3: LED brightness
+     * Byte 4: LED status
+     * Byte 5: LED multiplier (for pulsing LED)
+     */
     const pressInput = data[0] as 0 | 1;
     const rotationInput = data[1] as number;
+    const ledInput: LedState = {
+      isOn: Boolean(data[3]),
+      isPulsing: data[4] & 0x4 ? true : false, // ? Sure
+      // pulseSpeed: figureOut(data[5]) // TODO: Add pulseSpeed
+    };
 
     /**
      * Compute press inputs and emit events
@@ -268,9 +326,16 @@ export class PowerMate extends EventEmitter {
       }
     };
 
+    /**
+     * Compute LED status and update internal ledState
+     */
+    const computeLed = ({ isOn, isPulsing }: LedState) =>
+      (this.ledState = { isOn, isPulsing });
+
     // Compute inputs and emit events
     computePress(pressInput);
     computeRotation(rotationInput);
+    computeLed(ledInput);
 
     // Restart the read loop
     this.hid.read(this.interpretData.bind(this));

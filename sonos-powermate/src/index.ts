@@ -10,7 +10,7 @@
  */
 
 import { Sonos, EVENTS as SonosEvents } from './sonos';
-import { PowerMate, LED_STATES, EVENTS as PowerMateEvents } from './powermate';
+import { PowerMate, EVENTS as PowerMateEvents } from './powermate';
 
 const powermate = new PowerMate();
 const sonos = new Sonos();
@@ -30,8 +30,8 @@ powermate.on(PowerMateEvents.LONG_PRESS, () => sonos.toggleGroup());
 powermate.on(PowerMateEvents.DOUBLE_PRESS, () => {});
 
 // Map Sonos state updates to PowerMate LED
-sonos.on(SonosEvents.PLAYING, () => powermate.setLed(LED_STATES.ON));
-sonos.on(SonosEvents.PAUSED, () => powermate.setLed(LED_STATES.OFF));
+sonos.on(SonosEvents.PLAYING, () => powermate.setLed({ isOn: true }));
+sonos.on(SonosEvents.PAUSED, () => powermate.setLed({ isOn: false }));
 
 // For development, uncomment
 // import repl from 'repl';
