@@ -20,6 +20,7 @@ const DEVICES = {
 export const EVENTS = {
   PLAYING: 'isPlaying',
   PAUSED: 'isPaused',
+  GROUP_CHANGED: 'groupChanged',
 };
 
 /**
@@ -69,10 +70,12 @@ export class Sonos extends EventEmitter {
       [this.PRIMARY_DEVICE, this.SECONDARY_DEVICE].forEach(d => {
         // Check initial group name - if it includes '+ 1' ("Media Cube + 1") then devices are grouped
         this.isGrouped = d?.GroupName?.includes('+ 1') ? true : false;
+        this.emit(EVENTS.GROUP_CHANGED, { isGrouped: this.isGrouped });
 
         // Subscribe to groupname events and update on changes
         d?.Events.on('groupname', groupName => {
           this.isGrouped = groupName.includes('+ 1') ? true : false;
+          this.emit(EVENTS.GROUP_CHANGED, { isGrouped: this.isGrouped });
         });
       });
     });

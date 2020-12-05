@@ -32,6 +32,9 @@ powermate.on(PowerMateEvents.DOUBLE_PRESS, () => {});
 // Map Sonos state updates to PowerMate LED
 sonos.on(SonosEvents.PLAYING, () => powermate.setLed({ isOn: true }));
 sonos.on(SonosEvents.PAUSED, () => powermate.setLed({ isOn: false }));
+sonos.on(SonosEvents.GROUP_CHANGED, ({ isGrouped }) =>
+  powermate.setLed({ isOn: true, isPulsing: isGrouped })
+);
 
 // For development, uncomment
 // import repl from 'repl';
