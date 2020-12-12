@@ -3,6 +3,11 @@ import { EventEmitter } from 'events';
 import { setTimeout, clearTimeout } from 'timers';
 
 /**
+ * Use libusb driver because Raspbian fails
+ */
+HID.setDriverType('libusb');
+
+/**
  * Stores found devices from a `getAllDevices()` call
  */
 let allDevices: HID.Device[] | undefined = [];
