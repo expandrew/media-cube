@@ -1,4 +1,15 @@
-# shairport-sync
+# shairport-sync ![retired](https://img.shields.io/badge/-retired-lightgrey)
+
+**Update 20201218:** I no longer use AirPlay on Media Cube. I used these commands to disable shairport-sync:
+
+```bash
+sudo systemctl stop shairport-sync
+sudo systemctl disable shairport-sync
+```
+
+---
+
+## Overview
 
 ![Media Cube AirPlay](airplay.png)
 

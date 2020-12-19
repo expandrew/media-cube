@@ -1,4 +1,4 @@
-# Knob
+# Knob ![unbuilt](https://img.shields.io/badge/-unbuilt-red)
 
 Knob handles input/output for Media Cube
 
@@ -14,17 +14,21 @@ $ make uninstall  # you get it
 # Notes
 
 ## Input devices
+
 **Griffin PowerMate**
+
 - permanent; built into Media Cube
 - input from knob/button
 - output via dimmable blue LED
 
 **Nuimo**
+
 - bluetooth; can be moved around
 - input from knob, button, swipe/tap, fly (but prob too touchy)
 - output via 9x9 LED matrix
 
 ## External applications
+
 - **Shairport Sync**: playback controls for AirPlay audio
 - **Spotify**: shuffle playback for specified playlist(s)
 - **CD player**: basic playback and eject
@@ -32,18 +36,20 @@ $ make uninstall  # you get it
 
 ## General input/command mappings
 
-| Input                               | Command |
-|-------------------------------------|------------|
-| press                               | play/pause |
-| rotate clockwise                    | volume up |
-| rotate counter clockwise            | volume down |
-| press and rotate clockwise          | next track |
-| press and rotate counter clockwise  | previous track |
-| long press                          | disconnect/eject/reset |
-| double press                        | "secondary mode" |
+| Input                              | Command                |
+| ---------------------------------- | ---------------------- |
+| press                              | play/pause             |
+| rotate clockwise                   | volume up              |
+| rotate counter clockwise           | volume down            |
+| press and rotate clockwise         | next track             |
+| press and rotate counter clockwise | previous track         |
+| long press                         | disconnect/eject/reset |
+| double press                       | "secondary mode"       |
 
 ## Development Log
+
 What I did to install the Nuimo drivers on Raspberry Pi:
+
 ```bash
 # I think Bluetooth was installed already but
 sudo apt-get install --no-install-recommends bluetooth

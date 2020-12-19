@@ -1,4 +1,4 @@
-# spotifyd
+# spotifyd ![retired](https://img.shields.io/badge/-retired-lightgrey)
 
 **Update 20200208:** I disabled spotifyd in favor of using the Sonos speaker and the PowerMate to control it. See [sonospowermate](../sonospowermate/) for more info. I used these commands to disable spotifyd:
 
@@ -6,6 +6,8 @@
 sudo systemctl stop spotifyd
 sudo systemctl disable spotifyd
 ```
+
+---
 
 ## Installation
 
@@ -37,4 +39,3 @@ sudo systemctl start spotifyd
 
 # Connect to Media Cube on Spotify Connect and music should be playing
 ```
-
