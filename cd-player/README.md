@@ -1,4 +1,4 @@
-# cd-player
+# cd-player ![unbuilt](https://img.shields.io/badge/-unbuilt-red)
 
 ![images/devices.png](images/devices.png)
 
@@ -44,6 +44,7 @@ sg_raw /dev/sr0 EA 00 00 00 00 00 01
 - [Setting Volume for 3.5mm jack](https://www.raspberrypi.org/forums/viewtopic.php?t=14966)
 
 **Volume Commands**
+
 ```bash
 # Increase volume by 5%
 alias volu='sudo amixer set PCM -- $[$(amixer get PCM|grep -o [0-9]*%|sed 's/%//')+5]%'
@@ -58,6 +59,7 @@ alias vold='sudo amixer set PCM -- $[$(amixer get PCM|grep -o [0-9]*%|sed 's/%//
 ---
 
 ## Precedents
+
 - [Bluetooth CD Player with RPi 3](https://www.heinbockel.eu/2016/12/09/bluetooth-cd-player-with-raspberry-pi-3/)
 - [Reddit: Project idea: Raspberry Pi + CD Reader >= CD player?](https://www.reddit.com/r/raspberry_pi/comments/35yu0u/project_idea_raspberry_pi_cd_reader_cd_player/)
 - [GitHub `ivankrato/raspberry-pi-cdplayer`](https://github.com/ivankrato/raspberry-pi-cdplayer)
