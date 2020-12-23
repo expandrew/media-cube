@@ -1,3 +1,4 @@
+import Debug from 'debug';
 import { SonosDevice, SonosManager } from '@svrooij/sonos';
 import { EventEmitter } from 'events';
 
@@ -15,10 +16,17 @@ const DEVICES = {
 };
 
 /** Events for Sonos play state updates */
-export const EVENTS = {
+export const EVENTS: { [eventName: string]: string } = {
   PLAYING: 'isPlaying',
   PAUSED: 'isPaused',
   GROUP_CHANGED: 'groupChanged',
+};
+
+/** Debugger for events */
+const setupDebug = (sonos: Sonos) => {
+  for (const event in EVENTS) {
+    sonos.on(EVENTS[event], data => Debug('knob-ts:sonos')({ event, data }));
+  }
 };
 
 /** The class representing a Sonos setup */
@@ -33,6 +41,8 @@ export class Sonos extends EventEmitter {
     super();
     this.isGrouped = false;
     this.isPlaying = false;
+
+    setupDebug(this);
 
     // Get device topology from SonosManager
     this.manager = new SonosManager();

@@ -1,3 +1,4 @@
+import Debug from 'debug';
 import HID from 'node-hid';
 import { EventEmitter } from 'events';
 import { setTimeout, clearTimeout } from 'timers';
@@ -6,7 +7,7 @@ import { setTimeout, clearTimeout } from 'timers';
 HID.setDriverType('libusb');
 
 /** Events for PowerMate button and rotation */
-export const EVENTS = {
+export const EVENTS: { [eventName: string]: string } = {
   SINGLE_PRESS: 'singlePress',
   DOUBLE_PRESS: 'doublePress',
   LONG_PRESS: 'longPress',
@@ -14,6 +15,15 @@ export const EVENTS = {
   COUNTERCLOCKWISE: 'counterclockwise',
   PRESS_CLOCKWISE: 'pressClockwise',
   PRESS_COUNTERCLOCKWISE: 'pressCounterclockwise',
+};
+
+/** Debugger for events */
+const setupDebug = (powermate: PowerMate) => {
+  for (const event in EVENTS) {
+    powermate.on(EVENTS[event], data =>
+      Debug('knob-ts:powermate')({ event, data })
+    );
+  }
 };
 
 /** For storing and passing around LED-related values in a structured way */
@@ -84,6 +94,8 @@ export class PowerMate extends EventEmitter {
     if (!path) {
       throw new Error(`Path couldn't be found for PowerMate index ${index}.`);
     }
+
+    setupDebug(this);
 
     this.hid = new HID.HID(path);
     this.hid.read(this.interpretData.bind(this));
@@ -159,6 +171,12 @@ export class PowerMate extends EventEmitter {
 
     // Update internal ledState
     this.ledState = ledState;
+
+    Debug('knob-ts:powermate:led')('%o', {
+      ledState,
+      isOnFeatureReport,
+      isPulsingFeatureReport,
+    });
   }
 
   /**
