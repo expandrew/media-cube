@@ -171,12 +171,6 @@ export class PowerMate extends EventEmitter {
 
     // Update internal ledState
     this.ledState = ledState;
-
-    Debug('knob-ts:powermate:led')('%o', {
-      ledState,
-      isOnFeatureReport,
-      isPulsingFeatureReport,
-    });
   }
 
   /**
