@@ -1,4 +1,10 @@
-# sonospowermate
+# sonospowermate ![retired](https://img.shields.io/badge/-retired-lightgreygi)
+
+**Update 20201218:** I no longer use this library to handle the PowerMate and Sonos. I have moved to using [knob-ts](../knob-ts), which has a PowerMate input and a Sonos output to replicate the functionality in this library.
+
+---
+
+## Overview
 
 This is a library that is derived from [mattwelch/sonospowermate](https://github.com/mattwelch/sonospowermate) for controlling a Sonos speaker group with a Griffin PowerMate connected to a Rasberry Pi.
 
@@ -35,6 +41,7 @@ SUBSYSTEM=="usb", ATTRS{idVendor}=="077d", ATTRS{idProduct}=="0410", SYMLINK+="p
 
 # Save and exit, etc.
 ```
+
 (Unplug/re-plug the PowerMate in USB if it's already plugged in)
 
 Run `npm install` in this directory to bring in the dependencies.
@@ -64,9 +71,13 @@ $ sudo crontab -e
 Then things should be working!
 
 ## Use
+
 The blue LED ring on the Powermate will pulse while the app is learning about your Sonos topology, and will turn off (or on, if your zone is currently playing) when discovery is complete, and the system is ready for use.
+
 ### Commands
+
 #### Zone playing
+
 - **Turn right**: increase group volume
 - **Turn left**: decrease group volume
 - **Push turn right**: increase zone volume (that is, the volume of the single specified zone, even if it's in a group)
@@ -76,15 +87,17 @@ The blue LED ring on the Powermate will pulse while the app is learning about yo
 - **Long press**: Previous track
 
 #### Zone not playing, and not in favorites mode
+
 - **Single press**: Start Sonos
 - **Double press**: Enter favorites mode
 
 #### Zone not playing, and in favorites mode
+
 - **Turn right**: Go to the next favorite
 - **Turn left**: Go to the previous favorite
 - **Single press**: Play the current favorite
 - **Double press**: Exit favorites mode
 
-
 ## Notes
+
 This was developed and deployed on a Raspbian Raspberry Pi system. There are a couple steps necessary to get it running in this context. See this [blog post](http://mattwel.ch/controlling-a-sonos-with-the-griffin-powermate "PowerMate and Sonos") for more thorough instrucitons.
