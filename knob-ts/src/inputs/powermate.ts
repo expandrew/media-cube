@@ -2,6 +2,9 @@ import HID from 'node-hid';
 import { EventEmitter } from 'events';
 import { setTimeout, clearTimeout } from 'timers';
 
+/** For Raspbian, I have to use `libusb` for the HID driver via node-hid because PowerMate doesn't seem to actually register itself as a HID (it has its own driver, not usbhid or hid-generic, and it doesn't get a path like /dev/hidraw... so libusb seems to be my only option*/
+HID.setDriverType('libusb');
+
 /** Events for PowerMate button and rotation */
 export const EVENTS = {
   SINGLE_PRESS: 'singlePress',
