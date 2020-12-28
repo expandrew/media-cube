@@ -15,6 +15,8 @@ to the following outputs:
 
 ## Setup
 
+### Node.js
+
 Install Node.js `v14.15.3` on the Raspberry Pi:
 
 ```bash
@@ -26,7 +28,23 @@ $ exec bash
 $ nvm install 14.15.3
 ```
 
-<!-- TODO: Add docs for setting up PowerMate drivers with Raspbian to assign hidraw drivers via udev when connected -->
+### PowerMate
+
+Make a file at `/etc/udev/rules.d/95-powermate.rules` with these contents:
+
+```
+SUBSYSTEM=="usb", ATTRS{idVendor}=="077d", ATTRS{idProduct}=="0410", MODE="0666", GROUP="plugdev", SYMLINK+="powermate"
+```
+
+(from https://github.com/node-hid/node-hid#linux-notes)
+
+Then reload `udev` rules:
+
+```bash
+$ sudo udevadm control --reload-rules
+```
+
+### pm2
 
 Install and start the app with `pm2` on the Raspberry Pi
 
