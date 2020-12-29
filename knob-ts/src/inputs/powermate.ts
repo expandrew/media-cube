@@ -1,5 +1,6 @@
 import Debug from 'debug';
 import HID from 'node-hid';
+import usbDetect from 'usb-detection';
 import { EventEmitter } from 'events';
 import { setTimeout, clearTimeout } from 'timers';
 
@@ -17,12 +18,13 @@ export const EVENTS: { [eventName: string]: string } = {
   PRESS_COUNTERCLOCKWISE: 'pressCounterclockwise',
 };
 
+/** Shortcut to Debug('knob-ts:powermate')() */
+const log = (m: any, ...args: any) => Debug('knob-ts:powermate')(m, ...args);
+
 /** Debugger for events */
 const setupDebug = (powermate: PowerMate) => {
   for (const event in EVENTS) {
-    powermate.on(EVENTS[event], data =>
-      Debug('knob-ts:powermate')({ event, data })
-    );
+    powermate.on(EVENTS[event], data => log({ event, data }));
   }
 };
 
@@ -70,7 +72,7 @@ const PRODUCT_ID = 1040;
  * @param index - which index in the list of PowerMates found (will default to the first if unspecified)
  */
 export class PowerMate extends EventEmitter {
-  hid: HID.HID;
+  hid: HID.HID | undefined;
   isPressed: boolean;
   longPress: PressTimer;
   doublePress: PressTimer;
@@ -78,27 +80,39 @@ export class PowerMate extends EventEmitter {
   pressRotationDebouncer: Debouncer;
   ledState: LedState;
 
-  constructor(index: number = 0) {
+  constructor() {
     super();
-    let devices = HID.devices(VENDOR_ID, PRODUCT_ID);
-    if (!devices.length) {
-      throw new Error('No PowerMates could be found.');
-    }
-    if (index > devices.length || index < 0) {
-      throw new Error(
-        `Index ${index} out of range, only ${devices.length} PowerMate(s) found.`
-      );
-    }
-
-    const path = devices[index].path;
-    if (!path) {
-      throw new Error(`Path couldn't be found for PowerMate index ${index}.`);
-    }
 
     setupDebug(this);
 
-    this.hid = new HID.HID(path);
-    this.hid.read(this.interpretData.bind(this));
+    // Set up usb-detection
+    log('usb-detection: Starting...');
+    usbDetect.startMonitoring();
+
+    let settingUpHid: ReturnType<typeof setTimeout> | undefined = undefined;
+    /** If device is already connected, setupHid() right away */
+    usbDetect.find(VENDOR_ID, PRODUCT_ID).then(devices => {
+      log('usb-detection: find(), %O', devices);
+      if (devices.length) {
+        log('usb-detection: Already plugged in');
+        settingUpHid = this.setupHid();
+      }
+    });
+
+    /** Detect when device is added and call setupHid() */
+    usbDetect.on(`add:${VENDOR_ID}:${PRODUCT_ID}`, device => {
+      log('usb-detection: Plugged in: %O', device);
+      settingUpHid = this.setupHid();
+    });
+
+    /** Remove listeners when device is removed */
+    usbDetect.on(`remove:${VENDOR_ID}:${PRODUCT_ID}`, () => {
+      settingUpHid && clearTimeout(settingUpHid); // This is to prevent error when unplugged while timeout is still running
+      log('HID: Disconnected; Removing...');
+      this.hid?.removeAllListeners();
+      log('HID: Disconnected; Removed');
+    });
+
     this.isPressed = false;
     this.longPress = {
       timer: undefined,
@@ -120,8 +134,25 @@ export class PowerMate extends EventEmitter {
       isReady: true,
       WAIT_MS: SENSITIVITY.PRESS_ROTATION_WAIT_MS,
     };
-    this.ledState = { isOn: true, isPulsing: false };
-    this.setLed(this.ledState);
+    this.ledState = {
+      isOn: true,
+      isPulsing: false,
+    };
+  }
+
+  /**
+   * Set up HID
+   *
+   * There's a timeout around this because `HID.devices()` and `new HID.HID()` calls are costly, and HID doesn't find the device immediately if I try assigning things instantly after the device is connected via the event from node-usb-detection, so a timeout will have to do
+   */
+  setupHid(timeout: number = 1000) {
+    return setTimeout(() => {
+      log(`HID: Starting HID assignment...`);
+      this.hid = new HID.HID(VENDOR_ID, PRODUCT_ID);
+      this.hid.read(this.interpretData.bind(this));
+      this.setLed(this.ledState);
+      log('HID: HID assigned');
+    }, timeout);
   }
 
   /**
@@ -165,8 +196,8 @@ export class PowerMate extends EventEmitter {
     ];
 
     // Send to device
-    this.hid.sendFeatureReport(isOnFeatureReport);
-    this.hid.sendFeatureReport(isPulsingFeatureReport);
+    this.hid?.sendFeatureReport(isOnFeatureReport);
+    this.hid?.sendFeatureReport(isPulsingFeatureReport);
     // this.hid.sendFeatureReport(pulseSpeedFeatureReport); // TODO: Add pulseSpeed
 
     // Update internal ledState
@@ -185,7 +216,8 @@ export class PowerMate extends EventEmitter {
    */
   interpretData(error: any, data: number[]) {
     if (error) {
-      throw new Error(error);
+      log('interpretData:', { error });
+      return;
     }
 
     /**
@@ -320,7 +352,7 @@ export class PowerMate extends EventEmitter {
     computeLed(ledInput);
 
     // Restart the read loop
-    this.hid.read(this.interpretData.bind(this));
+    this.hid?.read(this.interpretData.bind(this));
   }
 
   /**
