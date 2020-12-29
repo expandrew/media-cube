@@ -58,6 +58,7 @@
   },
   "dependencies": {
     "@svrooij/sonos": "^2.2.0",
-    "node-hid": "^2.1.1"
+    "node-hid": "^2.1.1",
+    "usb-detection": "^4.10.0"
   }
 }
