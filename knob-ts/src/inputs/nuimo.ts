@@ -11,6 +11,10 @@ export const EVENTS: { [eventName: string]: string } = {
   COUNTERCLOCKWISE: 'counterclockwise',
   PRESS_CLOCKWISE: 'pressClockwise',
   PRESS_COUNTERCLOCKWISE: 'pressCounterclockwise',
+  SWIPE_LEFT: 'swipeLeft',
+  SWIPE_RIGHT: 'swipeRight',
+  SWIPE_UP: 'swipeUp',
+  SWIPE_DOWN: 'swipeDown',
 };
 
 /** Shortcut to Debug('knob-ts:nuimo')() */
@@ -126,6 +130,11 @@ export class Nuimo extends EventEmitter {
           this.computeRotation(delta);
         }
       });
+
+      // Set up swipes
+      this.device?.on('swipe', direction =>
+        this.emit(EVENTS[`SWIPE_${direction.toUpperCase()}`])
+      );
     });
   }
 

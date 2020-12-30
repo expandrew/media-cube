@@ -21,6 +21,8 @@ const sonos = new Sonos();
 nuimo.on(NuimoEvents.SINGLE_PRESS, () => sonos.togglePlay());
 nuimo.on(NuimoEvents.CLOCKWISE, () => sonos.volumeUp());
 nuimo.on(NuimoEvents.COUNTERCLOCKWISE, () => sonos.volumeDown());
+nuimo.on(NuimoEvents.SWIPE_RIGHT, () => sonos.next());
+nuimo.on(NuimoEvents.SWIPE_LEFT, () => sonos.previous());
 
 // Map PowerMate inputs to Sonos functions
 powermate.on(PowerMateEvents.CLOCKWISE, () => sonos.volumeUp());
