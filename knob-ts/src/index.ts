@@ -5,14 +5,20 @@
  *
  * Supports:
  * - Griffin PowerMate (input)
+ * - Senic Nuimo (input)
  * - Sonos (output)
  */
 
 import { Sonos, EVENTS as SonosEvents } from './outputs/sonos';
 import { PowerMate, EVENTS as PowerMateEvents } from './inputs/powermate';
+import { Nuimo, EVENTS as NuimoEvents } from './inputs/nuimo';
 
+const nuimo = new Nuimo();
 const powermate = new PowerMate();
 const sonos = new Sonos();
+
+// Map Nuimo inputs to Sonos functions
+nuimo.on(NuimoEvents.SINGLE_PRESS, () => {});
 
 // Map PowerMate inputs to Sonos functions
 powermate.on(PowerMateEvents.CLOCKWISE, () => sonos.volumeUp());

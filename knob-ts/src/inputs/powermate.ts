@@ -19,12 +19,12 @@ export const EVENTS: { [eventName: string]: string } = {
 };
 
 /** Shortcut to Debug('knob-ts:powermate')() */
-const log = (m: any, ...args: any) => Debug('knob-ts:powermate')(m, ...args);
+const debug = Debug('knob-ts:powermate');
 
 /** Debugger for events */
 const setupDebug = (powermate: PowerMate) => {
   for (const event in EVENTS) {
-    powermate.on(EVENTS[event], data => log({ event, data }));
+    powermate.on(EVENTS[event], data => debug({ event, data }));
   }
 };
 
@@ -86,31 +86,31 @@ export class PowerMate extends EventEmitter {
     setupDebug(this);
 
     // Set up usb-detection
-    log('usb-detection: Starting...');
+    debug('usb-detection: Starting...');
     usbDetect.startMonitoring();
 
     let settingUpHid: ReturnType<typeof setTimeout> | undefined = undefined;
     /** If device is already connected, setupHid() right away */
     usbDetect.find(VENDOR_ID, PRODUCT_ID).then(devices => {
-      log('usb-detection: find(), %O', devices);
+      debug('usb-detection: find(), %O', devices);
       if (devices.length) {
-        log('usb-detection: Already plugged in');
+        debug('usb-detection: Already plugged in');
         settingUpHid = this.setupHid();
       }
     });
 
     /** Detect when device is added and call setupHid() */
     usbDetect.on(`add:${VENDOR_ID}:${PRODUCT_ID}`, device => {
-      log('usb-detection: Plugged in: %O', device);
+      debug('usb-detection: Plugged in: %O', device);
       settingUpHid = this.setupHid();
     });
 
     /** Remove listeners when device is removed */
     usbDetect.on(`remove:${VENDOR_ID}:${PRODUCT_ID}`, () => {
       settingUpHid && clearTimeout(settingUpHid); // This is to prevent error when unplugged while timeout is still running
-      log('HID: Disconnected; Removing...');
+      debug('HID: Disconnected; Removing...');
       this.hid?.removeAllListeners();
-      log('HID: Disconnected; Removed');
+      debug('HID: Disconnected; Removed');
     });
 
     this.isPressed = false;
@@ -147,11 +147,11 @@ export class PowerMate extends EventEmitter {
    */
   setupHid(timeout: number = 1000) {
     return setTimeout(() => {
-      log(`HID: Starting HID assignment...`);
+      debug(`HID: Starting HID assignment...`);
       this.hid = new HID.HID(VENDOR_ID, PRODUCT_ID);
       this.hid.read(this.interpretData.bind(this));
       this.setLed(this.ledState);
-      log('HID: HID assigned');
+      debug('HID: HID assigned');
     }, timeout);
   }
 
@@ -216,7 +216,7 @@ export class PowerMate extends EventEmitter {
    */
   interpretData(error: any, data: number[]) {
     if (error) {
-      log('interpretData:', { error });
+      debug('interpretData:', { error });
       return;
     }
 
