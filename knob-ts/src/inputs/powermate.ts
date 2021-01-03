@@ -158,9 +158,15 @@ export class PowerMate extends EventEmitter {
   /**
    * Set LED information on PowerMate and update internal ledState
    *
-   * @param ledState - the `LedState` information with which to update the device
+   * @param ledState - the `LedState` information with which to update the device (can accept partial updates)
    */
   setLed(ledState: LedState) {
+    // Merge with existing ledState so we can send partial updates (like only isPulsing or only isOn)
+    ledState = Object.assign(
+      { isOn: this.ledState.isOn, isPulsing: this.ledState.isPulsing },
+      ledState
+    );
+
     // NB: I found these definitions in sandeepmistry/node-powermate
     const commands = {
       setBrightness: 0x01,
