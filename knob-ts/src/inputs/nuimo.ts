@@ -63,7 +63,7 @@ const manager = DeviceDiscoveryManager.defaultManager;
 
 const startDiscovery = async (): Promise<NuimoControlDevice | undefined> => {
   debug('startDiscovery: Starting Nuimo device discovery');
-  const session = manager.startDiscoverySession();
+  const session = manager.startDiscoverySession({ timeoutMs: 60 * 1000 });
   debug('startDiscovery: Waiting for device...');
   const device = await session.waitForFirstDevice();
   debug('startDiscovery: Found device: %o', { id: device.id });
