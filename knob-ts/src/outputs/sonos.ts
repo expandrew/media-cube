@@ -115,6 +115,16 @@ export class Sonos extends EventEmitter {
     this.PRIMARY_DEVICE?.TogglePlayback();
   }
 
+  /** Play */
+  play() {
+    return this.PRIMARY_DEVICE?.Play();
+  }
+
+  /** Pause */
+  pause() {
+    return this.PRIMARY_DEVICE?.Pause();
+  }
+
   /** Next track */
   next() {
     return this.PRIMARY_DEVICE?.Next();

@@ -22,7 +22,13 @@ const powermate = new PowerMate();
 const sonos = new Sonos();
 
 // Map Nuimo inputs to Sonos functions
-nuimo.on(NuimoEvents.SINGLE_PRESS, () => sonos.togglePlay());
+nuimo.on(NuimoEvents.SINGLE_PRESS, () => {
+  if (sonos.isPlaying) {
+    sonos.pause()?.then(() => nuimo.displayGlyph(NuimoGlyphs.PAUSE));
+  } else {
+    sonos.play()?.then(() => nuimo.displayGlyph(NuimoGlyphs.PLAY));
+  }
+});
 nuimo.on(NuimoEvents.CLOCKWISE, () => sonos.volumeUp());
 nuimo.on(NuimoEvents.COUNTERCLOCKWISE, () => sonos.volumeDown());
 nuimo.on(NuimoEvents.SWIPE_RIGHT, () =>
@@ -50,14 +56,8 @@ powermate.on(PowerMateEvents.SINGLE_PRESS, () => sonos.togglePlay());
 powermate.on(PowerMateEvents.DOUBLE_PRESS, () => {});
 
 // Map Sonos state updates to PowerMate LED and Nuimo screen
-sonos.on(SonosEvents.PLAYING, () => {
-  powermate.setLed({ isOn: true });
-  nuimo.displayGlyph(NuimoGlyphs.PLAY);
-});
-sonos.on(SonosEvents.PAUSED, () => {
-  powermate.setLed({ isOn: false });
-  nuimo.displayGlyph(NuimoGlyphs.PAUSE);
-});
+sonos.on(SonosEvents.PLAYING, () => powermate.setLed({ isOn: true }));
+sonos.on(SonosEvents.PAUSED, () => powermate.setLed({ isOn: false }));
 
 // For development, uncomment
 // import repl from 'repl';
