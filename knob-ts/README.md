@@ -5,7 +5,7 @@ Custom adapter library to map inputs and outputs for Media Cube
 It will map the following inputs:
 
 - [x] Griffin PowerMate
-- [ ] Senic Nuimo
+- [x] Senic Nuimo
 
 to the following outputs:
 
@@ -42,6 +42,18 @@ Then reload `udev` rules:
 
 ```bash
 $ sudo udevadm control --reload-rules
+```
+
+### Nuimo
+
+Install and configure drivers for Nuimo (`rocket-nuimo` uses `noble` and they have some setup steps):
+
+```bash
+# https://github.com/noble/noble#ubuntudebianraspbian
+$ sudo apt-get install bluetooth bluez libbluetooth-dev libudev-dev
+
+# https://github.com/noble/noble#running-on-linux
+$ sudo setcap cap_net_raw+eip $(eval readlink -f `which node`)
 ```
 
 ### pm2
