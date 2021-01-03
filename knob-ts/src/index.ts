@@ -11,7 +11,11 @@
 
 import { Sonos, EVENTS as SonosEvents } from './outputs/sonos';
 import { PowerMate, EVENTS as PowerMateEvents } from './inputs/powermate';
-import { Nuimo, EVENTS as NuimoEvents } from './inputs/nuimo';
+import {
+  Nuimo,
+  EVENTS as NuimoEvents,
+  GLYPHS as NuimoGlyphs,
+} from './inputs/nuimo';
 
 const nuimo = new Nuimo();
 const powermate = new PowerMate();
@@ -41,9 +45,15 @@ powermate.on(PowerMateEvents.PRESS_COUNTERCLOCKWISE, () => sonos.previous());
 powermate.on(PowerMateEvents.SINGLE_PRESS, () => sonos.togglePlay());
 powermate.on(PowerMateEvents.DOUBLE_PRESS, () => {});
 
-// Map Sonos state updates to PowerMate LED
-sonos.on(SonosEvents.PLAYING, () => powermate.setLed({ isOn: true }));
-sonos.on(SonosEvents.PAUSED, () => powermate.setLed({ isOn: false }));
+// Map Sonos state updates to PowerMate LED and Nuimo screen
+sonos.on(SonosEvents.PLAYING, () => {
+  powermate.setLed({ isOn: true });
+  nuimo.displayGlyph(NuimoGlyphs.PLAY);
+});
+sonos.on(SonosEvents.PAUSED, () => {
+  powermate.setLed({ isOn: false });
+  nuimo.displayGlyph(NuimoGlyphs.PAUSE);
+});
 
 // For development, uncomment
 // import repl from 'repl';

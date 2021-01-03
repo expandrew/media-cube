@@ -1,6 +1,13 @@
 import Debug from 'debug';
 import { EventEmitter } from 'events';
-import { DeviceDiscoveryManager, NuimoControlDevice } from 'rocket-nuimo';
+import {
+  DeviceDiscoveryManager,
+  DisplayGlyphOptions,
+  Glyph,
+  NuimoControlDevice,
+  pauseGlyph,
+  playGlyph,
+} from 'rocket-nuimo';
 
 /** Events for Nuimo discovery, connect, select/tap and rotation */
 export const EVENTS: { [eventName: string]: string } = {
@@ -19,6 +26,11 @@ export const EVENTS: { [eventName: string]: string } = {
   SWIPE_RIGHT: 'swipeRight',
   SWIPE_UP: 'swipeUp',
   SWIPE_DOWN: 'swipeDown',
+};
+
+export const GLYPHS: { [glyphName: string]: Glyph } = {
+  PLAY: playGlyph,
+  PAUSE: pauseGlyph,
 };
 
 /** Shortcut to Debug('knob-ts:nuimo')() */
@@ -164,6 +176,12 @@ export class Nuimo extends EventEmitter {
         // Emit failure
         this.emit(EVENTS.DISCOVERY_FINISHED, { success: false });
       });
+  }
+  displayGlyph(
+    glyph: Glyph,
+    options: DisplayGlyphOptions = { timeoutMs: 1000 }
+  ) {
+    this.device?.displayGlyph(glyph, options);
   }
 
   /**
