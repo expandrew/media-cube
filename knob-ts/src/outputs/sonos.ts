@@ -117,12 +117,12 @@ export class Sonos extends EventEmitter {
 
   /** Next track */
   next() {
-    this.PRIMARY_DEVICE?.Next();
+    return this.PRIMARY_DEVICE?.Next();
   }
 
   /** Previous track */
   previous() {
-    this.PRIMARY_DEVICE?.Previous();
+    return this.PRIMARY_DEVICE?.Previous();
   }
 
   /** Volume down for current group */

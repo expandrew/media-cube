@@ -4,9 +4,11 @@ import {
   DeviceDiscoveryManager,
   DisplayGlyphOptions,
   Glyph,
+  leftGlyph,
   NuimoControlDevice,
   pauseGlyph,
   playGlyph,
+  rightGlyph,
 } from 'rocket-nuimo';
 
 /** Events for Nuimo discovery, connect, select/tap and rotation */
@@ -31,6 +33,8 @@ export const EVENTS: { [eventName: string]: string } = {
 export const GLYPHS: { [glyphName: string]: Glyph } = {
   PLAY: playGlyph,
   PAUSE: pauseGlyph,
+  NEXT: rightGlyph,
+  PREVIOUS: leftGlyph,
 };
 
 /** Shortcut to Debug('knob-ts:nuimo')() */

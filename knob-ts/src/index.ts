@@ -25,8 +25,12 @@ const sonos = new Sonos();
 nuimo.on(NuimoEvents.SINGLE_PRESS, () => sonos.togglePlay());
 nuimo.on(NuimoEvents.CLOCKWISE, () => sonos.volumeUp());
 nuimo.on(NuimoEvents.COUNTERCLOCKWISE, () => sonos.volumeDown());
-nuimo.on(NuimoEvents.SWIPE_RIGHT, () => sonos.next());
-nuimo.on(NuimoEvents.SWIPE_LEFT, () => sonos.previous());
+nuimo.on(NuimoEvents.SWIPE_RIGHT, () =>
+  sonos.next()?.then(() => nuimo.displayGlyph(NuimoGlyphs.NEXT))
+);
+nuimo.on(NuimoEvents.SWIPE_LEFT, () =>
+  sonos.previous()?.then(() => nuimo.displayGlyph(NuimoGlyphs.PREVIOUS))
+);
 
 // Map PowerMate Long Press to reconnect Nuimo if it disconnects (and pulse LED while connecting)
 powermate.on(PowerMateEvents.LONG_PRESS, () => nuimo.connect());
