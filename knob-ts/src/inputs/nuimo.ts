@@ -2,8 +2,12 @@ import Debug from 'debug';
 import { EventEmitter } from 'events';
 import { DeviceDiscoveryManager, NuimoControlDevice } from 'rocket-nuimo';
 
-/** Events for Nuimo select/tap and rotation */
+/** Events for Nuimo discovery, connect, select/tap and rotation */
 export const EVENTS: { [eventName: string]: string } = {
+  DISCOVERY_STARTED: 'startDiscovery',
+  DISCOVERY_FINISHED: 'stopDiscovery',
+  DEVICE_CONNECTED: 'deviceConnected',
+  DEVICE_DISCONNECTED: 'deviceDisconnected',
   SINGLE_PRESS: 'singlePress',
   DOUBLE_PRESS: 'doublePress',
   LONG_PRESS: 'longPress',
@@ -57,22 +61,18 @@ type PressTimer = {
 
 const manager = DeviceDiscoveryManager.defaultManager;
 
-export const startDiscovery = async (): Promise<
-  NuimoControlDevice | undefined
-> => {
+const startDiscovery = async (): Promise<NuimoControlDevice | undefined> => {
   debug('startDiscovery: Starting Nuimo device discovery');
   const session = manager.startDiscoverySession();
   debug('startDiscovery: Waiting for device...');
   const device = await session.waitForFirstDevice();
-  debug(`startDiscovery: Found device: ${device.id}`);
+  debug('startDiscovery: Found device: %o', { id: device.id });
   debug('startDiscovery: Connecting...');
   if (await device.connect()) {
     debug('startDiscovery: Connected to device: %o', {
+      id: device.id,
       batteryLevel: device.batteryLevel,
     });
-    device.on('disconnect', () =>
-      debug('startDiscovery: Disconnected from device')
-    );
     return device;
   } else {
     debug('startDiscovery: Something went wrong');
@@ -115,27 +115,55 @@ export class Nuimo extends EventEmitter {
     };
 
     // Find and connect to the Nuimo
-    startDiscovery().then(device => {
-      this.device = device;
+    this.connect();
+  }
 
-      // Set up presses
-      this.device?.on('selectDown', () => this.computePress(1));
-      this.device?.on('selectUp', () => this.computePress(0));
+  connect() {
+    // Clear out any devices we may have
+    this.device?.disconnect();
+    this.device?.removeAllListeners();
+    this.device = undefined;
 
-      // Set up rotation
-      this.device?.setRotationRange(-1, 1, 0);
-      this.device?.on('rotate', (delta: number) => {
-        // Check if the delta is above our minimum
-        if (Math.abs(delta) > SENSITIVITY.ROTATION_MINIMUM_DELTA) {
-          this.computeRotation(delta);
-        }
+    this.emit(EVENTS.DISCOVERY_STARTED);
+    startDiscovery()
+      .then(device => {
+        this.device = device;
+
+        // Set up presses
+        this.device?.on('selectDown', () => this.computePress(1));
+        this.device?.on('selectUp', () => this.computePress(0));
+
+        // Set up rotation
+        this.device?.setRotationRange(-1, 1, 0);
+        this.device?.on('rotate', (delta: number) => {
+          // Check if the delta is above our minimum
+          if (Math.abs(delta) > SENSITIVITY.ROTATION_MINIMUM_DELTA) {
+            this.computeRotation(delta);
+          }
+        });
+
+        // Set up swipes
+        this.device?.on('swipe', direction =>
+          this.emit(EVENTS[`SWIPE_${direction.toUpperCase()}`])
+        );
+
+        // Set up disconnect behavior
+        this.device?.on('disconnect', () => {
+          this.device?.removeAllListeners();
+          this.emit(EVENTS.DEVICE_DISCONNECTED, { id: this.device?.id });
+        });
+
+        // Emit success
+        this.emit(EVENTS.DEVICE_CONNECTED, {
+          id: this.device?.id,
+          batteryLevel: this.device?.batteryLevel,
+        });
+        this.emit(EVENTS.DISCOVERY_FINISHED, { success: true });
+      })
+      .catch(() => {
+        // Emit failure
+        this.emit(EVENTS.DISCOVERY_FINISHED, { success: false });
       });
-
-      // Set up swipes
-      this.device?.on('swipe', direction =>
-        this.emit(EVENTS[`SWIPE_${direction.toUpperCase()}`])
-      );
-    });
   }
 
   /**

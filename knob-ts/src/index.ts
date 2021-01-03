@@ -24,21 +24,26 @@ nuimo.on(NuimoEvents.COUNTERCLOCKWISE, () => sonos.volumeDown());
 nuimo.on(NuimoEvents.SWIPE_RIGHT, () => sonos.next());
 nuimo.on(NuimoEvents.SWIPE_LEFT, () => sonos.previous());
 
+// Map PowerMate Long Press to reconnect Nuimo if it disconnects (and pulse LED while connecting)
+powermate.on(PowerMateEvents.LONG_PRESS, () => nuimo.connect());
+nuimo.on(NuimoEvents.DISCOVERY_STARTED, () =>
+  powermate.setLed({ isPulsing: true })
+);
+nuimo.on(NuimoEvents.DISCOVERY_FINISHED, () =>
+  powermate.setLed({ isPulsing: false })
+);
+
 // Map PowerMate inputs to Sonos functions
 powermate.on(PowerMateEvents.CLOCKWISE, () => sonos.volumeUp());
 powermate.on(PowerMateEvents.PRESS_CLOCKWISE, () => sonos.next());
 powermate.on(PowerMateEvents.COUNTERCLOCKWISE, () => sonos.volumeDown());
 powermate.on(PowerMateEvents.PRESS_COUNTERCLOCKWISE, () => sonos.previous());
 powermate.on(PowerMateEvents.SINGLE_PRESS, () => sonos.togglePlay());
-powermate.on(PowerMateEvents.LONG_PRESS, () => sonos.toggleGroup());
 powermate.on(PowerMateEvents.DOUBLE_PRESS, () => {});
 
 // Map Sonos state updates to PowerMate LED
 sonos.on(SonosEvents.PLAYING, () => powermate.setLed({ isOn: true }));
 sonos.on(SonosEvents.PAUSED, () => powermate.setLed({ isOn: false }));
-sonos.on(SonosEvents.GROUP_CHANGED, ({ isGrouped }) =>
-  powermate.setLed({ isOn: true, isPulsing: isGrouped })
-);
 
 // For development, uncomment
 // import repl from 'repl';
