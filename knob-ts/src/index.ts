@@ -50,7 +50,8 @@ const PowerMateInputs: { [eventName: string]: () => void } = {
   COUNTERCLOCKWISE: () => sonos.volumeDown(),
   PRESS_COUNTERCLOCKWISE: () => sonos.groupVolumeDown(),
   SINGLE_PRESS: () => sonos.togglePlay(),
-  DOUBLE_PRESS: () => {},
+  DOUBLE_PRESS: () => sonos.next(),
+  TRIPLE_PRESS: () => sonos.previous(),
   LONG_PRESS: () => nuimo.connect(), // Long Press reconnects Nuimo if it gets disconnected
 };
 
