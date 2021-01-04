@@ -17,31 +17,49 @@ import {
   GLYPHS as NuimoGlyphs,
 } from './inputs/nuimo';
 
-const nuimo = new Nuimo();
 const powermate = new PowerMate();
 const sonos = new Sonos();
+const nuimo = new Nuimo();
+
+const NuimoInputs: { [eventName: string]: () => void } = {
+  CLOCKWISE: () => sonos.volumeUp(),
+  PRESS_CLOCKWISE: () => sonos.groupVolumeUp(),
+  COUNTERCLOCKWISE: () => sonos.volumeDown(),
+  PRESS_COUNTERCLOCKWISE: () => sonos.groupVolumeDown(),
+  SINGLE_PRESS: () => {
+    if (sonos.isPlaying) {
+      sonos.pause()?.then(() => nuimo.displayGlyph(NuimoGlyphs.PAUSE));
+    } else {
+      sonos.play()?.then(() => nuimo.displayGlyph(NuimoGlyphs.PLAY));
+    }
+  },
+  SWIPE_RIGHT: () =>
+    sonos.next()?.then(() => nuimo.displayGlyph(NuimoGlyphs.NEXT)),
+  SWIPE_LEFT: () =>
+    sonos.previous()?.then(() => nuimo.displayGlyph(NuimoGlyphs.PREVIOUS)),
+};
 
 // Map Nuimo inputs to Sonos functions
-nuimo.on(NuimoEvents.SINGLE_PRESS, () => {
-  if (sonos.isPlaying) {
-    sonos.pause()?.then(() => nuimo.displayGlyph(NuimoGlyphs.PAUSE));
-  } else {
-    sonos.play()?.then(() => nuimo.displayGlyph(NuimoGlyphs.PLAY));
-  }
-});
-nuimo.on(NuimoEvents.CLOCKWISE, () => sonos.volumeUp());
-nuimo.on(NuimoEvents.PRESS_CLOCKWISE, () => sonos.groupVolumeUp());
-nuimo.on(NuimoEvents.COUNTERCLOCKWISE, () => sonos.volumeDown());
-nuimo.on(NuimoEvents.PRESS_COUNTERCLOCKWISE, () => sonos.groupVolumeDown());
-nuimo.on(NuimoEvents.SWIPE_RIGHT, () =>
-  sonos.next()?.then(() => nuimo.displayGlyph(NuimoGlyphs.NEXT))
-);
-nuimo.on(NuimoEvents.SWIPE_LEFT, () =>
-  sonos.previous()?.then(() => nuimo.displayGlyph(NuimoGlyphs.PREVIOUS))
-);
+for (const i in NuimoInputs) {
+  nuimo.on(NuimoEvents[i], NuimoInputs[i]);
+}
 
-// Map PowerMate Long Press to reconnect Nuimo if it disconnects (and pulse LED while connecting)
-powermate.on(PowerMateEvents.LONG_PRESS, () => nuimo.connect());
+const PowerMateInputs: { [eventName: string]: () => void } = {
+  CLOCKWISE: () => sonos.volumeUp(),
+  PRESS_CLOCKWISE: () => sonos.groupVolumeUp(),
+  COUNTERCLOCKWISE: () => sonos.volumeDown(),
+  PRESS_COUNTERCLOCKWISE: () => sonos.groupVolumeDown(),
+  SINGLE_PRESS: () => sonos.togglePlay(),
+  DOUBLE_PRESS: () => {},
+  LONG_PRESS: () => nuimo.connect(), // Long Press reconnects Nuimo if it gets disconnected
+};
+
+// Map PowerMate inputs to Sonos functions
+for (const i in PowerMateInputs) {
+  powermate.on(PowerMateEvents[i], PowerMateInputs[i]);
+}
+
+// Pulse PowerMate LED when reconnecting Nuimo
 nuimo.on(NuimoEvents.DISCOVERY_STARTED, () =>
   powermate.setLed({ isPulsing: true })
 );
@@ -49,23 +67,6 @@ nuimo.on(NuimoEvents.DISCOVERY_FINISHED, () =>
   powermate.setLed({ isPulsing: false })
 );
 
-// Map PowerMate inputs to Sonos functions
-powermate.on(PowerMateEvents.CLOCKWISE, () => sonos.volumeUp());
-powermate.on(PowerMateEvents.PRESS_CLOCKWISE, () => sonos.groupVolumeUp());
-powermate.on(PowerMateEvents.COUNTERCLOCKWISE, () => sonos.volumeDown());
-powermate.on(PowerMateEvents.PRESS_COUNTERCLOCKWISE, () =>
-  sonos.groupVolumeDown()
-);
-powermate.on(PowerMateEvents.SINGLE_PRESS, () => sonos.togglePlay());
-powermate.on(PowerMateEvents.DOUBLE_PRESS, () => {});
-
-// Map Sonos state updates to PowerMate LED and Nuimo screen
+// Turn on PowerMate LED when Sonos is playing
 sonos.on(SonosEvents.PLAYING, () => powermate.setLed({ isOn: true }));
 sonos.on(SonosEvents.PAUSED, () => powermate.setLed({ isOn: false }));
-
-// For development, uncomment
-// import repl from 'repl';
-// console.info('Starting repl...');
-// const startedRepl = repl.start('>>> ');
-// startedRepl.context['sonos'] = sonos;
-// startedRepl.context['powermate'] = powermate;
