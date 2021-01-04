@@ -18,7 +18,6 @@ export const EVENTS: { [eventName: string]: string } = {
   DEVICE_CONNECTED: 'deviceConnected',
   DEVICE_DISCONNECTED: 'deviceDisconnected',
   SINGLE_PRESS: 'singlePress',
-  DOUBLE_PRESS: 'doublePress',
   LONG_PRESS: 'longPress',
   CLOCKWISE: 'clockwise',
   COUNTERCLOCKWISE: 'counterclockwise',
@@ -51,8 +50,6 @@ const setupDebug = (nuimo: Nuimo) => {
 const SENSITIVITY = {
   /** Number of milliseconds for button to be held to trigger a "long press" */
   LONG_PRESS_MS: 1000,
-  /** Number of milliseconds between presses to trigger a "double press" */
-  DOUBLE_PRESS_MS: 300,
   /** Debounce "wait" milliseconds for rotation inputs to alter the "sensitivity" of the knob rotation inputs. A higher value here means it takes more turning to trigger the inputs */
   ROTATION_WAIT_MS: 200,
   /** Debounce "wait" milliseconds for press rotation inputs. Press rotation should be even less sensitive than regular rotation inputs. */
@@ -68,7 +65,7 @@ type Debouncer = {
   WAIT_MS: number;
 };
 
-/** Timers for long/double press events */
+/** Timers for long press events */
 type PressTimer = {
   timer: ReturnType<typeof setTimeout> | undefined;
   isRunning: boolean;
@@ -100,7 +97,6 @@ export class Nuimo extends EventEmitter {
   device: NuimoControlDevice | undefined;
   isPressed: boolean;
   longPress: PressTimer;
-  doublePress: PressTimer;
   rotationDebouncer: Debouncer;
   pressRotationDebouncer: Debouncer;
 
@@ -113,11 +109,6 @@ export class Nuimo extends EventEmitter {
       timer: undefined,
       isRunning: false,
       PRESS_MS: SENSITIVITY.LONG_PRESS_MS,
-    };
-    this.doublePress = {
-      timer: undefined,
-      isRunning: false,
-      PRESS_MS: SENSITIVITY.DOUBLE_PRESS_MS,
     };
     this.rotationDebouncer = {
       timer: undefined,
@@ -213,23 +204,8 @@ export class Nuimo extends EventEmitter {
 
       if (buttonUp) {
         if (this.longPress.isRunning) {
-          // Check if we're within a DOUBLE_PRESS timeout
-          if (this.doublePress.isRunning) {
-            // If we had a second press within a DOUBLE_PRESS timeout, it's a DOUBLE_PRESS
-            this.doublePress.isRunning = false;
-            clearTimeout(this.doublePress.timer as NodeJS.Timeout);
-            this.emit(EVENTS.DOUBLE_PRESS);
-          } else {
-            // If we aren't already in a DOUBLE_PRESS timeout, set one
-            this.doublePress.isRunning = true;
-            this.doublePress.timer = setTimeout(() => {
-              // If nothing else happens before the DOUBLE_PRESS timeout finishes, it's a SINGLE_PRESS
-              this.doublePress.isRunning = false;
-              this.emit(EVENTS.SINGLE_PRESS);
-            }, this.doublePress.PRESS_MS);
-          }
+          this.emit(EVENTS.SINGLE_PRESS);
         }
-
         // Clear LONG_PRESS timer when released
         clearTimeout(this.longPress.timer as NodeJS.Timeout);
       }
