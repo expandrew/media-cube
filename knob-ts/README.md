@@ -13,6 +13,20 @@ to the following outputs:
 - [ ] Hue lights
 - [ ] `media-cube/cd-player`
 
+## Mappings
+
+|                          | PowerMate               | Nuimo                 |
+| ------------------------ | ----------------------- | --------------------- |
+| press                    | Sonos Play/Pause        | Sonos Play/Pause      |
+| double press             | Sonos Next Track        | _(not supported)_     |
+| triple press             | Sonos Previous Track    | _(not supported)_     |
+| clockwise                | Sonos Volume Up         | Sonos Volume Up       |
+| counterclockwise         | Sonos Volume Down       | Sonos Volume Down     |
+| press + clockwise        | Sonos Group Volume Up   | Sonos Group Volume Up |
+| press + counterclockwise | Sonos Group Volume Down | Sonos Group Volume Up |
+| swipe right              | _(not supported)_       | Sonos Next Track      |
+| swipe left               | _(not supported)_       | Sonos Previous Track  |
+
 ## Setup
 
 ### Node.js
