@@ -103,6 +103,7 @@ To run the application in development, use `node dist/index.js` and it will run 
 - [svrooij/node-sonos-ts](https://github.com/svrooij/node-sonos-ts) (typed rewrite of `node-sonos` - currently a dependency for controlling Sonos)
 - [sandeepmistry/node-powermate](https://github.com/sandeepmistry/node-powermate) (derived some of my PowerMate logic from here)
 - [jishi/node-sonos-discovery](https://github.com/jishi/node-sonos-discovery) (for some hints about Sonos group logic)
+- [happycodelucky/rocket-nuimo-node](https://github.com/happycodelucky/rocket-nuimo-node) (for pretty much all things Nuimo; happy that there's an active and up-to-date (and TypeScript-ed!) library for Nuimo)
 
 ## Meta
 
