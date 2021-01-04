@@ -44,7 +44,7 @@ const SENSITIVITY = {
   /** Debounce "wait" milliseconds for rotation inputs to alter the "sensitivity" of the knob rotation inputs. A higher value here means it takes more turning to trigger the inputs */
   ROTATION_WAIT_MS: 100,
   /** Debounce "wait" milliseconds for press rotation inputs. Press rotation should be even less sensitive than regular rotation inputs. */
-  PRESS_ROTATION_WAIT_MS: 1000,
+  PRESS_ROTATION_WAIT_MS: 100,
 };
 
 /** Debouncers in rotation events */
