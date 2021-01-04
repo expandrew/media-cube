@@ -30,7 +30,9 @@ nuimo.on(NuimoEvents.SINGLE_PRESS, () => {
   }
 });
 nuimo.on(NuimoEvents.CLOCKWISE, () => sonos.volumeUp());
+nuimo.on(NuimoEvents.PRESS_CLOCKWISE, () => sonos.groupVolumeUp());
 nuimo.on(NuimoEvents.COUNTERCLOCKWISE, () => sonos.volumeDown());
+nuimo.on(NuimoEvents.PRESS_COUNTERCLOCKWISE, () => sonos.groupVolumeDown());
 nuimo.on(NuimoEvents.SWIPE_RIGHT, () =>
   sonos.next()?.then(() => nuimo.displayGlyph(NuimoGlyphs.NEXT))
 );
@@ -49,9 +51,11 @@ nuimo.on(NuimoEvents.DISCOVERY_FINISHED, () =>
 
 // Map PowerMate inputs to Sonos functions
 powermate.on(PowerMateEvents.CLOCKWISE, () => sonos.volumeUp());
-powermate.on(PowerMateEvents.PRESS_CLOCKWISE, () => sonos.next());
+powermate.on(PowerMateEvents.PRESS_CLOCKWISE, () => sonos.groupVolumeUp());
 powermate.on(PowerMateEvents.COUNTERCLOCKWISE, () => sonos.volumeDown());
-powermate.on(PowerMateEvents.PRESS_COUNTERCLOCKWISE, () => sonos.previous());
+powermate.on(PowerMateEvents.PRESS_COUNTERCLOCKWISE, () =>
+  sonos.groupVolumeDown()
+);
 powermate.on(PowerMateEvents.SINGLE_PRESS, () => sonos.togglePlay());
 powermate.on(PowerMateEvents.DOUBLE_PRESS, () => {});
 

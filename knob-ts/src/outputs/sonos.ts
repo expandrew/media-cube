@@ -135,22 +135,24 @@ export class Sonos extends EventEmitter {
     return this.PRIMARY_DEVICE?.Previous();
   }
 
-  /** Volume down for current group */
+  /** Volume down for primary device only */
   volumeDown() {
-    if (this.isGrouped) {
-      this.SetRelativeVolumeForGroup(-2);
-    } else {
-      this.PRIMARY_DEVICE?.SetRelativeVolume(-2);
-    }
+    this.PRIMARY_DEVICE?.SetRelativeVolume(-2);
   }
 
-  /** Volume up for current group */
+  /** Volume up for primary device only */
   volumeUp() {
-    if (this.isGrouped) {
-      this.SetRelativeVolumeForGroup(2);
-    } else {
-      this.PRIMARY_DEVICE?.SetRelativeVolume(2);
-    }
+    this.PRIMARY_DEVICE?.SetRelativeVolume(2);
+  }
+
+  /** Volume down for group */
+  groupVolumeDown() {
+    this.isGrouped && this.SetRelativeVolumeForGroup(-2);
+  }
+
+  /** Volume up for group */
+  groupVolumeUp() {
+    this.isGrouped && this.SetRelativeVolumeForGroup(2);
   }
 
   /**
