@@ -119,11 +119,11 @@ const SENSITIVITY = {
   /** Number of milliseconds for button to be held to trigger a "long press" */
   LONG_PRESS_MS: 1000,
   /** Debounce "wait" milliseconds for rotation inputs to alter the "sensitivity" of the knob rotation inputs. A higher value here means it takes more turning to trigger the inputs */
-  ROTATION_WAIT_MS: 200,
+  ROTATION_WAIT_MS: 100,
   /** Debounce "wait" milliseconds for press rotation inputs. Press rotation should be even less sensitive than regular rotation inputs. */
-  PRESS_ROTATION_WAIT_MS: 200,
+  PRESS_ROTATION_WAIT_MS: 100,
   /** Minimum delta to register as a rotation event. The Nuimo is very sensitive and sends pretty precise rotation signals, so this filters out anything outside of a threshold */
-  ROTATION_MINIMUM_DELTA: 0.0075,
+  ROTATION_MINIMUM_DELTA: 0.005,
 };
 
 /** Debouncers in rotation events */
