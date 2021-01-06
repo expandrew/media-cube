@@ -3,6 +3,7 @@ import { EventEmitter } from 'events';
 import {
   DeviceDiscoveryManager,
   DisplayGlyphOptions,
+  errorGlyph,
   Glyph,
   leftGlyph,
   NuimoControlDevice,
@@ -102,6 +103,7 @@ export const GLYPHS: { [glyphName: string]: Glyph } = {
   VOLUME_UP: plusGlyph,
   GROUP_VOLUME_DOWN: groupMinusGlyph,
   GROUP_VOLUME_UP: groupPlusGlyph,
+  ERROR: errorGlyph,
 };
 
 /** Shortcut to Debug('knob-ts:nuimo')() */

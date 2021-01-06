@@ -160,13 +160,14 @@ export class Sonos extends EventEmitter {
    * @param volume Relative volume for each speaker
    */
   private SetRelativeVolumeForGroup(volume: number) {
-    return new Promise(resolve =>
-      resolve(
-        this.isGrouped &&
-          [this.PRIMARY_DEVICE, this.SECONDARY_DEVICE].forEach(d =>
-            d?.SetRelativeVolume(volume)
+    return new Promise((resolve, reject) =>
+      this.isGrouped
+        ? resolve(
+            [this.PRIMARY_DEVICE, this.SECONDARY_DEVICE].forEach(d =>
+              d?.SetRelativeVolume(volume)
+            )
           )
-      )
+        : reject(false)
     );
   }
 }

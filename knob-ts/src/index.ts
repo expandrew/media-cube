@@ -30,11 +30,14 @@ const NuimoInputs: { [eventName: string]: () => void } = {
     );
   },
   PRESS_CLOCKWISE: () => {
-    sonos.groupVolumeUp()?.then(() =>
-      nuimo.displayGlyph(NuimoGlyphs.GROUP_VOLUME_UP, {
-        timeoutMs: 100,
-      })
-    );
+    sonos
+      .groupVolumeUp()
+      ?.then(() =>
+        nuimo.displayGlyph(NuimoGlyphs.GROUP_VOLUME_UP, {
+          timeoutMs: 100,
+        })
+      )
+      .catch(() => nuimo.displayGlyph(NuimoGlyphs.ERROR));
   },
   COUNTERCLOCKWISE: () => {
     sonos.volumeDown()?.then(() =>
@@ -44,11 +47,14 @@ const NuimoInputs: { [eventName: string]: () => void } = {
     );
   },
   PRESS_COUNTERCLOCKWISE: () => {
-    sonos.groupVolumeDown()?.then(() =>
-      nuimo.displayGlyph(NuimoGlyphs.GROUP_VOLUME_DOWN, {
-        timeoutMs: 100,
-      })
-    );
+    sonos
+      .groupVolumeDown()
+      ?.then(() =>
+        nuimo.displayGlyph(NuimoGlyphs.GROUP_VOLUME_DOWN, {
+          timeoutMs: 100,
+        })
+      )
+      .catch(() => nuimo.displayGlyph(NuimoGlyphs.ERROR));
   },
   SINGLE_PRESS: () => {
     if (sonos.isPlaying) {
