@@ -43,12 +43,39 @@ const heartGlyph = Glyph.fromString([
   '         ',
 ]);
 
+
+const minusGlyph = Glyph.fromString([
+  '         ',
+  '         ',
+  '         ',
+  '         ',
+  '  xxxxx  ',
+  '         ',
+  '         ',
+  '         ',
+  '         ',
+]);
+
+const plusGlyph = Glyph.fromString([
+  '         ',
+  '         ',
+  '    x    ',
+  '    x    ',
+  '  xxxxx  ',
+  '    x    ',
+  '    x    ',
+  '         ',
+  '         ',
+]);
+
 export const GLYPHS: { [glyphName: string]: Glyph } = {
   PLAY: playGlyph,
   PAUSE: pauseGlyph,
   NEXT: rightGlyph,
   PREVIOUS: leftGlyph,
   WAKE_UP: heartGlyph,
+  VOLUME_DOWN: minusGlyph,
+  VOLUME_UP: plusGlyph,
 };
 
 /** Shortcut to Debug('knob-ts:nuimo')() */

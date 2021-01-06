@@ -22,10 +22,22 @@ const sonos = new Sonos();
 const nuimo = new Nuimo();
 
 const NuimoInputs: { [eventName: string]: () => void } = {
-  CLOCKWISE: () => sonos.volumeUp(),
   PRESS_CLOCKWISE: () => sonos.groupVolumeUp(),
-  COUNTERCLOCKWISE: () => sonos.volumeDown(),
   PRESS_COUNTERCLOCKWISE: () => sonos.groupVolumeDown(),
+  CLOCKWISE: () => {
+    sonos.volumeUp()?.then(() =>
+      nuimo.displayGlyph(NuimoGlyphs.VOLUME_UP, {
+        timeoutMs: 100,
+      })
+    );
+  },
+  COUNTERCLOCKWISE: () => {
+    sonos.volumeDown()?.then(() =>
+      nuimo.displayGlyph(NuimoGlyphs.VOLUME_DOWN, {
+        timeoutMs: 100,
+      })
+    );
+  },
   SINGLE_PRESS: () => {
     if (sonos.isPlaying) {
       sonos.pause()?.then(() => nuimo.displayGlyph(NuimoGlyphs.PAUSE));

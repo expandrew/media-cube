@@ -137,12 +137,12 @@ export class Sonos extends EventEmitter {
 
   /** Volume down for primary device only */
   volumeDown() {
-    this.PRIMARY_DEVICE?.SetRelativeVolume(-2);
+    return this.PRIMARY_DEVICE?.SetRelativeVolume(-2);
   }
 
   /** Volume up for primary device only */
   volumeUp() {
-    this.PRIMARY_DEVICE?.SetRelativeVolume(2);
+    return this.PRIMARY_DEVICE?.SetRelativeVolume(2);
   }
 
   /** Volume down for group */
