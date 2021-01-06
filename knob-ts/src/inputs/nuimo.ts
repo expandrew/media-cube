@@ -27,6 +27,8 @@ export const EVENTS: { [eventName: string]: string } = {
   SWIPE_RIGHT: 'swipeRight',
   SWIPE_UP: 'swipeUp',
   SWIPE_DOWN: 'swipeDown',
+  TOUCH: 'touch',
+  LONG_TOUCH: 'longTouch',
 };
 
 export const GLYPHS: { [glyphName: string]: Glyph } = {
@@ -152,6 +154,12 @@ export class Nuimo extends EventEmitter {
         // Set up swipes
         this.device?.on('swipe', direction =>
           this.emit(EVENTS[`SWIPE_${direction.toUpperCase()}`])
+        );
+
+        // Set up touches
+        this.device?.on('touch', area => this.emit(EVENTS.TOUCH, { area }));
+        this.device?.on('longTouch', area =>
+          this.emit(EVENTS.LONG_TOUCH, { area })
         );
 
         // Set up disconnect behavior
