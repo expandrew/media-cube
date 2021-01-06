@@ -37,6 +37,7 @@ const NuimoInputs: { [eventName: string]: () => void } = {
     sonos.next()?.then(() => nuimo.displayGlyph(NuimoGlyphs.NEXT)),
   SWIPE_LEFT: () =>
     sonos.previous()?.then(() => nuimo.displayGlyph(NuimoGlyphs.PREVIOUS)),
+  LONG_TOUCH: () => nuimo.displayGlyph(NuimoGlyphs.WAKE_UP),
 };
 
 // Map Nuimo inputs to Sonos functions

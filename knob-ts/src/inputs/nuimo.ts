@@ -31,11 +31,24 @@ export const EVENTS: { [eventName: string]: string } = {
   LONG_TOUCH: 'longTouch',
 };
 
+const heartGlyph = Glyph.fromString([
+  '         ',
+  '  xx xx  ',
+  ' xxxxxxx ',
+  ' xxxxxxx ',
+  '  xxxxx  ',
+  '   xxx   ',
+  '    x    ',
+  '         ',
+  '         ',
+]);
+
 export const GLYPHS: { [glyphName: string]: Glyph } = {
   PLAY: playGlyph,
   PAUSE: pauseGlyph,
   NEXT: rightGlyph,
   PREVIOUS: leftGlyph,
+  WAKE_UP: heartGlyph,
 };
 
 /** Shortcut to Debug('knob-ts:nuimo')() */
