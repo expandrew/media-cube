@@ -22,8 +22,6 @@ const sonos = new Sonos();
 const nuimo = new Nuimo();
 
 const NuimoInputs: { [eventName: string]: () => void } = {
-  PRESS_CLOCKWISE: () => sonos.groupVolumeUp(),
-  PRESS_COUNTERCLOCKWISE: () => sonos.groupVolumeDown(),
   CLOCKWISE: () => {
     sonos.volumeUp()?.then(() =>
       nuimo.displayGlyph(NuimoGlyphs.VOLUME_UP, {
@@ -31,9 +29,23 @@ const NuimoInputs: { [eventName: string]: () => void } = {
       })
     );
   },
+  PRESS_CLOCKWISE: () => {
+    sonos.groupVolumeUp()?.then(() =>
+      nuimo.displayGlyph(NuimoGlyphs.GROUP_VOLUME_UP, {
+        timeoutMs: 100,
+      })
+    );
+  },
   COUNTERCLOCKWISE: () => {
     sonos.volumeDown()?.then(() =>
       nuimo.displayGlyph(NuimoGlyphs.VOLUME_DOWN, {
+        timeoutMs: 100,
+      })
+    );
+  },
+  PRESS_COUNTERCLOCKWISE: () => {
+    sonos.groupVolumeDown()?.then(() =>
+      nuimo.displayGlyph(NuimoGlyphs.GROUP_VOLUME_DOWN, {
         timeoutMs: 100,
       })
     );

@@ -68,6 +68,30 @@ const plusGlyph = Glyph.fromString([
   '         ',
 ]);
 
+const groupPlusGlyph = Glyph.fromString([
+  ' x     x ',
+  '         ',
+  '    x    ',
+  '    x    ',
+  '  xxxxx  ',
+  '    x    ',
+  '    x    ',
+  '         ',
+  '         ',
+]);
+
+const groupMinusGlyph = Glyph.fromString([
+  ' x     x ',
+  '         ',
+  '         ',
+  '         ',
+  '  xxxxx  ',
+  '         ',
+  '         ',
+  '         ',
+  '         ',
+]);
+
 export const GLYPHS: { [glyphName: string]: Glyph } = {
   PLAY: playGlyph,
   PAUSE: pauseGlyph,
@@ -76,6 +100,8 @@ export const GLYPHS: { [glyphName: string]: Glyph } = {
   WAKE_UP: heartGlyph,
   VOLUME_DOWN: minusGlyph,
   VOLUME_UP: plusGlyph,
+  GROUP_VOLUME_DOWN: groupMinusGlyph,
+  GROUP_VOLUME_UP: groupPlusGlyph,
 };
 
 /** Shortcut to Debug('knob-ts:nuimo')() */
