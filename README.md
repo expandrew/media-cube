@@ -15,7 +15,7 @@ Below is what I've set up:
 
 ### Unbuilt
 
-- [knob](knob/) - (input/output adapter written in Python, but not completed; not comfortable enough in Python, maybe will come back to this)
+- [knob-py](knob-py/) - (input/output adapter written in Python, but not completed; not comfortable enough in Python, maybe will come back to this)
 - [cd-player](cd-player/) (CD player to use Apple SuperDrive and Raspberry Pi's audio out to play CD audio; needs to integrate with an input device to control it)
 
 ### Retired
