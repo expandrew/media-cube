@@ -265,7 +265,7 @@ export class PowerMate extends EventEmitter {
       const buttonUp = !isPressed; // for readability down below
 
       // If there is a change from what is currently stored:
-      if (isPressed != this.isPressed) {
+      if (isPressed !== this.isPressed) {
         this.isPressed = isPressed;
 
         if (buttonDown) {
