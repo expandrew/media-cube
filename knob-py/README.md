@@ -1,6 +1,6 @@
-# Knob ![unbuilt](https://img.shields.io/badge/-unbuilt-red)
+# knob-py ![unbuilt](https://img.shields.io/badge/-unbuilt-red)
 
-Knob handles input/output for Media Cube
+knob-py handles input/output for Media Cube
 
 # Getting started
 
