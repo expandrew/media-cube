@@ -9,9 +9,9 @@ Below is what I've set up:
 ### In use
 
 - [gandi-ldns](gandi-ldns/) (dynamic DNS updater to point a subdomain to my home IP for OpenVPN)
+- [knob-ts](knob-ts/) (input/output adapter written in TypeScript to map inputs like PowerMate to outputs like Sonos)
 - [openvpn](openvpn/) (OpenVPN server for my home network)
 - [pi-hole](pi-hole/) (ad-blocker for my home network)
-- [sonospowermate](sonospowermate/) (to control Sonos with Griffin PowerMate)
 
 ### Unbuilt
 
@@ -21,4 +21,5 @@ Below is what I've set up:
 ### Retired
 
 - ~~[shairport-sync](shairport-sync)~~ (No longer using AirPlay on Media Cube; using Sonos now)
+- ~~[sonospowermate](sonospowermate/)~~ (No longer using this to glue together PowerMate and Sonos; replaced by [knob-ts](knob-ts/))
 - ~~[spotifyd](spotifyd/)~~ (No longer using Spotify Connect on Media Cube; using Sonos now)

@@ -1,0 +1,65 @@
+{
+  "version": "0.1.0",
+  "license": "MIT",
+  "main": "dist/index.js",
+  "typings": "dist/index.d.ts",
+  "files": [
+    "dist",
+    "src"
+  ],
+  "engines": {
+    "node": ">=10"
+  },
+  "scripts": {
+    "start": "tsdx watch",
+    "build": "tsdx build",
+    "test": "tsdx test",
+    "lint": "tsdx lint",
+    "prepare": "tsdx build",
+    "pm2:start": "pm2 start pm2.config.json",
+    "pm2:stop": "pm2 stop pm2.config.json",
+    "pm2:debug": "pm2 startOrReload pm2.config.json --env debug",
+    "dev": "DEBUG='knob-ts:*' node dist/index.js"
+  },
+  "peerDependencies": {
+    "pm2": "^4.5.1"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "tsdx lint"
+    }
+  },
+  "prettier": {
+    "printWidth": 80,
+    "semi": true,
+    "singleQuote": true,
+    "trailingComma": "es5"
+  },
+  "name": "knob-ts",
+  "author": "Andrew Westling",
+  "module": "dist/knob-ts.esm.js",
+  "size-limit": [
+    {
+      "path": "dist/knob-ts.cjs.production.min.js",
+      "limit": "10 KB"
+    },
+    {
+      "path": "dist/knob-ts.esm.js",
+      "limit": "10 KB"
+    }
+  ],
+  "devDependencies": {
+    "@types/debug": "^4.1.5",
+    "@types/node-hid": "^1.3.0",
+    "husky": "^4.3.6",
+    "tsdx": "^0.14.1",
+    "tslib": "^2.0.3",
+    "typescript": "^4.1.3"
+  },
+  "dependencies": {
+    "@svrooij/sonos": "^2.2.0",
+    "node-hid": "^2.1.1",
+    "rocket-nuimo": "^0.5.1",
+    "usb-detection": "^4.10.0"
+  }
+}

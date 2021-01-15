@@ -1,5 +1,7 @@
 # spotifyd ![retired](https://img.shields.io/badge/-retired-lightgrey)
 
+**Update 20201218:** I no longer use [sonospowermate](../sonospowermate) to control Spotify; instead, I use [knob-ts](../knob-ts) and control Spotify via Sonos.
+
 **Update 20200208:** I disabled spotifyd in favor of using the Sonos speaker and the PowerMate to control it. See [sonospowermate](../sonospowermate/) for more info. I used these commands to disable spotifyd:
 
 ```bash

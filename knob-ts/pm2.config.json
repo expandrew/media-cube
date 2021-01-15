@@ -1,0 +1,13 @@
+{
+  "name": "knob-ts",
+  "script": "dist/index.js",
+  "pmx": false,
+  "env": {
+    "SONOS_LISTENER_HOST": "10.0.1.10",
+    "DEBUG": "knob-ts:*"
+  },
+  "env_debug": {
+    "SONOS_LISTENER_HOST": "10.0.1.10",
+    "DEBUG": "*"
+  }
+}
