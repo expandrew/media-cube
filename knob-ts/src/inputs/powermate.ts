@@ -167,6 +167,7 @@ export class PowerMate extends EventEmitter {
   setLed(ledState: LedState) {
     // Merge with existing ledState so we can send partial updates (like only isPulsing or only isOn)
     ledState = Object.assign(
+      {},
       { isOn: this.ledState.isOn, isPulsing: this.ledState.isPulsing },
       ledState
     );
