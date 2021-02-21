@@ -1,4 +1,4 @@
-// import { PowerMate } from '../src/inputs/powermate';
+// import { PowerMate } from '../src/devices/powermate';
 
 xdescribe('PowerMate', () => {
   it('creates a new PowerMate', () => {

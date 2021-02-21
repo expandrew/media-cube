@@ -1,21 +1,10 @@
-/**
- * knob-ts
- *
- * Adapter to map device inputs to media outputs on Media Cube
- *
- * Supports:
- * - Griffin PowerMate (input)
- * - Senic Nuimo (input)
- * - Sonos (output)
- */
-
-import { Sonos, EVENTS as SonosEvents } from './outputs/sonos';
-import { PowerMate, EVENTS as PowerMateEvents } from './inputs/powermate';
+import { Sonos, EVENTS as SonosEvents } from './devices/sonos';
+import { PowerMate, EVENTS as PowerMateEvents } from './devices/powermate';
 import {
   Nuimo,
   EVENTS as NuimoEvents,
   GLYPHS as NuimoGlyphs,
-} from './inputs/nuimo';
+} from './devices/nuimo';
 
 const powermate = new PowerMate();
 const sonos = new Sonos();

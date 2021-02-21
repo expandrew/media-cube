@@ -9,13 +9,13 @@ Below is what I've set up:
 ### In use
 
 - [gandi-ldns](gandi-ldns/) (dynamic DNS updater to point a subdomain to my home IP for OpenVPN)
-- [knob-ts](knob-ts/) (input/output adapter written in TypeScript to map inputs like PowerMate to outputs like Sonos)
+- [knob-ts](knob-ts/) (adapter library written in TypeScript to map inputs and outputs on assorted devices)
 - [openvpn](openvpn/) (OpenVPN server for my home network)
 - [pi-hole](pi-hole/) (ad-blocker for my home network)
 
 ### Unbuilt
 
-- [knob-py](knob-py/) - (input/output adapter written in Python, but not completed; not comfortable enough in Python, maybe will come back to this)
+- [knob-py](knob-py/) - (adapter library written in Python, but not completed; not comfortable enough in Python, maybe will come back to this)
 - [cd-player](cd-player/) (CD player to use Apple SuperDrive and Raspberry Pi's audio out to play CD audio; needs to integrate with an input device to control it)
 
 ### Retired
