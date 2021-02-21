@@ -1,4 +1,4 @@
-// import { Sonos } from '../src/outputs/sonos';
+// import { Sonos } from '../src/devices/sonos';
 
 xdescribe('Sonos', () => {
   it('creates a new Sonos', () => {

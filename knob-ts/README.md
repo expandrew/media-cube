@@ -2,14 +2,12 @@
 
 Custom adapter library to map inputs and outputs for Media Cube
 
-It will map the following inputs:
+It will map inputs and outputs from the following devices:
 
 - [x] Griffin PowerMate
 - [x] Senic Nuimo
-
-to the following outputs:
-
 - [x] Sonos
+- [ ] [blink(1)](https://blink1.thingm.com/)
 - [ ] Hue lights
 - [ ] `media-cube/cd-player`
 

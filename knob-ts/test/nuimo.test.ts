@@ -1,4 +1,4 @@
-// import { Nuimo } from '../src/inputs/nuimo';
+// import { Nuimo } from '../src/devices/nuimo';
 
 xdescribe('Nuimo', () => {
   it('creates a new Nuimo', () => {
