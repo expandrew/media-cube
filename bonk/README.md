@@ -24,28 +24,6 @@ It will map inputs and outputs from the following devices:
 | press + counterclockwise | Sonos Group Volume Down | Sonos Group Volume Up |
 | swipe right              | _(not supported)_       | Sonos Next Track      |
 | swipe left               | _(not supported)_       | Sonos Previous Track  |
-| long press               | Enter Layer 2           | Enter Layer 2         |
-
-### Layer 2
-
-**PowerMate: (indicated by pulsing)**
-
-- Clockwise/counterclockwise: Forward and back between functions
-- Press: Select function
-  - Function 1: (indicated by pulse `.`): Re-pair Nuimo
-  - Function 2: (indicated by pulse `..`): Toggle Sonos Group
-  - Function 3: (indicated by pulse `...`): _(not supported)_
-- Long press: Back to Layer 1
-
-**Nuimo: (indicated by on-screen icons)**
-
-- Clockwise/counterclockwise: Forward and back between functions
-- Press: Select function
-  - Function 1: (indicated by icon): Nuimo Battery Level
-  - Function 2: (indicated by icon): Toggle Sonos Group
-  - Function 3: (indicated by icon): ? (Playlists?)
-  - Function 4: (indicated by icon): ? (Radio?)
-- Long press: Back to Layer 1
 
 ## Setup
 
