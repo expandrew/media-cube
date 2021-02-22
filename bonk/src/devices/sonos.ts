@@ -1,5 +1,6 @@
-import Debug from 'debug';
 import { SonosDevice, SonosManager } from '@svrooij/sonos';
+
+import Debug from 'debug';
 import { EventEmitter } from 'events';
 
 /**
@@ -33,7 +34,7 @@ export const EVENTS: { [eventName: string]: string } = {
 /** Debugger for events */
 const setupDebug = (sonos: Sonos) => {
   for (const event in EVENTS) {
-    sonos.on(EVENTS[event], data => Debug('knob-ts:sonos')({ event, data }));
+    sonos.on(EVENTS[event], data => Debug('bonk:sonos')({ event, data }));
   }
 };
 

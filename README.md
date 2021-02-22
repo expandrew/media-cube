@@ -8,8 +8,8 @@ Below is what I've set up:
 
 ### In use
 
+- [bonk](bonk/) (adapter library written in TypeScript to map inputs and outputs on assorted devices)
 - [gandi-ldns](gandi-ldns/) (dynamic DNS updater to point a subdomain to my home IP for OpenVPN)
-- [knob-ts](knob-ts/) (adapter library written in TypeScript to map inputs and outputs on assorted devices)
 - [openvpn](openvpn/) (OpenVPN server for my home network)
 - [pi-hole](pi-hole/) (ad-blocker for my home network)
 
@@ -21,5 +21,5 @@ Below is what I've set up:
 ### Retired
 
 - ~~[shairport-sync](shairport-sync)~~ (No longer using AirPlay on Media Cube; using Sonos now)
-- ~~[sonospowermate](sonospowermate/)~~ (No longer using this to glue together PowerMate and Sonos; replaced by [knob-ts](knob-ts/))
+- ~~[sonospowermate](sonospowermate/)~~ (No longer using this to glue together PowerMate and Sonos; replaced by [bonk](bonk/))
 - ~~[spotifyd](spotifyd/)~~ (No longer using Spotify Connect on Media Cube; using Sonos now)

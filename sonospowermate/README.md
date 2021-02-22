@@ -1,6 +1,6 @@
 # sonospowermate ![retired](https://img.shields.io/badge/-retired-lightgreygi)
 
-**Update 20201218:** I no longer use this library to handle the PowerMate and Sonos. I have moved to using [knob-ts](../knob-ts), which has a PowerMate input and a Sonos output to replicate the functionality in this library.
+**Update 20201218:** I no longer use this library to handle the PowerMate and Sonos. I have moved to using [bonk](../bonk), which has a PowerMate input and a Sonos output to replicate the functionality in this library.
 
 ---
 
