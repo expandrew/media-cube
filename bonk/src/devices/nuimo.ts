@@ -1,16 +1,17 @@
-import Debug from 'debug';
-import { EventEmitter } from 'events';
 import {
   DeviceDiscoveryManager,
   DisplayGlyphOptions,
-  errorGlyph,
   Glyph,
-  leftGlyph,
   NuimoControlDevice,
+  errorGlyph,
+  leftGlyph,
   pauseGlyph,
   playGlyph,
   rightGlyph,
 } from 'rocket-nuimo';
+
+import Debug from 'debug';
+import { EventEmitter } from 'events';
 
 /** Events for Nuimo discovery, connect, select/tap and rotation */
 export const EVENTS: { [eventName: string]: string } = {
@@ -105,8 +106,8 @@ export const GLYPHS: { [glyphName: string]: Glyph } = {
   ERROR: errorGlyph,
 };
 
-/** Shortcut to Debug('knob-ts:nuimo')() */
-const debug = Debug('knob-ts:nuimo');
+/** Shortcut to Debug('bonk:nuimo')() */
+const debug = Debug('bonk:nuimo');
 
 /** Debugger for events */
 const setupDebug = (nuimo: Nuimo) => {

@@ -1,8 +1,9 @@
+import { clearTimeout, setTimeout } from 'timers';
+
 import Debug from 'debug';
+import { EventEmitter } from 'events';
 import HID from 'node-hid';
 import usbDetect from 'usb-detection';
-import { EventEmitter } from 'events';
-import { setTimeout, clearTimeout } from 'timers';
 
 /** For Raspbian, I have to use `libusb` for the HID driver via node-hid because PowerMate doesn't seem to actually register itself as a HID (it has its own driver, not usbhid or hid-generic, and it doesn't get a path like /dev/hidraw... so libusb seems to be my only option*/
 HID.setDriverType('libusb');
@@ -19,8 +20,8 @@ export const EVENTS: { [eventName: string]: string } = {
   PRESS_COUNTERCLOCKWISE: 'pressCounterclockwise',
 };
 
-/** Shortcut to Debug('knob-ts:powermate')() */
-const debug = Debug('knob-ts:powermate');
+/** Shortcut to Debug('bonk:powermate')() */
+const debug = Debug('bonk:powermate');
 
 /** Debugger for events */
 const setupDebug = (powermate: PowerMate) => {

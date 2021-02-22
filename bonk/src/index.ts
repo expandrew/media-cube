@@ -1,10 +1,10 @@
-import { Sonos, EVENTS as SonosEvents } from './devices/sonos';
-import { PowerMate, EVENTS as PowerMateEvents } from './devices/powermate';
 import {
   Nuimo,
   EVENTS as NuimoEvents,
   GLYPHS as NuimoGlyphs,
 } from './devices/nuimo';
+import { PowerMate, EVENTS as PowerMateEvents } from './devices/powermate';
+import { Sonos, EVENTS as SonosEvents } from './devices/sonos';
 
 const powermate = new PowerMate();
 const sonos = new Sonos();

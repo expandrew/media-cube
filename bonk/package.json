@@ -19,7 +19,8 @@
     "pm2:start": "pm2 start pm2.config.json",
     "pm2:stop": "pm2 stop pm2.config.json",
     "pm2:debug": "pm2 startOrReload pm2.config.json --env debug",
-    "dev": "DEBUG='knob-ts:*' node dist/index.js"
+    "pm2:logs": "pm2 logs bonk",
+    "dev": "DEBUG='bonk:*' node dist/index.js"
   },
   "peerDependencies": {
     "pm2": "^4.5.1"
@@ -35,16 +36,16 @@
     "singleQuote": true,
     "trailingComma": "es5"
   },
-  "name": "knob-ts",
+  "name": "bonk",
   "author": "Andrew Westling",
-  "module": "dist/knob-ts.esm.js",
+  "module": "dist/bonk.esm.js",
   "size-limit": [
     {
-      "path": "dist/knob-ts.cjs.production.min.js",
+      "path": "dist/bonk.cjs.production.min.js",
       "limit": "10 KB"
     },
     {
-      "path": "dist/knob-ts.esm.js",
+      "path": "dist/bonk.esm.js",
       "limit": "10 KB"
     }
   ],
