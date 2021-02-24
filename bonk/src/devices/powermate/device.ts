@@ -18,15 +18,8 @@ const setupDebug = (powermate: PowerMate) => {
   }
 };
 
-/** For storing and passing around LED-related values in a structured way */
-export type LedState = {
-  isOn?: boolean;
-  isPulsing?: boolean;
-  // pulseSpeed?: 'slow' | 'normal' | 'fast'; // TODO: Add pulseSpeed
-};
-
 /** Configuration for PowerMate Sensitivity */
-const SENSITIVITY = {
+const sensitivity = {
   /** Number of milliseconds for button to be held to trigger a "long press" */
   LONG_PRESS_MS: 1000,
   /** Number of milliseconds between presses to trigger a "double(/triple) press" */
@@ -35,6 +28,13 @@ const SENSITIVITY = {
   ROTATION_WAIT_MS: 100,
   /** Debounce "wait" milliseconds for press rotation inputs. Press rotation should be even less sensitive than regular rotation inputs. */
   PRESS_ROTATION_WAIT_MS: 100,
+};
+
+/** For storing and passing around LED-related values in a structured way */
+type LedState = {
+  isOn?: boolean;
+  isPulsing?: boolean;
+  // pulseSpeed?: 'slow' | 'normal' | 'fast'; // TODO: Add pulseSpeed
 };
 
 /** Debouncers in rotation events */
@@ -110,23 +110,23 @@ export class PowerMate extends EventEmitter {
       count: 0,
       timer: undefined,
       isRunning: false,
-      PRESS_MS: SENSITIVITY.LONG_PRESS_MS,
+      PRESS_MS: sensitivity.LONG_PRESS_MS,
     };
     this.multiPress = {
       count: 0,
       timer: undefined,
       isRunning: false,
-      PRESS_MS: SENSITIVITY.MULTI_PRESS_MS,
+      PRESS_MS: sensitivity.MULTI_PRESS_MS,
     };
     this.rotationDebouncer = {
       timer: undefined,
       isReady: true,
-      WAIT_MS: SENSITIVITY.ROTATION_WAIT_MS,
+      WAIT_MS: sensitivity.ROTATION_WAIT_MS,
     };
     this.pressRotationDebouncer = {
       timer: undefined,
       isReady: true,
-      WAIT_MS: SENSITIVITY.PRESS_ROTATION_WAIT_MS,
+      WAIT_MS: sensitivity.PRESS_ROTATION_WAIT_MS,
     };
     this.ledState = {
       isOn: true,

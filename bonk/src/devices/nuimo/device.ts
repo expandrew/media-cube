@@ -19,7 +19,7 @@ const setupDebug = (nuimo: Nuimo) => {
 };
 
 /** Configuration for Nuimo Sensitivity */
-const SENSITIVITY = {
+const sensitivity = {
   /** Number of milliseconds for button to be held to trigger a "long press" */
   LONG_PRESS_MS: 1000,
   /** Debounce "wait" milliseconds for rotation inputs to alter the "sensitivity" of the knob rotation inputs. A higher value here means it takes more turning to trigger the inputs */
@@ -68,35 +68,41 @@ const startDiscovery = async (): Promise<NuimoControlDevice | undefined> => {
 export class Nuimo extends EventEmitter {
   device: NuimoControlDevice | undefined;
   isPressed: boolean;
-  longPress: PressTimer;
-  rotationDebouncer: Debouncer;
-  pressRotationDebouncer: Debouncer;
+  private longPress: PressTimer;
+  private rotationDebouncer: Debouncer;
+  private pressRotationDebouncer: Debouncer;
 
   constructor() {
     super();
     setupDebug(this);
 
+    // Set initial values for everything
     this.isPressed = false;
     this.longPress = {
       timer: undefined,
       isRunning: false,
-      PRESS_MS: SENSITIVITY.LONG_PRESS_MS,
+      PRESS_MS: sensitivity.LONG_PRESS_MS,
     };
     this.rotationDebouncer = {
       timer: undefined,
       isReady: true,
-      WAIT_MS: SENSITIVITY.ROTATION_WAIT_MS,
+      WAIT_MS: sensitivity.ROTATION_WAIT_MS,
     };
     this.pressRotationDebouncer = {
       timer: undefined,
       isReady: true,
-      WAIT_MS: SENSITIVITY.PRESS_ROTATION_WAIT_MS,
+      WAIT_MS: sensitivity.PRESS_ROTATION_WAIT_MS,
     };
 
     // Find and connect to the Nuimo
     this.connect();
   }
 
+  /**
+   * Connect to the Nuimo
+   *
+   * This will disconnect and remove listeners if a Nuimo is already connected
+   */
   connect() {
     // Clear out any devices we may have
     this.device?.disconnect();
@@ -116,7 +122,7 @@ export class Nuimo extends EventEmitter {
         this.device?.setRotationRange(-1, 1, 0);
         this.device?.on('rotate', (delta: number) => {
           // Check if the delta is above our minimum
-          if (Math.abs(delta) > SENSITIVITY.ROTATION_MINIMUM_DELTA) {
+          if (Math.abs(delta) > sensitivity.ROTATION_MINIMUM_DELTA) {
             this.computeRotation(delta);
           }
         });
@@ -152,6 +158,7 @@ export class Nuimo extends EventEmitter {
         this.emit(NuimoEvents.DISCOVERY_FINISHED, { success: false });
       });
   }
+
   displayGlyph(
     glyph: Glyph,
     options: DisplayGlyphOptions = { timeoutMs: 1000 }
@@ -164,7 +171,7 @@ export class Nuimo extends EventEmitter {
    *
    * @param pressInput - boolean 0 or 1 for "up" or "down"
    */
-  computePress(pressInput: 0 | 1) {
+  private computePress(pressInput: 0 | 1) {
     const isPressed = Boolean(pressInput);
     const buttonDown = isPressed; // for readability down below
     const buttonUp = !isPressed; // for readability down below
@@ -197,7 +204,7 @@ export class Nuimo extends EventEmitter {
    *
    * @param delta - the amount that the Nuimo was rotated. Negative is counter-clockwise, positive is clockwise.
    */
-  computeRotation(delta: number) {
+  private computeRotation(delta: number) {
     if (this.rotationDebouncer.isReady) {
       // Clear LONG_PRESS timer when released
       clearTimeout(this.longPress.timer as NodeJS.Timeout);
