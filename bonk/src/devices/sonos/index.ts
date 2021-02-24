@@ -1,1 +1,2 @@
-export { Sonos, EVENTS } from './device';
+export { Sonos } from './device';
+export { SonosEvents } from './events';

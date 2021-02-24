@@ -1,32 +1,20 @@
-import { clearTimeout, setTimeout } from 'timers';
-
 import Debug from 'debug';
 import { EventEmitter } from 'events';
 import HID from 'node-hid';
+import { clearTimeout, setTimeout } from 'timers';
 import usbDetect from 'usb-detection';
+import { PowerMateEvents } from './events';
 
 /** For Raspbian, I have to use `libusb` for the HID driver via node-hid because PowerMate doesn't seem to actually register itself as a HID (it has its own driver, not usbhid or hid-generic, and it doesn't get a path like /dev/hidraw... so libusb seems to be my only option*/
 HID.setDriverType('libusb');
-
-/** Events for PowerMate button and rotation */
-export const EVENTS: { [eventName: string]: string } = {
-  SINGLE_PRESS: 'singlePress',
-  DOUBLE_PRESS: 'doublePress',
-  TRIPLE_PRESS: 'triplePress',
-  LONG_PRESS: 'longPress',
-  CLOCKWISE: 'clockwise',
-  COUNTERCLOCKWISE: 'counterclockwise',
-  PRESS_CLOCKWISE: 'pressClockwise',
-  PRESS_COUNTERCLOCKWISE: 'pressCounterclockwise',
-};
 
 /** Shortcut to Debug('bonk:powermate')() */
 const debug = Debug('bonk:powermate');
 
 /** Debugger for events */
 const setupDebug = (powermate: PowerMate) => {
-  for (const event in EVENTS) {
-    powermate.on(EVENTS[event], data => debug({ event, data }));
+  for (const event in PowerMateEvents) {
+    powermate.on(PowerMateEvents[event], data => debug({ event, data }));
   }
 };
 
@@ -275,7 +263,7 @@ export class PowerMate extends EventEmitter {
           this.longPress.isRunning = true;
           this.longPress.timer = setTimeout(() => {
             this.longPress.isRunning = false;
-            this.emit(EVENTS.LONG_PRESS);
+            this.emit(PowerMateEvents.LONG_PRESS);
           }, this.longPress.PRESS_MS);
         }
 
@@ -296,13 +284,13 @@ export class PowerMate extends EventEmitter {
                 // See how many presses happened during the timeout and emit the right event
                 switch (this.multiPress.count) {
                   case 1:
-                    this.emit(EVENTS.SINGLE_PRESS);
+                    this.emit(PowerMateEvents.SINGLE_PRESS);
                     break;
                   case 2:
-                    this.emit(EVENTS.DOUBLE_PRESS);
+                    this.emit(PowerMateEvents.DOUBLE_PRESS);
                     break;
                   case 3:
-                    this.emit(EVENTS.TRIPLE_PRESS);
+                    this.emit(PowerMateEvents.TRIPLE_PRESS);
                     break;
                 }
                 // Reset count
@@ -347,20 +335,20 @@ export class PowerMate extends EventEmitter {
             delta = -256 + rotationInput; // Counterclockwise rotation is sent starting at 255 so this converts it to a meaningful negative number
             this.isPressed
               ? this.emitWithDebouncer(
-                  EVENTS.PRESS_COUNTERCLOCKWISE,
+                  PowerMateEvents.PRESS_COUNTERCLOCKWISE,
                   { delta },
                   this.pressRotationDebouncer
                 )
-              : this.emit(EVENTS.COUNTERCLOCKWISE, { delta });
+              : this.emit(PowerMateEvents.COUNTERCLOCKWISE, { delta });
           } else {
             delta = rotationInput; // Clockwise rotation is sent starting at 1, so it will already be a meaningful positive number
             this.isPressed
               ? this.emitWithDebouncer(
-                  EVENTS.PRESS_CLOCKWISE,
+                  PowerMateEvents.PRESS_CLOCKWISE,
                   { delta },
                   this.pressRotationDebouncer
                 )
-              : this.emit(EVENTS.CLOCKWISE, { delta });
+              : this.emit(PowerMateEvents.CLOCKWISE, { delta });
           }
           // Reset debouncer "isReady" flag for next input
           this.rotationDebouncer.isReady = true;

@@ -1,118 +1,20 @@
+import Debug from 'debug';
+import { EventEmitter } from 'events';
 import {
   DeviceDiscoveryManager,
   DisplayGlyphOptions,
   Glyph,
   NuimoControlDevice,
-  errorGlyph,
-  leftGlyph,
-  pauseGlyph,
-  playGlyph,
-  rightGlyph,
 } from 'rocket-nuimo';
-
-import Debug from 'debug';
-import { EventEmitter } from 'events';
-
-/** Events for Nuimo discovery, connect, select/tap and rotation */
-export const EVENTS: { [eventName: string]: string } = {
-  DISCOVERY_STARTED: 'startDiscovery',
-  DISCOVERY_FINISHED: 'stopDiscovery',
-  DEVICE_CONNECTED: 'deviceConnected',
-  DEVICE_DISCONNECTED: 'deviceDisconnected',
-  SINGLE_PRESS: 'singlePress',
-  LONG_PRESS: 'longPress',
-  CLOCKWISE: 'clockwise',
-  COUNTERCLOCKWISE: 'counterclockwise',
-  PRESS_CLOCKWISE: 'pressClockwise',
-  PRESS_COUNTERCLOCKWISE: 'pressCounterclockwise',
-  SWIPE_LEFT: 'swipeLeft',
-  SWIPE_RIGHT: 'swipeRight',
-  SWIPE_UP: 'swipeUp',
-  SWIPE_DOWN: 'swipeDown',
-  TOUCH: 'touch',
-  LONG_TOUCH: 'longTouch',
-};
-
-const heartGlyph = Glyph.fromString([
-  '         ',
-  '  xx xx  ',
-  ' xxxxxxx ',
-  ' xxxxxxx ',
-  '  xxxxx  ',
-  '   xxx   ',
-  '    x    ',
-  '         ',
-  '         ',
-]);
-
-const minusGlyph = Glyph.fromString([
-  '         ',
-  '         ',
-  '         ',
-  '         ',
-  '  xxxxx  ',
-  '         ',
-  '         ',
-  '         ',
-  '         ',
-]);
-
-const plusGlyph = Glyph.fromString([
-  '         ',
-  '         ',
-  '    x    ',
-  '    x    ',
-  '  xxxxx  ',
-  '    x    ',
-  '    x    ',
-  '         ',
-  '         ',
-]);
-
-const groupPlusGlyph = Glyph.fromString([
-  ' x     x ',
-  '         ',
-  '    x    ',
-  '    x    ',
-  '  xxxxx  ',
-  '    x    ',
-  '    x    ',
-  '         ',
-  '         ',
-]);
-
-const groupMinusGlyph = Glyph.fromString([
-  ' x     x ',
-  '         ',
-  '         ',
-  '         ',
-  '  xxxxx  ',
-  '         ',
-  '         ',
-  '         ',
-  '         ',
-]);
-
-export const GLYPHS: { [glyphName: string]: Glyph } = {
-  PLAY: playGlyph,
-  PAUSE: pauseGlyph,
-  NEXT: rightGlyph,
-  PREVIOUS: leftGlyph,
-  WAKE_UP: heartGlyph,
-  VOLUME_DOWN: minusGlyph,
-  VOLUME_UP: plusGlyph,
-  GROUP_VOLUME_DOWN: groupMinusGlyph,
-  GROUP_VOLUME_UP: groupPlusGlyph,
-  ERROR: errorGlyph,
-};
+import { NuimoEvents } from './events';
 
 /** Shortcut to Debug('bonk:nuimo')() */
 const debug = Debug('bonk:nuimo');
 
 /** Debugger for events */
 const setupDebug = (nuimo: Nuimo) => {
-  for (const event in EVENTS) {
-    nuimo.on(EVENTS[event], data => debug({ event, data }));
+  for (const event in NuimoEvents) {
+    nuimo.on(NuimoEvents[event], data => debug({ event, data }));
   }
 };
 
@@ -201,7 +103,7 @@ export class Nuimo extends EventEmitter {
     this.device?.removeAllListeners();
     this.device = undefined;
 
-    this.emit(EVENTS.DISCOVERY_STARTED);
+    this.emit(NuimoEvents.DISCOVERY_STARTED);
     startDiscovery()
       .then(device => {
         this.device = device;
@@ -221,31 +123,33 @@ export class Nuimo extends EventEmitter {
 
         // Set up swipes
         this.device?.on('swipe', direction =>
-          this.emit(EVENTS[`SWIPE_${direction.toUpperCase()}`])
+          this.emit(NuimoEvents[`SWIPE_${direction.toUpperCase()}`])
         );
 
         // Set up touches
-        this.device?.on('touch', area => this.emit(EVENTS.TOUCH, { area }));
+        this.device?.on('touch', area =>
+          this.emit(NuimoEvents.TOUCH, { area })
+        );
         this.device?.on('longTouch', area =>
-          this.emit(EVENTS.LONG_TOUCH, { area })
+          this.emit(NuimoEvents.LONG_TOUCH, { area })
         );
 
         // Set up disconnect behavior
         this.device?.on('disconnect', () => {
           this.device?.removeAllListeners();
-          this.emit(EVENTS.DEVICE_DISCONNECTED, { id: this.device?.id });
+          this.emit(NuimoEvents.DEVICE_DISCONNECTED, { id: this.device?.id });
         });
 
         // Emit success
-        this.emit(EVENTS.DEVICE_CONNECTED, {
+        this.emit(NuimoEvents.DEVICE_CONNECTED, {
           id: this.device?.id,
           batteryLevel: this.device?.batteryLevel,
         });
-        this.emit(EVENTS.DISCOVERY_FINISHED, { success: true });
+        this.emit(NuimoEvents.DISCOVERY_FINISHED, { success: true });
       })
       .catch(() => {
         // Emit failure
-        this.emit(EVENTS.DISCOVERY_FINISHED, { success: false });
+        this.emit(NuimoEvents.DISCOVERY_FINISHED, { success: false });
       });
   }
   displayGlyph(
@@ -274,13 +178,13 @@ export class Nuimo extends EventEmitter {
         this.longPress.isRunning = true;
         this.longPress.timer = setTimeout(() => {
           this.longPress.isRunning = false;
-          this.emit(EVENTS.LONG_PRESS);
+          this.emit(NuimoEvents.LONG_PRESS);
         }, this.longPress.PRESS_MS);
       }
 
       if (buttonUp) {
         if (this.longPress.isRunning) {
-          this.emit(EVENTS.SINGLE_PRESS);
+          this.emit(NuimoEvents.SINGLE_PRESS);
         }
         // Clear LONG_PRESS timer when released
         clearTimeout(this.longPress.timer as NodeJS.Timeout);
@@ -305,11 +209,11 @@ export class Nuimo extends EventEmitter {
         if (delta < 0) {
           this.isPressed
             ? this.emitWithDebouncer(
-                EVENTS.PRESS_COUNTERCLOCKWISE,
+                NuimoEvents.PRESS_COUNTERCLOCKWISE,
                 { delta },
                 this.pressRotationDebouncer
               )
-            : this.emit(EVENTS.COUNTERCLOCKWISE, {
+            : this.emit(NuimoEvents.COUNTERCLOCKWISE, {
                 delta,
               });
           // Reset device.rotation each time because the library has a "clamp" built into the rotation (min/max) and I don't care about it
@@ -317,11 +221,11 @@ export class Nuimo extends EventEmitter {
         } else {
           this.isPressed
             ? this.emitWithDebouncer(
-                EVENTS.PRESS_CLOCKWISE,
+                NuimoEvents.PRESS_CLOCKWISE,
                 { delta },
                 this.pressRotationDebouncer
               )
-            : this.emit(EVENTS.CLOCKWISE, { delta });
+            : this.emit(NuimoEvents.CLOCKWISE, { delta });
           // Reset device.rotation each time because the library has a "clamp" built into the rotation (min/max) and I don't care about it
           if (this.device) this.device.rotation = 0;
         }

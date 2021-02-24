@@ -1,7 +1,7 @@
 import { SonosDevice, SonosManager } from '@svrooij/sonos';
-
 import Debug from 'debug';
 import { EventEmitter } from 'events';
+import { SonosEvents } from './events';
 
 /**
  * My Sonos devices and their IPs
@@ -24,17 +24,10 @@ const DEVICES = {
   },
 };
 
-/** Events for Sonos play state updates */
-export const EVENTS: { [eventName: string]: string } = {
-  PLAYING: 'isPlaying',
-  PAUSED: 'isPaused',
-  GROUP_CHANGED: 'groupChanged',
-};
-
 /** Debugger for events */
 const setupDebug = (sonos: Sonos) => {
-  for (const event in EVENTS) {
-    sonos.on(EVENTS[event], data => Debug('bonk:sonos')({ event, data }));
+  for (const event in SonosEvents) {
+    sonos.on(SonosEvents[event], data => Debug('bonk:sonos')({ event, data }));
   }
 };
 
@@ -77,7 +70,9 @@ export class Sonos extends EventEmitter {
             this.isPlaying = isPlaying;
           }
 
-          isPlaying ? this.emit(EVENTS.PLAYING) : this.emit(EVENTS.PAUSED);
+          isPlaying
+            ? this.emit(SonosEvents.PLAYING)
+            : this.emit(SonosEvents.PAUSED);
         }
       );
 
@@ -85,12 +80,12 @@ export class Sonos extends EventEmitter {
       [this.PRIMARY_DEVICE, this.SECONDARY_DEVICE].forEach(device => {
         // Check initial group name - if it includes '+ 1' ("Media Cube + 1") then devices are grouped
         this.isGrouped = device?.GroupName?.includes('+ 1') ? true : false;
-        this.emit(EVENTS.GROUP_CHANGED, { isGrouped: this.isGrouped });
+        this.emit(SonosEvents.GROUP_CHANGED, { isGrouped: this.isGrouped });
 
         // Subscribe to groupname events and update on changes
         device?.Events.on('groupname', groupName => {
           this.isGrouped = groupName.includes('+ 1') ? true : false;
-          this.emit(EVENTS.GROUP_CHANGED, { isGrouped: this.isGrouped });
+          this.emit(SonosEvents.GROUP_CHANGED, { isGrouped: this.isGrouped });
         });
       });
     });
