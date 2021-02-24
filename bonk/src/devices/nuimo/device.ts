@@ -206,7 +206,7 @@ export class Nuimo extends EventEmitter {
    */
   private computeRotation(delta: number) {
     if (this.rotationDebouncer.isReady) {
-      // Clear LONG_PRESS timer when released
+      // Clear LONG_PRESS timer if we rotate at all because it is probably a press rotation if the button is pressed
       clearTimeout(this.longPress.timer as NodeJS.Timeout);
       this.longPress.isRunning = false;
 
