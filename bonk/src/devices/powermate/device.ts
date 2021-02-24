@@ -63,13 +63,13 @@ const PRODUCT_ID = 1040;
  * @param index - which index in the list of PowerMates found (will default to the first if unspecified)
  */
 export class PowerMate extends EventEmitter {
-  hid: HID.HID | undefined;
   isPressed: boolean;
-  longPress: PressTimer;
-  multiPress: PressTimer;
-  rotationDebouncer: Debouncer;
-  pressRotationDebouncer: Debouncer;
-  ledState: LedState;
+  private hid: HID.HID | undefined;
+  private longPress: PressTimer;
+  private multiPress: PressTimer;
+  private rotationDebouncer: Debouncer;
+  private pressRotationDebouncer: Debouncer;
+  private ledState: LedState;
 
   constructor() {
     super();
@@ -104,6 +104,7 @@ export class PowerMate extends EventEmitter {
       debug('HID: Disconnected; Removed');
     });
 
+    // Set initial values for everything
     this.isPressed = false;
     this.longPress = {
       count: 0,
@@ -131,21 +132,6 @@ export class PowerMate extends EventEmitter {
       isOn: true,
       isPulsing: false,
     };
-  }
-
-  /**
-   * Set up HID
-   *
-   * There's a timeout around this because `HID.devices()` and `new HID.HID()` calls are costly, and HID doesn't find the device immediately if I try assigning things instantly after the device is connected via the event from node-usb-detection, so a timeout will have to do
-   */
-  setupHid(timeout: number = 1000) {
-    return setTimeout(() => {
-      debug(`HID: Starting HID assignment...`);
-      this.hid = new HID.HID(VENDOR_ID, PRODUCT_ID);
-      this.hid.read(this.interpretData.bind(this));
-      this.setLed(this.ledState);
-      debug('HID: HID assigned');
-    }, timeout);
   }
 
   /**
@@ -205,6 +191,21 @@ export class PowerMate extends EventEmitter {
   }
 
   /**
+   * Set up HID
+   *
+   * There's a timeout around this because `HID.devices()` and `new HID.HID()` calls are costly, and HID doesn't find the device immediately if I try assigning things instantly after the device is connected via the event from node-usb-detection, so a timeout will have to do
+   */
+  private setupHid(timeout: number = 1000) {
+    return setTimeout(() => {
+      debug(`HID: Starting HID assignment...`);
+      this.hid = new HID.HID(VENDOR_ID, PRODUCT_ID);
+      this.hid.read(this.interpretData.bind(this));
+      this.setLed(this.ledState);
+      debug('HID: HID assigned');
+    }, timeout);
+  }
+
+  /**
    * Callback for interpreting read data from PowerMate
    *
    * Includes:
@@ -214,7 +215,7 @@ export class PowerMate extends EventEmitter {
    * @param error - Errors from the PowerMate on input
    * @param data - This comes in as a buffer but HID expects it as `number[]`.
    */
-  interpretData(error: any, data: number[]) {
+  private interpretData(error: any, data: number[]) {
     if (error) {
       debug('interpretData:', { error });
       return;
