@@ -233,13 +233,11 @@ export class PowerMate extends EventEmitter {
      */
     const pressInput = data[0] as 0 | 1;
     const rotationInput = data[1] as number;
-
-    // 🧪 Experiment: turning this off so the internal PowerMate ledState doesn't get overwritten on reads - write-only... maybe this will fix the pulsing problem
-    // const ledInput: LedState = {
-    //   isOn: Boolean(data[3]),
-    //   isPulsing: data[4] & 0x4 ? true : false, // ? Sure
-    //   // pulseSpeed: figureOut(data[5]) // TODO: Add pulseSpeed
-    // };
+    const ledInput: LedState = {
+      isOn: Boolean(data[3]),
+      isPulsing: data[4] & 0x4 ? true : false, // ? Sure
+      // pulseSpeed: figureOut(data[5]) // TODO: Add pulseSpeed
+    };
 
     /**
      * Compute press inputs and emit events
@@ -360,15 +358,20 @@ export class PowerMate extends EventEmitter {
     };
 
     /** Compute LED status and update internal ledState */
-    // 🧪 Experiment: turning this off so the internal PowerMate ledState doesn't get overwritten on reads - write-only... maybe this will fix the pulsing problem
-    // const computeLed = (ledState: LedState) => (this.ledState = ledState);
+    const computeLed = (ledState: LedState) => {
+      // 🧪 Experiment: turning this off so the internal PowerMate ledState doesn't get overwritten on reads - should possibly think of hardware LED state as "write-only"
+      // this.ledState = ledState
+      debug('computeLed experiment: %O', {
+        ledState,
+        rawData4Value: data[4],
+        bitwiseANDData4Value: data[4] & 0x4,
+      });
+    };
 
     // Compute inputs and emit events
     computePress(pressInput);
     computeRotation(rotationInput);
-
-    // 🧪 Experiment: turning this off so the internal PowerMate ledState doesn't get overwritten on reads - write-only... maybe this will fix the pulsing problem
-    // computeLed(ledInput);
+    computeLed(ledInput);
 
     // Restart the read loop
     this.hid?.read(this.interpretData.bind(this));
