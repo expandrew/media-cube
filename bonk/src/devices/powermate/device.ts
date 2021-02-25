@@ -1,44 +1,25 @@
-import { clearTimeout, setTimeout } from 'timers';
-
 import Debug from 'debug';
 import { EventEmitter } from 'events';
 import HID from 'node-hid';
+import { clearTimeout, setTimeout } from 'timers';
 import usbDetect from 'usb-detection';
+import { PowerMateEvents } from './events';
 
 /** For Raspbian, I have to use `libusb` for the HID driver via node-hid because PowerMate doesn't seem to actually register itself as a HID (it has its own driver, not usbhid or hid-generic, and it doesn't get a path like /dev/hidraw... so libusb seems to be my only option*/
 HID.setDriverType('libusb');
-
-/** Events for PowerMate button and rotation */
-export const EVENTS: { [eventName: string]: string } = {
-  SINGLE_PRESS: 'singlePress',
-  DOUBLE_PRESS: 'doublePress',
-  TRIPLE_PRESS: 'triplePress',
-  LONG_PRESS: 'longPress',
-  CLOCKWISE: 'clockwise',
-  COUNTERCLOCKWISE: 'counterclockwise',
-  PRESS_CLOCKWISE: 'pressClockwise',
-  PRESS_COUNTERCLOCKWISE: 'pressCounterclockwise',
-};
 
 /** Shortcut to Debug('bonk:powermate')() */
 const debug = Debug('bonk:powermate');
 
 /** Debugger for events */
 const setupDebug = (powermate: PowerMate) => {
-  for (const event in EVENTS) {
-    powermate.on(EVENTS[event], data => debug({ event, data }));
+  for (const event in PowerMateEvents) {
+    powermate.on(PowerMateEvents[event], data => debug({ event, data }));
   }
 };
 
-/** For storing and passing around LED-related values in a structured way */
-export type LedState = {
-  isOn?: boolean;
-  isPulsing?: boolean;
-  // pulseSpeed?: 'slow' | 'normal' | 'fast'; // TODO: Add pulseSpeed
-};
-
 /** Configuration for PowerMate Sensitivity */
-const SENSITIVITY = {
+const sensitivity = {
   /** Number of milliseconds for button to be held to trigger a "long press" */
   LONG_PRESS_MS: 1000,
   /** Number of milliseconds between presses to trigger a "double(/triple) press" */
@@ -47,6 +28,13 @@ const SENSITIVITY = {
   ROTATION_WAIT_MS: 100,
   /** Debounce "wait" milliseconds for press rotation inputs. Press rotation should be even less sensitive than regular rotation inputs. */
   PRESS_ROTATION_WAIT_MS: 100,
+};
+
+/** For storing and passing around LED-related values in a structured way */
+type LedState = {
+  isOn?: boolean;
+  isPulsing?: boolean;
+  // pulseSpeed?: 'slow' | 'normal' | 'fast'; // TODO: Add pulseSpeed
 };
 
 /** Debouncers in rotation events */
@@ -75,13 +63,13 @@ const PRODUCT_ID = 1040;
  * @param index - which index in the list of PowerMates found (will default to the first if unspecified)
  */
 export class PowerMate extends EventEmitter {
-  hid: HID.HID | undefined;
   isPressed: boolean;
-  longPress: PressTimer;
-  multiPress: PressTimer;
-  rotationDebouncer: Debouncer;
-  pressRotationDebouncer: Debouncer;
-  ledState: LedState;
+  private hid: HID.HID | undefined;
+  private longPress: PressTimer;
+  private multiPress: PressTimer;
+  private rotationDebouncer: Debouncer;
+  private pressRotationDebouncer: Debouncer;
+  private ledState: LedState;
 
   constructor() {
     super();
@@ -116,48 +104,34 @@ export class PowerMate extends EventEmitter {
       debug('HID: Disconnected; Removed');
     });
 
+    // Set initial values for everything
     this.isPressed = false;
     this.longPress = {
       count: 0,
       timer: undefined,
       isRunning: false,
-      PRESS_MS: SENSITIVITY.LONG_PRESS_MS,
+      PRESS_MS: sensitivity.LONG_PRESS_MS,
     };
     this.multiPress = {
       count: 0,
       timer: undefined,
       isRunning: false,
-      PRESS_MS: SENSITIVITY.MULTI_PRESS_MS,
+      PRESS_MS: sensitivity.MULTI_PRESS_MS,
     };
     this.rotationDebouncer = {
       timer: undefined,
       isReady: true,
-      WAIT_MS: SENSITIVITY.ROTATION_WAIT_MS,
+      WAIT_MS: sensitivity.ROTATION_WAIT_MS,
     };
     this.pressRotationDebouncer = {
       timer: undefined,
       isReady: true,
-      WAIT_MS: SENSITIVITY.PRESS_ROTATION_WAIT_MS,
+      WAIT_MS: sensitivity.PRESS_ROTATION_WAIT_MS,
     };
     this.ledState = {
       isOn: true,
       isPulsing: false,
     };
-  }
-
-  /**
-   * Set up HID
-   *
-   * There's a timeout around this because `HID.devices()` and `new HID.HID()` calls are costly, and HID doesn't find the device immediately if I try assigning things instantly after the device is connected via the event from node-usb-detection, so a timeout will have to do
-   */
-  setupHid(timeout: number = 1000) {
-    return setTimeout(() => {
-      debug(`HID: Starting HID assignment...`);
-      this.hid = new HID.HID(VENDOR_ID, PRODUCT_ID);
-      this.hid.read(this.interpretData.bind(this));
-      this.setLed(this.ledState);
-      debug('HID: HID assigned');
-    }, timeout);
   }
 
   /**
@@ -217,6 +191,21 @@ export class PowerMate extends EventEmitter {
   }
 
   /**
+   * Set up HID
+   *
+   * There's a timeout around this because `HID.devices()` and `new HID.HID()` calls are costly, and HID doesn't find the device immediately if I try assigning things instantly after the device is connected via the event from node-usb-detection, so a timeout will have to do
+   */
+  private setupHid(timeout: number = 1000) {
+    return setTimeout(() => {
+      debug(`HID: Starting HID assignment...`);
+      this.hid = new HID.HID(VENDOR_ID, PRODUCT_ID);
+      this.hid.read(this.interpretData.bind(this));
+      this.setLed(this.ledState);
+      debug('HID: HID assigned');
+    }, timeout);
+  }
+
+  /**
    * Callback for interpreting read data from PowerMate
    *
    * Includes:
@@ -226,7 +215,7 @@ export class PowerMate extends EventEmitter {
    * @param error - Errors from the PowerMate on input
    * @param data - This comes in as a buffer but HID expects it as `number[]`.
    */
-  interpretData(error: any, data: number[]) {
+  private interpretData(error: any, data: number[]) {
     if (error) {
       debug('interpretData:', { error });
       return;
@@ -275,7 +264,7 @@ export class PowerMate extends EventEmitter {
           this.longPress.isRunning = true;
           this.longPress.timer = setTimeout(() => {
             this.longPress.isRunning = false;
-            this.emit(EVENTS.LONG_PRESS);
+            this.emit(PowerMateEvents.LONG_PRESS);
           }, this.longPress.PRESS_MS);
         }
 
@@ -296,13 +285,13 @@ export class PowerMate extends EventEmitter {
                 // See how many presses happened during the timeout and emit the right event
                 switch (this.multiPress.count) {
                   case 1:
-                    this.emit(EVENTS.SINGLE_PRESS);
+                    this.emit(PowerMateEvents.SINGLE_PRESS);
                     break;
                   case 2:
-                    this.emit(EVENTS.DOUBLE_PRESS);
+                    this.emit(PowerMateEvents.DOUBLE_PRESS);
                     break;
                   case 3:
-                    this.emit(EVENTS.TRIPLE_PRESS);
+                    this.emit(PowerMateEvents.TRIPLE_PRESS);
                     break;
                 }
                 // Reset count
@@ -347,20 +336,20 @@ export class PowerMate extends EventEmitter {
             delta = -256 + rotationInput; // Counterclockwise rotation is sent starting at 255 so this converts it to a meaningful negative number
             this.isPressed
               ? this.emitWithDebouncer(
-                  EVENTS.PRESS_COUNTERCLOCKWISE,
+                  PowerMateEvents.PRESS_COUNTERCLOCKWISE,
                   { delta },
                   this.pressRotationDebouncer
                 )
-              : this.emit(EVENTS.COUNTERCLOCKWISE, { delta });
+              : this.emit(PowerMateEvents.COUNTERCLOCKWISE, { delta });
           } else {
             delta = rotationInput; // Clockwise rotation is sent starting at 1, so it will already be a meaningful positive number
             this.isPressed
               ? this.emitWithDebouncer(
-                  EVENTS.PRESS_CLOCKWISE,
+                  PowerMateEvents.PRESS_CLOCKWISE,
                   { delta },
                   this.pressRotationDebouncer
                 )
-              : this.emit(EVENTS.CLOCKWISE, { delta });
+              : this.emit(PowerMateEvents.CLOCKWISE, { delta });
           }
           // Reset debouncer "isReady" flag for next input
           this.rotationDebouncer.isReady = true;

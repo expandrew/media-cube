@@ -1,7 +1,7 @@
 import { SonosDevice, SonosManager } from '@svrooij/sonos';
-
 import Debug from 'debug';
 import { EventEmitter } from 'events';
+import { SonosEvents } from './events';
 
 /**
  * My Sonos devices and their IPs
@@ -11,7 +11,7 @@ import { EventEmitter } from 'events';
  *
  * @todo: Possibly add default volume levels for each device and use when initializing?
  */
-const DEVICES = {
+const devices = {
   PRIMARY: {
     // One SL (Living Room)
     ip: '10.0.1.16',
@@ -24,17 +24,10 @@ const DEVICES = {
   },
 };
 
-/** Events for Sonos play state updates */
-export const EVENTS: { [eventName: string]: string } = {
-  PLAYING: 'isPlaying',
-  PAUSED: 'isPaused',
-  GROUP_CHANGED: 'groupChanged',
-};
-
 /** Debugger for events */
 const setupDebug = (sonos: Sonos) => {
-  for (const event in EVENTS) {
-    sonos.on(EVENTS[event], data => Debug('bonk:sonos')({ event, data }));
+  for (const event in SonosEvents) {
+    sonos.on(SonosEvents[event], data => Debug('bonk:sonos')({ event, data }));
   }
 };
 
@@ -60,11 +53,11 @@ export class Sonos extends EventEmitter {
 
       // Set up shortcut for primary device
       this.PRIMARY_DEVICE = this.manager.Devices.find(
-        d => d.Uuid === DEVICES['PRIMARY'].uuid
+        d => d.Uuid === devices['PRIMARY'].uuid
       );
       // Set up shortcut for secondary device
       this.SECONDARY_DEVICE = this.manager.Devices.find(
-        d => d.Uuid === DEVICES['SECONDARY'].uuid
+        d => d.Uuid === devices['SECONDARY'].uuid
       );
 
       // Get current play state and update isPlaying
@@ -77,7 +70,9 @@ export class Sonos extends EventEmitter {
             this.isPlaying = isPlaying;
           }
 
-          isPlaying ? this.emit(EVENTS.PLAYING) : this.emit(EVENTS.PAUSED);
+          isPlaying
+            ? this.emit(SonosEvents.PLAYING)
+            : this.emit(SonosEvents.PAUSED);
         }
       );
 
@@ -85,12 +80,12 @@ export class Sonos extends EventEmitter {
       [this.PRIMARY_DEVICE, this.SECONDARY_DEVICE].forEach(device => {
         // Check initial group name - if it includes '+ 1' ("Media Cube + 1") then devices are grouped
         this.isGrouped = device?.GroupName?.includes('+ 1') ? true : false;
-        this.emit(EVENTS.GROUP_CHANGED, { isGrouped: this.isGrouped });
+        this.emit(SonosEvents.GROUP_CHANGED, { isGrouped: this.isGrouped });
 
         // Subscribe to groupname events and update on changes
         device?.Events.on('groupname', groupName => {
           this.isGrouped = groupName.includes('+ 1') ? true : false;
-          this.emit(EVENTS.GROUP_CHANGED, { isGrouped: this.isGrouped });
+          this.emit(SonosEvents.GROUP_CHANGED, { isGrouped: this.isGrouped });
         });
       });
     });
