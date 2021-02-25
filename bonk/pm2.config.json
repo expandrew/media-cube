@@ -2,7 +2,6 @@
   "name": "bonk",
   "script": "dist/index.js",
   "pmx": false,
-  "watch": true,
   "env": {
     "SONOS_LISTENER_HOST": "10.0.1.10",
     "DEBUG": "bonk:*"
