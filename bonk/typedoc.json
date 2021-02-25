@@ -1,0 +1,7 @@
+{
+  "entryPoints": ["./src/devices"],
+  "excludeExternals": true,
+  "out": "docs",
+  "plugin": "typedoc-plugin-markdown",
+  "readme": "none"
+}
