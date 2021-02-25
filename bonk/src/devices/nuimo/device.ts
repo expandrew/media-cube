@@ -235,7 +235,7 @@ export class Nuimo extends EventEmitter {
    *
    * @param event The event to emit when the debounce is ready
    * @param data The data to send along with the event emitter
-   * @param debouncer The debouncer object with `timer`, `isReady`, and `WAIT_MS`
+   * @param debouncer The `Debouncer` object with `timer`, `isReady`, and `WAIT_MS`
    */
   private emitWithDebouncer(event: string, data: {}, debouncer: Debouncer) {
     if (debouncer.isReady) {
