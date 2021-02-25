@@ -1,5 +1,6 @@
 {
   "entryPoints": ["./src/devices"],
+  "exclude": ["**/index.ts"],
   "excludeExternals": true,
   "out": "docs",
   "plugin": "typedoc-plugin-markdown",

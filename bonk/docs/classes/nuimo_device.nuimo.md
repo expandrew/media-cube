@@ -40,7 +40,7 @@
 
 **Returns:** [*Nuimo*](nuimo_device.nuimo.md)
 
-Defined in: [nuimo/device.ts:73](https://github.com/expandrew/media-cube/blob/fd9cbc6/bonk/src/devices/nuimo/device.ts#L73)
+Defined in: [nuimo/device.ts:73](https://github.com/expandrew/media-cube/blob/90f7c48/bonk/src/devices/nuimo/device.ts#L73)
 
 ## Properties
 
@@ -48,7 +48,7 @@ Defined in: [nuimo/device.ts:73](https://github.com/expandrew/media-cube/blob/fd
 
 • **device**: *undefined* \| *NuimoControlDevice*
 
-Defined in: [nuimo/device.ts:69](https://github.com/expandrew/media-cube/blob/fd9cbc6/bonk/src/devices/nuimo/device.ts#L69)
+Defined in: [nuimo/device.ts:69](https://github.com/expandrew/media-cube/blob/90f7c48/bonk/src/devices/nuimo/device.ts#L69)
 
 ___
 
@@ -56,7 +56,7 @@ ___
 
 • **isPressed**: *boolean*
 
-Defined in: [nuimo/device.ts:70](https://github.com/expandrew/media-cube/blob/fd9cbc6/bonk/src/devices/nuimo/device.ts#L70)
+Defined in: [nuimo/device.ts:70](https://github.com/expandrew/media-cube/blob/90f7c48/bonk/src/devices/nuimo/device.ts#L70)
 
 ___
 
@@ -64,7 +64,7 @@ ___
 
 • `Private` **longPress**: PressTimer
 
-Defined in: [nuimo/device.ts:71](https://github.com/expandrew/media-cube/blob/fd9cbc6/bonk/src/devices/nuimo/device.ts#L71)
+Defined in: [nuimo/device.ts:71](https://github.com/expandrew/media-cube/blob/90f7c48/bonk/src/devices/nuimo/device.ts#L71)
 
 ___
 
@@ -72,7 +72,7 @@ ___
 
 • `Private` **pressRotationDebouncer**: Debouncer
 
-Defined in: [nuimo/device.ts:73](https://github.com/expandrew/media-cube/blob/fd9cbc6/bonk/src/devices/nuimo/device.ts#L73)
+Defined in: [nuimo/device.ts:73](https://github.com/expandrew/media-cube/blob/90f7c48/bonk/src/devices/nuimo/device.ts#L73)
 
 ___
 
@@ -80,7 +80,7 @@ ___
 
 • `Private` **rotationDebouncer**: Debouncer
 
-Defined in: [nuimo/device.ts:72](https://github.com/expandrew/media-cube/blob/fd9cbc6/bonk/src/devices/nuimo/device.ts#L72)
+Defined in: [nuimo/device.ts:72](https://github.com/expandrew/media-cube/blob/90f7c48/bonk/src/devices/nuimo/device.ts#L72)
 
 ## Methods
 
@@ -98,7 +98,7 @@ Name | Type | Description |
 
 **Returns:** *void*
 
-Defined in: [nuimo/device.ts:174](https://github.com/expandrew/media-cube/blob/fd9cbc6/bonk/src/devices/nuimo/device.ts#L174)
+Defined in: [nuimo/device.ts:174](https://github.com/expandrew/media-cube/blob/90f7c48/bonk/src/devices/nuimo/device.ts#L174)
 
 ___
 
@@ -116,7 +116,7 @@ Name | Type | Description |
 
 **Returns:** *void*
 
-Defined in: [nuimo/device.ts:207](https://github.com/expandrew/media-cube/blob/fd9cbc6/bonk/src/devices/nuimo/device.ts#L207)
+Defined in: [nuimo/device.ts:207](https://github.com/expandrew/media-cube/blob/90f7c48/bonk/src/devices/nuimo/device.ts#L207)
 
 ___
 
@@ -130,7 +130,7 @@ This will disconnect and remove listeners if a Nuimo is already connected
 
 **Returns:** *void*
 
-Defined in: [nuimo/device.ts:106](https://github.com/expandrew/media-cube/blob/fd9cbc6/bonk/src/devices/nuimo/device.ts#L106)
+Defined in: [nuimo/device.ts:106](https://github.com/expandrew/media-cube/blob/90f7c48/bonk/src/devices/nuimo/device.ts#L106)
 
 ___
 
@@ -147,7 +147,7 @@ Name | Type |
 
 **Returns:** *void*
 
-Defined in: [nuimo/device.ts:162](https://github.com/expandrew/media-cube/blob/fd9cbc6/bonk/src/devices/nuimo/device.ts#L162)
+Defined in: [nuimo/device.ts:162](https://github.com/expandrew/media-cube/blob/90f7c48/bonk/src/devices/nuimo/device.ts#L162)
 
 ___
 
@@ -167,4 +167,4 @@ Name | Type | Description |
 
 **Returns:** *void*
 
-Defined in: [nuimo/device.ts:252](https://github.com/expandrew/media-cube/blob/fd9cbc6/bonk/src/devices/nuimo/device.ts#L252)
+Defined in: [nuimo/device.ts:252](https://github.com/expandrew/media-cube/blob/90f7c48/bonk/src/devices/nuimo/device.ts#L252)
