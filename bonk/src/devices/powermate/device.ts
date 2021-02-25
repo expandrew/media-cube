@@ -3,6 +3,7 @@ import { EventEmitter } from 'events';
 import HID from 'node-hid';
 import { clearTimeout, setTimeout } from 'timers';
 import usbDetect from 'usb-detection';
+import { Debouncer, PressTimer } from '../utils';
 import { PowerMateEvents } from './events';
 
 /** For Raspbian, I have to use `libusb` for the HID driver via node-hid because PowerMate doesn't seem to actually register itself as a HID (it has its own driver, not usbhid or hid-generic, and it doesn't get a path like /dev/hidraw... so libusb seems to be my only option*/
@@ -31,25 +32,10 @@ const sensitivity = {
 };
 
 /** For storing and passing around LED-related values in a structured way */
-type LedState = {
+export type LedState = {
   isOn?: boolean;
   isPulsing?: boolean;
   // pulseSpeed?: 'slow' | 'normal' | 'fast'; // TODO: Add pulseSpeed
-};
-
-/** Debouncers in rotation events */
-type Debouncer = {
-  timer: ReturnType<typeof setTimeout> | undefined;
-  isReady: boolean;
-  WAIT_MS: number;
-};
-
-/** Timers for long/multi press events */
-type PressTimer = {
-  count: number;
-  timer: ReturnType<typeof setTimeout> | undefined;
-  isRunning: boolean;
-  PRESS_MS: number;
 };
 
 /** Vendor ID for Griffin PowerMate */
@@ -375,7 +361,7 @@ export class PowerMate extends EventEmitter {
    *
    * @param event The event to emit when the debounce is ready
    * @param data The data to send along with the event emitter
-   * @param debouncer The debouncer object with `timer`, `isReady`, and `WAIT_MS`
+   * @param debouncer The `Debouncer` object with `timer`, `isReady`, and `WAIT_MS`
    */
   private emitWithDebouncer(event: string, data: {}, debouncer: Debouncer) {
     if (debouncer.isReady) {

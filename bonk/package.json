@@ -21,6 +21,8 @@
     "pm2:stop": "pm2 stop pm2.config.json",
     "pm2:debug": "pm2 startOrReload pm2.config.json --env debug",
     "pm2:logs": "pm2 logs bonk",
+    "pretypedoc": "rimraf docs/**",
+    "typedoc": "typedoc",
     "dev": "DEBUG='bonk:*' node dist/index.js"
   },
   "peerDependencies": {
@@ -53,9 +55,12 @@
   "devDependencies": {
     "@types/debug": "^4.1.5",
     "@types/node-hid": "^1.3.0",
-    "husky": "^4.3.6",
+    "husky": "^4.3.8",
+    "rimraf": "^3.0.2",
     "tsdx": "^0.14.1",
     "tslib": "^2.0.3",
+    "typedoc": "^0.20.28",
+    "typedoc-plugin-markdown": "^3.5.0",
     "typescript": "^4.1.3"
   },
   "dependencies": {

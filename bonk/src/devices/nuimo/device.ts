@@ -6,6 +6,7 @@ import {
   Glyph,
   NuimoControlDevice,
 } from 'rocket-nuimo';
+import { Debouncer, PressTimer } from '../utils';
 import { NuimoEvents } from './events';
 
 /** Shortcut to Debug('bonk:nuimo')() */
@@ -28,20 +29,6 @@ const sensitivity = {
   PRESS_ROTATION_WAIT_MS: 100,
   /** Minimum delta to register as a rotation event. The Nuimo is very sensitive and sends pretty precise rotation signals, so this filters out anything outside of a threshold */
   ROTATION_MINIMUM_DELTA: 0.005,
-};
-
-/** Debouncers in rotation events */
-type Debouncer = {
-  timer: ReturnType<typeof setTimeout> | undefined;
-  isReady: boolean;
-  WAIT_MS: number;
-};
-
-/** Timers for long press events */
-type PressTimer = {
-  timer: ReturnType<typeof setTimeout> | undefined;
-  isRunning: boolean;
-  PRESS_MS: number;
 };
 
 const manager = DeviceDiscoveryManager.defaultManager;
@@ -79,6 +66,7 @@ export class Nuimo extends EventEmitter {
     // Set initial values for everything
     this.isPressed = false;
     this.longPress = {
+      count: 0,
       timer: undefined,
       isRunning: false,
       PRESS_MS: sensitivity.LONG_PRESS_MS,
@@ -247,7 +235,7 @@ export class Nuimo extends EventEmitter {
    *
    * @param event The event to emit when the debounce is ready
    * @param data The data to send along with the event emitter
-   * @param debouncer The debouncer object with `timer`, `isReady`, and `WAIT_MS`
+   * @param debouncer The `Debouncer` object with `timer`, `isReady`, and `WAIT_MS`
    */
   private emitWithDebouncer(event: string, data: {}, debouncer: Debouncer) {
     if (debouncer.isReady) {
