@@ -19,13 +19,13 @@ Debouncers in rotation events
 
 #### Type declaration:
 
-Name | Type |
-:------ | :------ |
-`WAIT_MS` | *number* |
-`isReady` | *boolean* |
-`timer` | *ReturnType*<*typeof* setTimeout\> \| *undefined* |
+Name | Type | Description |
+:------ | :------ | :------ |
+`WAIT_MS` | *number* | Number of milliseconds to wait before another event can be emitted   |
+`isReady` | *boolean* | Whether more events can be emitted or not (this should be reset to true after the `timer` runs out)   |
+`timer` | *ReturnType*<*typeof* setTimeout\> \| *undefined* | The timeout object for this Debouncer   |
 
-Defined in: utils.ts:4
+Defined in: [utils.ts:4](https://github.com/expandrew/media-cube/blob/4261262/bonk/src/devices/utils.ts#L4)
 
 ___
 
@@ -37,11 +37,11 @@ Timers for long/multi press events
 
 #### Type declaration:
 
-Name | Type |
-:------ | :------ |
-`PRESS_MS` | *number* |
-`count` | *number* |
-`isRunning` | *boolean* |
-`timer` | *ReturnType*<*typeof* setTimeout\> \| *undefined* |
+Name | Type | Description |
+:------ | :------ | :------ |
+`PRESS_MS` | *number* | Number of milliseconds to wait before the timer runs out   |
+`count` | *number* | The count for number of presses within a given timeout (for double- and triple-press)   |
+`isRunning` | *boolean* | Whether the timer is currently running or not (this was hard to tell from the `timer` so I made this shortcut)   |
+`timer` | *ReturnType*<*typeof* setTimeout\> \| *undefined* | The timeout object for this PressTimer   |
 
-Defined in: utils.ts:11
+Defined in: [utils.ts:14](https://github.com/expandrew/media-cube/blob/4261262/bonk/src/devices/utils.ts#L14)
