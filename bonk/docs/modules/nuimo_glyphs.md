@@ -35,7 +35,7 @@ Name | Type |
 `VOLUME_UP` | Glyph |
 `WAKE_UP` | Glyph |
 
-Defined in: [nuimo/glyphs.ts:71](https://github.com/expandrew/media-cube/blob/02306f2/bonk/src/devices/nuimo/glyphs.ts#L71)
+Defined in: [nuimo/glyphs.ts:71](https://github.com/expandrew/media-cube/blob/a702056/bonk/src/devices/nuimo/glyphs.ts#L71)
 
 ## Variables
 
@@ -47,4 +47,4 @@ Importable object of glyphs that can be displayed on the Nuimo screen
 
 Expected to be passed into the `Nuimo.displayGlyph()` function
 
-Defined in: [nuimo/glyphs.ts:89](https://github.com/expandrew/media-cube/blob/02306f2/bonk/src/devices/nuimo/glyphs.ts#L89)
+Defined in: [nuimo/glyphs.ts:89](https://github.com/expandrew/media-cube/blob/a702056/bonk/src/devices/nuimo/glyphs.ts#L89)

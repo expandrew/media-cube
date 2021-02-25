@@ -27,4 +27,4 @@ Name | Type |
 `isOn`? | *boolean* |
 `isPulsing`? | *boolean* |
 
-Defined in: [powermate/device.ts:35](https://github.com/expandrew/media-cube/blob/02306f2/bonk/src/devices/powermate/device.ts#L35)
+Defined in: [powermate/device.ts:35](https://github.com/expandrew/media-cube/blob/a702056/bonk/src/devices/powermate/device.ts#L35)

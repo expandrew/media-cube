@@ -25,7 +25,7 @@ Name | Type | Description |
 `isReady` | *boolean* | Whether more events can be emitted or not (this should be reset to true after the `timer` runs out)   |
 `timer` | *ReturnType*<*typeof* setTimeout\> \| *undefined* | The timeout object for this Debouncer   |
 
-Defined in: [utils.ts:4](https://github.com/expandrew/media-cube/blob/02306f2/bonk/src/devices/utils.ts#L4)
+Defined in: [utils.ts:4](https://github.com/expandrew/media-cube/blob/a702056/bonk/src/devices/utils.ts#L4)
 
 ___
 
@@ -44,4 +44,4 @@ Name | Type | Description |
 `isRunning` | *boolean* | Whether the timer is currently running or not (this was hard to tell from the `timer` so I made this shortcut)   |
 `timer` | *ReturnType*<*typeof* setTimeout\> \| *undefined* | The timeout object for this PressTimer   |
 
-Defined in: [utils.ts:14](https://github.com/expandrew/media-cube/blob/02306f2/bonk/src/devices/utils.ts#L14)
+Defined in: [utils.ts:14](https://github.com/expandrew/media-cube/blob/a702056/bonk/src/devices/utils.ts#L14)
