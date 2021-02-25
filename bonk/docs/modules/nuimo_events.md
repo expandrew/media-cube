@@ -18,4 +18,4 @@ Events for Nuimo discovery, connect, select/tap and rotation
 
 #### Type declaration:
 
-Defined in: [nuimo/events.ts:2](https://github.com/expandrew/media-cube/blob/4261262/bonk/src/devices/nuimo/events.ts#L2)
+Defined in: [nuimo/events.ts:2](https://github.com/expandrew/media-cube/blob/1125a73/bonk/src/devices/nuimo/events.ts#L2)

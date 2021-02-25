@@ -67,7 +67,26 @@ const groupMinusGlyph = Glyph.fromString([
   '         ',
 ]);
 
-export const NuimoGlyphs: { [glyphName: string]: Glyph } = {
+/** All possible glyph names */
+export type NuimoGlyphs = {
+  PLAY: Glyph;
+  PAUSE: Glyph;
+  NEXT: Glyph;
+  PREVIOUS: Glyph;
+  WAKE_UP: Glyph;
+  VOLUME_DOWN: Glyph;
+  VOLUME_UP: Glyph;
+  GROUP_VOLUME_DOWN: Glyph;
+  GROUP_VOLUME_UP: Glyph;
+  ERROR: Glyph;
+};
+
+/**
+ * Importable object of glyphs that can be displayed on the Nuimo screen
+ *
+ * Expected to be passed into the `Nuimo.displayGlyph()` function
+ */
+export const NuimoGlyphs: NuimoGlyphs = {
   PLAY: playGlyph,
   PAUSE: pauseGlyph,
   NEXT: rightGlyph,
