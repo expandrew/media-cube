@@ -48,7 +48,7 @@ The class representing a Sonos setup
 
 **Returns:** [*Sonos*](sonos_device.sonos.md)
 
-Defined in: [sonos/device.ts:40](https://github.com/expandrew/media-cube/blob/1125a73/bonk/src/devices/sonos/device.ts#L40)
+Defined in: [sonos/device.ts:40](https://github.com/expandrew/media-cube/blob/02306f2/bonk/src/devices/sonos/device.ts#L40)
 
 ## Properties
 
@@ -56,7 +56,7 @@ Defined in: [sonos/device.ts:40](https://github.com/expandrew/media-cube/blob/11
 
 • **PRIMARY\_DEVICE**: *undefined* \| *default*
 
-Defined in: [sonos/device.ts:37](https://github.com/expandrew/media-cube/blob/1125a73/bonk/src/devices/sonos/device.ts#L37)
+Defined in: [sonos/device.ts:37](https://github.com/expandrew/media-cube/blob/02306f2/bonk/src/devices/sonos/device.ts#L37)
 
 ___
 
@@ -64,7 +64,7 @@ ___
 
 • **SECONDARY\_DEVICE**: *undefined* \| *default*
 
-Defined in: [sonos/device.ts:38](https://github.com/expandrew/media-cube/blob/1125a73/bonk/src/devices/sonos/device.ts#L38)
+Defined in: [sonos/device.ts:38](https://github.com/expandrew/media-cube/blob/02306f2/bonk/src/devices/sonos/device.ts#L38)
 
 ___
 
@@ -72,7 +72,7 @@ ___
 
 • **isGrouped**: *boolean*
 
-Defined in: [sonos/device.ts:39](https://github.com/expandrew/media-cube/blob/1125a73/bonk/src/devices/sonos/device.ts#L39)
+Defined in: [sonos/device.ts:39](https://github.com/expandrew/media-cube/blob/02306f2/bonk/src/devices/sonos/device.ts#L39)
 
 ___
 
@@ -80,7 +80,7 @@ ___
 
 • **isPlaying**: *boolean*
 
-Defined in: [sonos/device.ts:40](https://github.com/expandrew/media-cube/blob/1125a73/bonk/src/devices/sonos/device.ts#L40)
+Defined in: [sonos/device.ts:40](https://github.com/expandrew/media-cube/blob/02306f2/bonk/src/devices/sonos/device.ts#L40)
 
 ___
 
@@ -88,7 +88,7 @@ ___
 
 • **manager**: *default*
 
-Defined in: [sonos/device.ts:36](https://github.com/expandrew/media-cube/blob/1125a73/bonk/src/devices/sonos/device.ts#L36)
+Defined in: [sonos/device.ts:36](https://github.com/expandrew/media-cube/blob/02306f2/bonk/src/devices/sonos/device.ts#L36)
 
 ## Methods
 
@@ -106,7 +106,7 @@ Name | Type | Description |
 
 **Returns:** *Promise*<unknown\>
 
-Defined in: [sonos/device.ts:166](https://github.com/expandrew/media-cube/blob/1125a73/bonk/src/devices/sonos/device.ts#L166)
+Defined in: [sonos/device.ts:166](https://github.com/expandrew/media-cube/blob/02306f2/bonk/src/devices/sonos/device.ts#L166)
 
 ___
 
@@ -118,7 +118,7 @@ Volume down for group
 
 **Returns:** *Promise*<unknown\>
 
-Defined in: [sonos/device.ts:153](https://github.com/expandrew/media-cube/blob/1125a73/bonk/src/devices/sonos/device.ts#L153)
+Defined in: [sonos/device.ts:153](https://github.com/expandrew/media-cube/blob/02306f2/bonk/src/devices/sonos/device.ts#L153)
 
 ___
 
@@ -130,7 +130,7 @@ Volume up for group
 
 **Returns:** *Promise*<unknown\>
 
-Defined in: [sonos/device.ts:158](https://github.com/expandrew/media-cube/blob/1125a73/bonk/src/devices/sonos/device.ts#L158)
+Defined in: [sonos/device.ts:158](https://github.com/expandrew/media-cube/blob/02306f2/bonk/src/devices/sonos/device.ts#L158)
 
 ___
 
@@ -142,7 +142,7 @@ Next track
 
 **Returns:** *undefined* \| *Promise*<boolean\>
 
-Defined in: [sonos/device.ts:133](https://github.com/expandrew/media-cube/blob/1125a73/bonk/src/devices/sonos/device.ts#L133)
+Defined in: [sonos/device.ts:133](https://github.com/expandrew/media-cube/blob/02306f2/bonk/src/devices/sonos/device.ts#L133)
 
 ___
 
@@ -154,7 +154,7 @@ Pause
 
 **Returns:** *undefined* \| *Promise*<boolean\>
 
-Defined in: [sonos/device.ts:128](https://github.com/expandrew/media-cube/blob/1125a73/bonk/src/devices/sonos/device.ts#L128)
+Defined in: [sonos/device.ts:128](https://github.com/expandrew/media-cube/blob/02306f2/bonk/src/devices/sonos/device.ts#L128)
 
 ___
 
@@ -166,7 +166,7 @@ Play
 
 **Returns:** *undefined* \| *Promise*<boolean\>
 
-Defined in: [sonos/device.ts:123](https://github.com/expandrew/media-cube/blob/1125a73/bonk/src/devices/sonos/device.ts#L123)
+Defined in: [sonos/device.ts:123](https://github.com/expandrew/media-cube/blob/02306f2/bonk/src/devices/sonos/device.ts#L123)
 
 ___
 
@@ -178,7 +178,7 @@ Previous track
 
 **Returns:** *undefined* \| *Promise*<boolean\>
 
-Defined in: [sonos/device.ts:138](https://github.com/expandrew/media-cube/blob/1125a73/bonk/src/devices/sonos/device.ts#L138)
+Defined in: [sonos/device.ts:138](https://github.com/expandrew/media-cube/blob/02306f2/bonk/src/devices/sonos/device.ts#L138)
 
 ___
 
@@ -194,7 +194,7 @@ Also sets `isGrouped` if both devices are in the same group
 
 **Returns:** *void*
 
-Defined in: [sonos/device.ts:101](https://github.com/expandrew/media-cube/blob/1125a73/bonk/src/devices/sonos/device.ts#L101)
+Defined in: [sonos/device.ts:101](https://github.com/expandrew/media-cube/blob/02306f2/bonk/src/devices/sonos/device.ts#L101)
 
 ___
 
@@ -206,7 +206,7 @@ Toggle play/pause
 
 **Returns:** *void*
 
-Defined in: [sonos/device.ts:118](https://github.com/expandrew/media-cube/blob/1125a73/bonk/src/devices/sonos/device.ts#L118)
+Defined in: [sonos/device.ts:118](https://github.com/expandrew/media-cube/blob/02306f2/bonk/src/devices/sonos/device.ts#L118)
 
 ___
 
@@ -218,7 +218,7 @@ Volume down for primary device only
 
 **Returns:** *undefined* \| *Promise*<number\>
 
-Defined in: [sonos/device.ts:143](https://github.com/expandrew/media-cube/blob/1125a73/bonk/src/devices/sonos/device.ts#L143)
+Defined in: [sonos/device.ts:143](https://github.com/expandrew/media-cube/blob/02306f2/bonk/src/devices/sonos/device.ts#L143)
 
 ___
 
@@ -230,4 +230,4 @@ Volume up for primary device only
 
 **Returns:** *undefined* \| *Promise*<number\>
 
-Defined in: [sonos/device.ts:148](https://github.com/expandrew/media-cube/blob/1125a73/bonk/src/devices/sonos/device.ts#L148)
+Defined in: [sonos/device.ts:148](https://github.com/expandrew/media-cube/blob/02306f2/bonk/src/devices/sonos/device.ts#L148)

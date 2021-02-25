@@ -18,4 +18,4 @@ Events for PowerMate button and rotation
 
 #### Type declaration:
 
-Defined in: [powermate/events.ts:2](https://github.com/expandrew/media-cube/blob/1125a73/bonk/src/devices/powermate/events.ts#L2)
+Defined in: [powermate/events.ts:2](https://github.com/expandrew/media-cube/blob/02306f2/bonk/src/devices/powermate/events.ts#L2)
