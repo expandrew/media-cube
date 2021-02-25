@@ -358,15 +358,7 @@ export class PowerMate extends EventEmitter {
     };
 
     /** Compute LED status and update internal ledState */
-    const computeLed = (ledState: LedState) => {
-      // 🧪 Experiment: turning this off so the internal PowerMate ledState doesn't get overwritten on reads - should possibly think of hardware LED state as "write-only"
-      // this.ledState = ledState
-      debug('computeLed experiment: %O', {
-        ledState,
-        rawData4Value: data[4],
-        bitwiseANDData4Value: data[4] & 0x4,
-      });
-    };
+    const computeLed = (ledState: LedState) => (this.ledState = ledState);
 
     // Compute inputs and emit events
     computePress(pressInput);
