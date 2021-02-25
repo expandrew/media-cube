@@ -45,7 +45,7 @@ The class representing a PowerMate device
 
 **Returns:** [*PowerMate*](powermate_device.powermate.md)
 
-Defined in: [powermate/device.ts:72](https://github.com/expandrew/media-cube/blob/90f7c48/bonk/src/devices/powermate/device.ts#L72)
+Defined in: [powermate/device.ts:58](https://github.com/expandrew/media-cube/blob/d151821/bonk/src/devices/powermate/device.ts#L58)
 
 ## Properties
 
@@ -53,7 +53,7 @@ Defined in: [powermate/device.ts:72](https://github.com/expandrew/media-cube/blo
 
 • `Private` **hid**: *undefined* \| *HID*
 
-Defined in: [powermate/device.ts:67](https://github.com/expandrew/media-cube/blob/90f7c48/bonk/src/devices/powermate/device.ts#L67)
+Defined in: [powermate/device.ts:53](https://github.com/expandrew/media-cube/blob/d151821/bonk/src/devices/powermate/device.ts#L53)
 
 ___
 
@@ -61,53 +61,53 @@ ___
 
 • **isPressed**: *boolean*
 
-Defined in: [powermate/device.ts:66](https://github.com/expandrew/media-cube/blob/90f7c48/bonk/src/devices/powermate/device.ts#L66)
+Defined in: [powermate/device.ts:52](https://github.com/expandrew/media-cube/blob/d151821/bonk/src/devices/powermate/device.ts#L52)
 
 ___
 
 ### ledState
 
-• `Private` **ledState**: LedState
+• `Private` **ledState**: [*LedState*](../modules/powermate_device.md#ledstate)
 
-Defined in: [powermate/device.ts:72](https://github.com/expandrew/media-cube/blob/90f7c48/bonk/src/devices/powermate/device.ts#L72)
+Defined in: [powermate/device.ts:58](https://github.com/expandrew/media-cube/blob/d151821/bonk/src/devices/powermate/device.ts#L58)
 
 ___
 
 ### longPress
 
-• `Private` **longPress**: PressTimer
+• `Private` **longPress**: [*PressTimer*](../modules/utils.md#presstimer)
 
-Defined in: [powermate/device.ts:68](https://github.com/expandrew/media-cube/blob/90f7c48/bonk/src/devices/powermate/device.ts#L68)
+Defined in: [powermate/device.ts:54](https://github.com/expandrew/media-cube/blob/d151821/bonk/src/devices/powermate/device.ts#L54)
 
 ___
 
 ### multiPress
 
-• `Private` **multiPress**: PressTimer
+• `Private` **multiPress**: [*PressTimer*](../modules/utils.md#presstimer)
 
-Defined in: [powermate/device.ts:69](https://github.com/expandrew/media-cube/blob/90f7c48/bonk/src/devices/powermate/device.ts#L69)
+Defined in: [powermate/device.ts:55](https://github.com/expandrew/media-cube/blob/d151821/bonk/src/devices/powermate/device.ts#L55)
 
 ___
 
 ### pressRotationDebouncer
 
-• `Private` **pressRotationDebouncer**: Debouncer
+• `Private` **pressRotationDebouncer**: [*Debouncer*](../modules/utils.md#debouncer)
 
-Defined in: [powermate/device.ts:71](https://github.com/expandrew/media-cube/blob/90f7c48/bonk/src/devices/powermate/device.ts#L71)
+Defined in: [powermate/device.ts:57](https://github.com/expandrew/media-cube/blob/d151821/bonk/src/devices/powermate/device.ts#L57)
 
 ___
 
 ### rotationDebouncer
 
-• `Private` **rotationDebouncer**: Debouncer
+• `Private` **rotationDebouncer**: [*Debouncer*](../modules/utils.md#debouncer)
 
-Defined in: [powermate/device.ts:70](https://github.com/expandrew/media-cube/blob/90f7c48/bonk/src/devices/powermate/device.ts#L70)
+Defined in: [powermate/device.ts:56](https://github.com/expandrew/media-cube/blob/d151821/bonk/src/devices/powermate/device.ts#L56)
 
 ## Methods
 
 ### emitWithDebouncer
 
-▸ `Private`**emitWithDebouncer**(`event`: *string*, `data`: {}, `debouncer`: Debouncer): *void*
+▸ `Private`**emitWithDebouncer**(`event`: *string*, `data`: {}, `debouncer`: [*Debouncer*](../modules/utils.md#debouncer)): *void*
 
 emitWithDebouncer
 
@@ -117,11 +117,11 @@ Name | Type | Description |
 :------ | :------ | :------ |
 `event` | *string* | The event to emit when the debounce is ready   |
 `data` | *object* | The data to send along with the event emitter   |
-`debouncer` | Debouncer | The debouncer object with `timer`, `isReady`, and `WAIT_MS`    |
+`debouncer` | [*Debouncer*](../modules/utils.md#debouncer) | The debouncer object with `timer`, `isReady`, and `WAIT_MS`    |
 
 **Returns:** *void*
 
-Defined in: [powermate/device.ts:379](https://github.com/expandrew/media-cube/blob/90f7c48/bonk/src/devices/powermate/device.ts#L379)
+Defined in: [powermate/device.ts:365](https://github.com/expandrew/media-cube/blob/d151821/bonk/src/devices/powermate/device.ts#L365)
 
 ___
 
@@ -144,13 +144,13 @@ Name | Type | Description |
 
 **Returns:** *void*
 
-Defined in: [powermate/device.ts:218](https://github.com/expandrew/media-cube/blob/90f7c48/bonk/src/devices/powermate/device.ts#L218)
+Defined in: [powermate/device.ts:204](https://github.com/expandrew/media-cube/blob/d151821/bonk/src/devices/powermate/device.ts#L204)
 
 ___
 
 ### setLed
 
-▸ **setLed**(`ledState`: LedState): *void*
+▸ **setLed**(`ledState`: [*LedState*](../modules/powermate_device.md#ledstate)): *void*
 
 Set LED information on PowerMate and update internal ledState
 
@@ -158,11 +158,11 @@ Set LED information on PowerMate and update internal ledState
 
 Name | Type | Description |
 :------ | :------ | :------ |
-`ledState` | LedState | the `LedState` information with which to update the device (can accept partial updates)    |
+`ledState` | [*LedState*](../modules/powermate_device.md#ledstate) | the `LedState` information with which to update the device (can accept partial updates)    |
 
 **Returns:** *void*
 
-Defined in: [powermate/device.ts:142](https://github.com/expandrew/media-cube/blob/90f7c48/bonk/src/devices/powermate/device.ts#L142)
+Defined in: [powermate/device.ts:128](https://github.com/expandrew/media-cube/blob/d151821/bonk/src/devices/powermate/device.ts#L128)
 
 ___
 
@@ -182,4 +182,4 @@ Name | Type | Default value |
 
 **Returns:** *Timeout*
 
-Defined in: [powermate/device.ts:198](https://github.com/expandrew/media-cube/blob/90f7c48/bonk/src/devices/powermate/device.ts#L198)
+Defined in: [powermate/device.ts:184](https://github.com/expandrew/media-cube/blob/d151821/bonk/src/devices/powermate/device.ts#L184)

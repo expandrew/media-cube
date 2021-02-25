@@ -16,4 +16,4 @@
 
 #### Type declaration:
 
-Defined in: [nuimo/glyphs.ts:70](https://github.com/expandrew/media-cube/blob/90f7c48/bonk/src/devices/nuimo/glyphs.ts#L70)
+Defined in: [nuimo/glyphs.ts:70](https://github.com/expandrew/media-cube/blob/d151821/bonk/src/devices/nuimo/glyphs.ts#L70)

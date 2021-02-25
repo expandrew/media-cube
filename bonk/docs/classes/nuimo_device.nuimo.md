@@ -40,7 +40,7 @@
 
 **Returns:** [*Nuimo*](nuimo_device.nuimo.md)
 
-Defined in: [nuimo/device.ts:73](https://github.com/expandrew/media-cube/blob/90f7c48/bonk/src/devices/nuimo/device.ts#L73)
+Defined in: [nuimo/device.ts:60](https://github.com/expandrew/media-cube/blob/d151821/bonk/src/devices/nuimo/device.ts#L60)
 
 ## Properties
 
@@ -48,7 +48,7 @@ Defined in: [nuimo/device.ts:73](https://github.com/expandrew/media-cube/blob/90
 
 • **device**: *undefined* \| *NuimoControlDevice*
 
-Defined in: [nuimo/device.ts:69](https://github.com/expandrew/media-cube/blob/90f7c48/bonk/src/devices/nuimo/device.ts#L69)
+Defined in: [nuimo/device.ts:56](https://github.com/expandrew/media-cube/blob/d151821/bonk/src/devices/nuimo/device.ts#L56)
 
 ___
 
@@ -56,31 +56,31 @@ ___
 
 • **isPressed**: *boolean*
 
-Defined in: [nuimo/device.ts:70](https://github.com/expandrew/media-cube/blob/90f7c48/bonk/src/devices/nuimo/device.ts#L70)
+Defined in: [nuimo/device.ts:57](https://github.com/expandrew/media-cube/blob/d151821/bonk/src/devices/nuimo/device.ts#L57)
 
 ___
 
 ### longPress
 
-• `Private` **longPress**: PressTimer
+• `Private` **longPress**: [*PressTimer*](../modules/utils.md#presstimer)
 
-Defined in: [nuimo/device.ts:71](https://github.com/expandrew/media-cube/blob/90f7c48/bonk/src/devices/nuimo/device.ts#L71)
+Defined in: [nuimo/device.ts:58](https://github.com/expandrew/media-cube/blob/d151821/bonk/src/devices/nuimo/device.ts#L58)
 
 ___
 
 ### pressRotationDebouncer
 
-• `Private` **pressRotationDebouncer**: Debouncer
+• `Private` **pressRotationDebouncer**: [*Debouncer*](../modules/utils.md#debouncer)
 
-Defined in: [nuimo/device.ts:73](https://github.com/expandrew/media-cube/blob/90f7c48/bonk/src/devices/nuimo/device.ts#L73)
+Defined in: [nuimo/device.ts:60](https://github.com/expandrew/media-cube/blob/d151821/bonk/src/devices/nuimo/device.ts#L60)
 
 ___
 
 ### rotationDebouncer
 
-• `Private` **rotationDebouncer**: Debouncer
+• `Private` **rotationDebouncer**: [*Debouncer*](../modules/utils.md#debouncer)
 
-Defined in: [nuimo/device.ts:72](https://github.com/expandrew/media-cube/blob/90f7c48/bonk/src/devices/nuimo/device.ts#L72)
+Defined in: [nuimo/device.ts:59](https://github.com/expandrew/media-cube/blob/d151821/bonk/src/devices/nuimo/device.ts#L59)
 
 ## Methods
 
@@ -98,7 +98,7 @@ Name | Type | Description |
 
 **Returns:** *void*
 
-Defined in: [nuimo/device.ts:174](https://github.com/expandrew/media-cube/blob/90f7c48/bonk/src/devices/nuimo/device.ts#L174)
+Defined in: [nuimo/device.ts:162](https://github.com/expandrew/media-cube/blob/d151821/bonk/src/devices/nuimo/device.ts#L162)
 
 ___
 
@@ -116,7 +116,7 @@ Name | Type | Description |
 
 **Returns:** *void*
 
-Defined in: [nuimo/device.ts:207](https://github.com/expandrew/media-cube/blob/90f7c48/bonk/src/devices/nuimo/device.ts#L207)
+Defined in: [nuimo/device.ts:195](https://github.com/expandrew/media-cube/blob/d151821/bonk/src/devices/nuimo/device.ts#L195)
 
 ___
 
@@ -130,7 +130,7 @@ This will disconnect and remove listeners if a Nuimo is already connected
 
 **Returns:** *void*
 
-Defined in: [nuimo/device.ts:106](https://github.com/expandrew/media-cube/blob/90f7c48/bonk/src/devices/nuimo/device.ts#L106)
+Defined in: [nuimo/device.ts:94](https://github.com/expandrew/media-cube/blob/d151821/bonk/src/devices/nuimo/device.ts#L94)
 
 ___
 
@@ -147,13 +147,13 @@ Name | Type |
 
 **Returns:** *void*
 
-Defined in: [nuimo/device.ts:162](https://github.com/expandrew/media-cube/blob/90f7c48/bonk/src/devices/nuimo/device.ts#L162)
+Defined in: [nuimo/device.ts:150](https://github.com/expandrew/media-cube/blob/d151821/bonk/src/devices/nuimo/device.ts#L150)
 
 ___
 
 ### emitWithDebouncer
 
-▸ `Private`**emitWithDebouncer**(`event`: *string*, `data`: {}, `debouncer`: Debouncer): *void*
+▸ `Private`**emitWithDebouncer**(`event`: *string*, `data`: {}, `debouncer`: [*Debouncer*](../modules/utils.md#debouncer)): *void*
 
 emitWithDebouncer
 
@@ -163,8 +163,8 @@ Name | Type | Description |
 :------ | :------ | :------ |
 `event` | *string* | The event to emit when the debounce is ready   |
 `data` | *object* | The data to send along with the event emitter   |
-`debouncer` | Debouncer | The debouncer object with `timer`, `isReady`, and `WAIT_MS`    |
+`debouncer` | [*Debouncer*](../modules/utils.md#debouncer) | The debouncer object with `timer`, `isReady`, and `WAIT_MS`    |
 
 **Returns:** *void*
 
-Defined in: [nuimo/device.ts:252](https://github.com/expandrew/media-cube/blob/90f7c48/bonk/src/devices/nuimo/device.ts#L252)
+Defined in: [nuimo/device.ts:240](https://github.com/expandrew/media-cube/blob/d151821/bonk/src/devices/nuimo/device.ts#L240)
