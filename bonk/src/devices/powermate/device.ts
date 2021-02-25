@@ -235,7 +235,8 @@ export class PowerMate extends EventEmitter {
     const rotationInput = data[1] as number;
     const ledInput: LedState = {
       isOn: Boolean(data[3]),
-      isPulsing: data[4] & 0x4 ? true : false, // ? Sure
+      // 🧪 Experiment: turning this off so the internal PowerMate ledState.isPulsing doesn't get overwritten on reads (isPulsing uses bad logic to set itself)
+      // isPulsing: data[4] & 0x4 ? true : false, // This logic is wrong; this gets set to true sometimes even when the device isn't pulsing
       // pulseSpeed: figureOut(data[5]) // TODO: Add pulseSpeed
     };
 
