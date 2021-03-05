@@ -1,5 +1,6 @@
 import { SonosDevice, SonosManager } from '@svrooij/sonos';
 import Debug from 'debug';
+import TypedEmitter from 'typed-emitter';
 import { EventEmitter } from 'events';
 import { SonosEvents } from './events';
 
@@ -26,13 +27,17 @@ const devices = {
 
 /** Debugger for events */
 const setupDebug = (sonos: Sonos) => {
-  for (const event in SonosEvents) {
-    sonos.on(SonosEvents[event], data => Debug('bonk:sonos')({ event, data }));
+  for (const i in SonosEvents) {
+    sonos.on(SonosEvents[i] as keyof SonosEvents, data =>
+      Debug('bonk:sonos')({ event: SonosEvents[i], data })
+    );
   }
 };
 
 /** The class representing a Sonos setup */
-export class Sonos extends EventEmitter {
+export class Sonos extends (EventEmitter as new () => TypedEmitter<
+  SonosEvents
+>) {
   manager: SonosManager;
   PRIMARY_DEVICE: SonosDevice | undefined;
   SECONDARY_DEVICE: SonosDevice | undefined;
@@ -70,9 +75,7 @@ export class Sonos extends EventEmitter {
             this.isPlaying = isPlaying;
           }
 
-          isPlaying
-            ? this.emit(SonosEvents.PLAYING)
-            : this.emit(SonosEvents.PAUSED);
+          isPlaying ? this.emit('isPlaying') : this.emit('isPaused');
         }
       );
 
@@ -80,12 +83,12 @@ export class Sonos extends EventEmitter {
       [this.PRIMARY_DEVICE, this.SECONDARY_DEVICE].forEach(device => {
         // Check initial group name - if it includes '+ 1' ("Media Cube + 1") then devices are grouped
         this.isGrouped = device?.GroupName?.includes('+ 1') ? true : false;
-        this.emit(SonosEvents.GROUP_CHANGED, { isGrouped: this.isGrouped });
+        this.emit('groupChanged', { isGrouped: this.isGrouped });
 
         // Subscribe to groupname events and update on changes
         device?.Events.on('groupname', groupName => {
           this.isGrouped = groupName.includes('+ 1') ? true : false;
-          this.emit(SonosEvents.GROUP_CHANGED, { isGrouped: this.isGrouped });
+          this.emit('groupChanged', { isGrouped: this.isGrouped });
         });
       });
     });

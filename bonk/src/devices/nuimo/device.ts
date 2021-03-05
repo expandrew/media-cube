@@ -6,6 +6,7 @@ import {
   Glyph,
   NuimoControlDevice,
 } from 'rocket-nuimo';
+import TypedEmitter from 'typed-emitter';
 import { Debouncer, PressTimer, withDebouncer } from '../utils';
 import { NuimoEvents } from './events';
 
@@ -14,8 +15,10 @@ const debug = Debug('bonk:nuimo');
 
 /** Debugger for events */
 const setupDebug = (nuimo: Nuimo) => {
-  for (const event in NuimoEvents) {
-    nuimo.on(NuimoEvents[event], data => debug({ event, data }));
+  for (const i in NuimoEvents) {
+    nuimo.on(NuimoEvents[i] as keyof NuimoEvents, (data: any) =>
+      debug({ event: NuimoEvents[i], data })
+    );
   }
 };
 
@@ -50,7 +53,9 @@ const startDiscovery = async (): Promise<NuimoControlDevice | undefined> => {
   }
 };
 
-export class Nuimo extends EventEmitter {
+export class Nuimo extends (EventEmitter as new () => TypedEmitter<
+  NuimoEvents
+>) {
   device: NuimoControlDevice | undefined;
   isPressed: boolean;
   private longPress: PressTimer;
@@ -89,7 +94,7 @@ export class Nuimo extends EventEmitter {
     this.device?.removeAllListeners();
     this.device = undefined;
 
-    this.emit(NuimoEvents.DISCOVERY_STARTED);
+    this.emit('discoveryStarted');
     startDiscovery()
       .then(device => {
         this.device = device;
@@ -108,36 +113,35 @@ export class Nuimo extends EventEmitter {
         });
 
         // Set up swipes
-        this.device?.on('swipe', direction =>
-          this.emit(NuimoEvents[`SWIPE_${direction.toUpperCase()}`])
-        );
+        this.device?.on('swipe', direction => {
+          direction === 'left' && this.emit('swipeLeft');
+          direction === 'right' && this.emit('swipeRight');
+          direction === 'up' && this.emit('swipeUp');
+          direction === 'down' && this.emit('swipeDown');
+        });
 
         // Set up touches
-        this.device?.on('touch', area =>
-          this.emit(NuimoEvents.TOUCH, { area })
-        );
-        this.device?.on('longTouch', area =>
-          this.emit(NuimoEvents.LONG_TOUCH, { area })
-        );
+        this.device?.on('touch', area => this.emit('touch', { area }));
+        this.device?.on('longTouch', area => this.emit('longTouch', { area }));
 
         // Set up disconnect behavior
         this.device?.on('disconnect', () => {
           this.device?.removeAllListeners();
-          this.emit(NuimoEvents.DEVICE_DISCONNECTED, {
+          this.emit('deviceDisconnected', {
             id: this.device?.id,
           });
         });
 
         // Emit success
-        this.emit(NuimoEvents.DEVICE_CONNECTED, {
+        this.emit('deviceConnected', {
           id: this.device?.id,
           batteryLevel: this.device?.batteryLevel,
         });
-        this.emit(NuimoEvents.DISCOVERY_FINISHED, { success: true });
+        this.emit('discoveryFinished', { success: true });
       })
       .catch(() => {
         // Emit failure
-        this.emit(NuimoEvents.DISCOVERY_FINISHED, { success: false });
+        this.emit('discoveryFinished', { success: false });
       });
   }
 
@@ -167,13 +171,13 @@ export class Nuimo extends EventEmitter {
         this.longPress.isRunning = true;
         this.longPress.timer = setTimeout(() => {
           this.longPress.isRunning = false;
-          this.emit(NuimoEvents.LONG_PRESS);
+          this.emit('longPress');
         }, this.longPress.PRESS_MS);
       }
 
       if (buttonUp) {
         if (this.longPress.isRunning) {
-          this.emit(NuimoEvents.SINGLE_PRESS);
+          this.emit('singlePress');
         }
         // Clear LONG_PRESS timer when released
         clearTimeout(this.longPress.timer as NodeJS.Timeout);
@@ -196,16 +200,16 @@ export class Nuimo extends EventEmitter {
       withDebouncer(this.rotationDebouncer, () => {
         if (delta < 0) {
           this.isPressed
-            ? this.emit(NuimoEvents.PRESS_COUNTERCLOCKWISE, { delta })
-            : this.emit(NuimoEvents.COUNTERCLOCKWISE, {
+            ? this.emit('pressCounterclockwise', { delta })
+            : this.emit('counterclockwise', {
                 delta,
               });
           // Reset device.rotation each time because the library has a "clamp" built into the rotation (min/max) and I don't care about it
           if (this.device) this.device.rotation = 0;
         } else {
           this.isPressed
-            ? this.emit(NuimoEvents.PRESS_CLOCKWISE, { delta })
-            : this.emit(NuimoEvents.CLOCKWISE, { delta });
+            ? this.emit('pressClockwise', { delta })
+            : this.emit('clockwise', { delta });
           // Reset device.rotation each time because the library has a "clamp" built into the rotation (min/max) and I don't care about it
           if (this.device) this.device.rotation = 0;
         }

@@ -2,6 +2,7 @@ import Debug from 'debug';
 import { EventEmitter } from 'events';
 import HID from 'node-hid';
 import { clearTimeout, setTimeout } from 'timers';
+import TypedEmitter from 'typed-emitter';
 import usbDetect from 'usb-detection';
 import { Debouncer, PressTimer, withDebouncer } from '../utils';
 import { PowerMateEvents } from './events';
@@ -14,8 +15,10 @@ const debug = Debug('bonk:powermate');
 
 /** Debugger for events */
 const setupDebug = (powermate: PowerMate) => {
-  for (const event in PowerMateEvents) {
-    powermate.on(PowerMateEvents[event], data => debug({ event, data }));
+  for (const i in PowerMateEvents) {
+    powermate.on(PowerMateEvents[i] as keyof PowerMateEvents, data =>
+      debug({ event: PowerMateEvents[i], data })
+    );
   }
 };
 
@@ -46,7 +49,9 @@ const PRODUCT_ID = 1040;
  *
  * @param index - which index in the list of PowerMates found (will default to the first if unspecified)
  */
-export class PowerMate extends EventEmitter {
+export class PowerMate extends (EventEmitter as new () => TypedEmitter<
+  PowerMateEvents
+>) {
   isPressed: boolean;
   private hid: HID.HID | undefined;
   private longPress: PressTimer;
@@ -243,7 +248,7 @@ export class PowerMate extends EventEmitter {
           this.longPress.isRunning = true;
           this.longPress.timer = setTimeout(() => {
             this.longPress.isRunning = false;
-            this.emit(PowerMateEvents.LONG_PRESS);
+            this.emit('longPress');
           }, this.longPress.PRESS_MS);
         }
 
@@ -264,13 +269,13 @@ export class PowerMate extends EventEmitter {
                 // See how many presses happened during the timeout and emit the right event
                 switch (this.multiPress.count) {
                   case 1:
-                    this.emit(PowerMateEvents.SINGLE_PRESS);
+                    this.emit('singlePress');
                     break;
                   case 2:
-                    this.emit(PowerMateEvents.DOUBLE_PRESS);
+                    this.emit('doublePress');
                     break;
                   case 3:
-                    this.emit(PowerMateEvents.TRIPLE_PRESS);
+                    this.emit('triplePress');
                     break;
                 }
                 // Reset count
@@ -313,13 +318,13 @@ export class PowerMate extends EventEmitter {
           if (rotationInput > 128) {
             delta = -256 + rotationInput; // Counterclockwise rotation is sent starting at 255 so this converts it to a meaningful negative number
             this.isPressed
-              ? this.emit(PowerMateEvents.PRESS_COUNTERCLOCKWISE, { delta })
-              : this.emit(PowerMateEvents.COUNTERCLOCKWISE, { delta });
+              ? this.emit('pressCounterclockwise', { delta })
+              : this.emit('counterclockwise', { delta });
           } else {
             delta = rotationInput; // Clockwise rotation is sent starting at 1, so it will already be a meaningful positive number
             this.isPressed
-              ? this.emit(PowerMateEvents.PRESS_CLOCKWISE, { delta })
-              : this.emit(PowerMateEvents.CLOCKWISE, { delta });
+              ? this.emit('pressClockwise', { delta })
+              : this.emit('clockwise', { delta });
           }
         });
       }
