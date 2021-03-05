@@ -27,8 +27,6 @@ const sensitivity = {
   MULTI_PRESS_MS: 500,
   /** Debounce "wait" milliseconds for rotation inputs to alter the "sensitivity" of the knob rotation inputs. A higher value here means it takes more turning to trigger the inputs */
   ROTATION_WAIT_MS: 100,
-  /** Debounce "wait" milliseconds for press rotation inputs. Press rotation should be even less sensitive than regular rotation inputs. */
-  PRESS_ROTATION_WAIT_MS: 100,
 };
 
 /** For storing and passing around LED-related values in a structured way */
@@ -54,7 +52,6 @@ export class PowerMate extends EventEmitter {
   private longPress: PressTimer;
   private multiPress: PressTimer;
   private rotationDebouncer: Debouncer;
-  private pressRotationDebouncer: Debouncer;
   private ledState: LedState;
 
   constructor() {
@@ -108,11 +105,6 @@ export class PowerMate extends EventEmitter {
       timer: undefined,
       isReady: true,
       WAIT_MS: sensitivity.ROTATION_WAIT_MS,
-    };
-    this.pressRotationDebouncer = {
-      timer: undefined,
-      isReady: true,
-      WAIT_MS: sensitivity.PRESS_ROTATION_WAIT_MS,
     };
     this.ledState = {
       isOn: true,
@@ -321,16 +313,12 @@ export class PowerMate extends EventEmitter {
           if (rotationInput > 128) {
             delta = -256 + rotationInput; // Counterclockwise rotation is sent starting at 255 so this converts it to a meaningful negative number
             this.isPressed
-              ? withDebouncer(this.pressRotationDebouncer, () =>
-                  this.emit(PowerMateEvents.PRESS_COUNTERCLOCKWISE, { delta })
-                )
+              ? this.emit(PowerMateEvents.PRESS_COUNTERCLOCKWISE, { delta })
               : this.emit(PowerMateEvents.COUNTERCLOCKWISE, { delta });
           } else {
             delta = rotationInput; // Clockwise rotation is sent starting at 1, so it will already be a meaningful positive number
             this.isPressed
-              ? withDebouncer(this.pressRotationDebouncer, () =>
-                  this.emit(PowerMateEvents.PRESS_CLOCKWISE, { delta })
-                )
+              ? this.emit(PowerMateEvents.PRESS_CLOCKWISE, { delta })
               : this.emit(PowerMateEvents.CLOCKWISE, { delta });
           }
         });

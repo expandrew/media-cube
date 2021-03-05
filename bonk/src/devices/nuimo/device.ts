@@ -25,8 +25,6 @@ const sensitivity = {
   LONG_PRESS_MS: 1000,
   /** Debounce "wait" milliseconds for rotation inputs to alter the "sensitivity" of the knob rotation inputs. A higher value here means it takes more turning to trigger the inputs */
   ROTATION_WAIT_MS: 100,
-  /** Debounce "wait" milliseconds for press rotation inputs. Press rotation should be even less sensitive than regular rotation inputs. */
-  PRESS_ROTATION_WAIT_MS: 100,
   /** Minimum delta to register as a rotation event. The Nuimo is very sensitive and sends pretty precise rotation signals, so this filters out anything outside of a threshold */
   ROTATION_MINIMUM_DELTA: 0.005,
 };
@@ -57,7 +55,6 @@ export class Nuimo extends EventEmitter {
   isPressed: boolean;
   private longPress: PressTimer;
   private rotationDebouncer: Debouncer;
-  private pressRotationDebouncer: Debouncer;
 
   constructor() {
     super();
@@ -75,11 +72,6 @@ export class Nuimo extends EventEmitter {
       timer: undefined,
       isReady: true,
       WAIT_MS: sensitivity.ROTATION_WAIT_MS,
-    };
-    this.pressRotationDebouncer = {
-      timer: undefined,
-      isReady: true,
-      WAIT_MS: sensitivity.PRESS_ROTATION_WAIT_MS,
     };
 
     // Find and connect to the Nuimo
@@ -204,9 +196,7 @@ export class Nuimo extends EventEmitter {
       withDebouncer(this.rotationDebouncer, () => {
         if (delta < 0) {
           this.isPressed
-            ? withDebouncer(this.pressRotationDebouncer, () =>
-                this.emit(NuimoEvents.PRESS_COUNTERCLOCKWISE, { delta })
-              )
+            ? this.emit(NuimoEvents.PRESS_COUNTERCLOCKWISE, { delta })
             : this.emit(NuimoEvents.COUNTERCLOCKWISE, {
                 delta,
               });
@@ -214,9 +204,7 @@ export class Nuimo extends EventEmitter {
           if (this.device) this.device.rotation = 0;
         } else {
           this.isPressed
-            ? withDebouncer(this.pressRotationDebouncer, () =>
-                this.emit(NuimoEvents.PRESS_CLOCKWISE, { delta })
-              )
+            ? this.emit(NuimoEvents.PRESS_CLOCKWISE, { delta })
             : this.emit(NuimoEvents.CLOCKWISE, { delta });
           // Reset device.rotation each time because the library has a "clamp" built into the rotation (min/max) and I don't care about it
           if (this.device) this.device.rotation = 0;
