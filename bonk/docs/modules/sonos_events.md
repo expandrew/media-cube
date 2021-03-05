@@ -18,4 +18,4 @@ Events for Sonos play state updates
 
 #### Type declaration:
 
-Defined in: [sonos/events.ts:2](https://github.com/expandrew/media-cube/blob/a702056/bonk/src/devices/sonos/events.ts#L2)
+Defined in: [sonos/events.ts:2](https://github.com/expandrew/media-cube/blob/1700072/bonk/src/devices/sonos/events.ts#L2)

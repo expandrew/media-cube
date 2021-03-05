@@ -27,12 +27,10 @@ The class representing a PowerMate device
 - [ledState](powermate_device.powermate.md#ledstate)
 - [longPress](powermate_device.powermate.md#longpress)
 - [multiPress](powermate_device.powermate.md#multipress)
-- [pressRotationDebouncer](powermate_device.powermate.md#pressrotationdebouncer)
 - [rotationDebouncer](powermate_device.powermate.md#rotationdebouncer)
 
 ### Methods
 
-- [emitWithDebouncer](powermate_device.powermate.md#emitwithdebouncer)
 - [interpretData](powermate_device.powermate.md#interpretdata)
 - [setLed](powermate_device.powermate.md#setled)
 - [setupHid](powermate_device.powermate.md#setuphid)
@@ -45,7 +43,7 @@ The class representing a PowerMate device
 
 **Returns:** [*PowerMate*](powermate_device.powermate.md)
 
-Defined in: [powermate/device.ts:58](https://github.com/expandrew/media-cube/blob/a702056/bonk/src/devices/powermate/device.ts#L58)
+Defined in: [powermate/device.ts:55](https://github.com/expandrew/media-cube/blob/1700072/bonk/src/devices/powermate/device.ts#L55)
 
 ## Properties
 
@@ -53,7 +51,7 @@ Defined in: [powermate/device.ts:58](https://github.com/expandrew/media-cube/blo
 
 • `Private` **hid**: *undefined* \| *HID*
 
-Defined in: [powermate/device.ts:53](https://github.com/expandrew/media-cube/blob/a702056/bonk/src/devices/powermate/device.ts#L53)
+Defined in: [powermate/device.ts:51](https://github.com/expandrew/media-cube/blob/1700072/bonk/src/devices/powermate/device.ts#L51)
 
 ___
 
@@ -61,7 +59,7 @@ ___
 
 • **isPressed**: *boolean*
 
-Defined in: [powermate/device.ts:52](https://github.com/expandrew/media-cube/blob/a702056/bonk/src/devices/powermate/device.ts#L52)
+Defined in: [powermate/device.ts:50](https://github.com/expandrew/media-cube/blob/1700072/bonk/src/devices/powermate/device.ts#L50)
 
 ___
 
@@ -69,7 +67,7 @@ ___
 
 • `Private` **ledState**: [*LedState*](../modules/powermate_device.md#ledstate)
 
-Defined in: [powermate/device.ts:58](https://github.com/expandrew/media-cube/blob/a702056/bonk/src/devices/powermate/device.ts#L58)
+Defined in: [powermate/device.ts:55](https://github.com/expandrew/media-cube/blob/1700072/bonk/src/devices/powermate/device.ts#L55)
 
 ___
 
@@ -77,7 +75,7 @@ ___
 
 • `Private` **longPress**: [*PressTimer*](../modules/utils.md#presstimer)
 
-Defined in: [powermate/device.ts:54](https://github.com/expandrew/media-cube/blob/a702056/bonk/src/devices/powermate/device.ts#L54)
+Defined in: [powermate/device.ts:52](https://github.com/expandrew/media-cube/blob/1700072/bonk/src/devices/powermate/device.ts#L52)
 
 ___
 
@@ -85,15 +83,7 @@ ___
 
 • `Private` **multiPress**: [*PressTimer*](../modules/utils.md#presstimer)
 
-Defined in: [powermate/device.ts:55](https://github.com/expandrew/media-cube/blob/a702056/bonk/src/devices/powermate/device.ts#L55)
-
-___
-
-### pressRotationDebouncer
-
-• `Private` **pressRotationDebouncer**: [*Debouncer*](../modules/utils.md#debouncer)
-
-Defined in: [powermate/device.ts:57](https://github.com/expandrew/media-cube/blob/a702056/bonk/src/devices/powermate/device.ts#L57)
+Defined in: [powermate/device.ts:53](https://github.com/expandrew/media-cube/blob/1700072/bonk/src/devices/powermate/device.ts#L53)
 
 ___
 
@@ -101,29 +91,9 @@ ___
 
 • `Private` **rotationDebouncer**: [*Debouncer*](../modules/utils.md#debouncer)
 
-Defined in: [powermate/device.ts:56](https://github.com/expandrew/media-cube/blob/a702056/bonk/src/devices/powermate/device.ts#L56)
+Defined in: [powermate/device.ts:54](https://github.com/expandrew/media-cube/blob/1700072/bonk/src/devices/powermate/device.ts#L54)
 
 ## Methods
-
-### emitWithDebouncer
-
-▸ `Private`**emitWithDebouncer**(`event`: *string*, `data`: {}, `debouncer`: [*Debouncer*](../modules/utils.md#debouncer)): *void*
-
-emitWithDebouncer
-
-#### Parameters:
-
-Name | Type | Description |
-:------ | :------ | :------ |
-`event` | *string* | The event to emit when the debounce is ready   |
-`data` | *object* | The data to send along with the event emitter   |
-`debouncer` | [*Debouncer*](../modules/utils.md#debouncer) | The `Debouncer` object with `timer`, `isReady`, and `WAIT_MS`    |
-
-**Returns:** *void*
-
-Defined in: [powermate/device.ts:366](https://github.com/expandrew/media-cube/blob/a702056/bonk/src/devices/powermate/device.ts#L366)
-
-___
 
 ### interpretData
 
@@ -144,7 +114,7 @@ Name | Type | Description |
 
 **Returns:** *void*
 
-Defined in: [powermate/device.ts:204](https://github.com/expandrew/media-cube/blob/a702056/bonk/src/devices/powermate/device.ts#L204)
+Defined in: [powermate/device.ts:196](https://github.com/expandrew/media-cube/blob/1700072/bonk/src/devices/powermate/device.ts#L196)
 
 ___
 
@@ -162,7 +132,7 @@ Name | Type | Description |
 
 **Returns:** *void*
 
-Defined in: [powermate/device.ts:128](https://github.com/expandrew/media-cube/blob/a702056/bonk/src/devices/powermate/device.ts#L128)
+Defined in: [powermate/device.ts:120](https://github.com/expandrew/media-cube/blob/1700072/bonk/src/devices/powermate/device.ts#L120)
 
 ___
 
@@ -182,4 +152,4 @@ Name | Type | Default value |
 
 **Returns:** *Timeout*
 
-Defined in: [powermate/device.ts:184](https://github.com/expandrew/media-cube/blob/a702056/bonk/src/devices/powermate/device.ts#L184)
+Defined in: [powermate/device.ts:176](https://github.com/expandrew/media-cube/blob/1700072/bonk/src/devices/powermate/device.ts#L176)

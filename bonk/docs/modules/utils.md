@@ -9,6 +9,10 @@
 - [Debouncer](utils.md#debouncer)
 - [PressTimer](utils.md#presstimer)
 
+### Functions
+
+- [withDebouncer](utils.md#withdebouncer)
+
 ## Type aliases
 
 ### Debouncer
@@ -25,7 +29,7 @@ Name | Type | Description |
 `isReady` | *boolean* | Whether more events can be emitted or not (this should be reset to true after the `timer` runs out)   |
 `timer` | *ReturnType*<*typeof* setTimeout\> \| *undefined* | The timeout object for this Debouncer   |
 
-Defined in: [utils.ts:4](https://github.com/expandrew/media-cube/blob/a702056/bonk/src/devices/utils.ts#L4)
+Defined in: [utils.ts:4](https://github.com/expandrew/media-cube/blob/1700072/bonk/src/devices/utils.ts#L4)
 
 ___
 
@@ -44,4 +48,23 @@ Name | Type | Description |
 `isRunning` | *boolean* | Whether the timer is currently running or not (this was hard to tell from the `timer` so I made this shortcut)   |
 `timer` | *ReturnType*<*typeof* setTimeout\> \| *undefined* | The timeout object for this PressTimer   |
 
-Defined in: [utils.ts:14](https://github.com/expandrew/media-cube/blob/a702056/bonk/src/devices/utils.ts#L14)
+Defined in: [utils.ts:31](https://github.com/expandrew/media-cube/blob/1700072/bonk/src/devices/utils.ts#L31)
+
+## Functions
+
+### withDebouncer
+
+▸ `Const`**withDebouncer**(`debouncer`: [*Debouncer*](utils.md#debouncer), `fn`: () => *void*): *void*
+
+withDebouncer
+
+#### Parameters:
+
+Name | Type | Description |
+:------ | :------ | :------ |
+`debouncer` | [*Debouncer*](utils.md#debouncer) | The `Debouncer` object with `timer`, `isReady`, and `WAIT_MS`   |
+`fn` | () => *void* | The function to call when the debouncer is ready    |
+
+**Returns:** *void*
+
+Defined in: [utils.ts:19](https://github.com/expandrew/media-cube/blob/1700072/bonk/src/devices/utils.ts#L19)
