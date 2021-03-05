@@ -317,8 +317,7 @@ export class PowerMate extends EventEmitter {
         this.longPress.isRunning = false;
 
         // Use debouncer
-        this.rotationDebouncer.isReady = false;
-        this.rotationDebouncer.timer = setTimeout(() => {
+        withDebouncer(this.rotationDebouncer, () => {
           if (rotationInput > 128) {
             delta = -256 + rotationInput; // Counterclockwise rotation is sent starting at 255 so this converts it to a meaningful negative number
             this.isPressed
@@ -334,9 +333,7 @@ export class PowerMate extends EventEmitter {
                 )
               : this.emit(PowerMateEvents.CLOCKWISE, { delta });
           }
-          // Reset debouncer "isReady" flag for next input
-          this.rotationDebouncer.isReady = true;
-        }, this.rotationDebouncer.WAIT_MS);
+        });
       }
     };
 

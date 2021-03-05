@@ -201,8 +201,7 @@ export class Nuimo extends EventEmitter {
       this.longPress.isRunning = false;
 
       // Use debouncer
-      this.rotationDebouncer.isReady = false;
-      this.rotationDebouncer.timer = setTimeout(() => {
+      withDebouncer(this.rotationDebouncer, () => {
         if (delta < 0) {
           this.isPressed
             ? withDebouncer(this.pressRotationDebouncer, () =>
@@ -222,9 +221,7 @@ export class Nuimo extends EventEmitter {
           // Reset device.rotation each time because the library has a "clamp" built into the rotation (min/max) and I don't care about it
           if (this.device) this.device.rotation = 0;
         }
-        // Reset debouncer "isReady" flag for next input
-        this.rotationDebouncer.isReady = true;
-      }, this.rotationDebouncer.WAIT_MS);
+      });
     }
   }
 }
