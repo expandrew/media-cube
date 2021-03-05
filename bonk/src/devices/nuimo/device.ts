@@ -6,7 +6,7 @@ import {
   Glyph,
   NuimoControlDevice,
 } from 'rocket-nuimo';
-import { Debouncer, PressTimer } from '../utils';
+import { Debouncer, PressTimer, withDebouncer } from '../utils';
 import { NuimoEvents } from './events';
 
 /** Shortcut to Debug('bonk:nuimo')() */
@@ -25,8 +25,6 @@ const sensitivity = {
   LONG_PRESS_MS: 1000,
   /** Debounce "wait" milliseconds for rotation inputs to alter the "sensitivity" of the knob rotation inputs. A higher value here means it takes more turning to trigger the inputs */
   ROTATION_WAIT_MS: 100,
-  /** Debounce "wait" milliseconds for press rotation inputs. Press rotation should be even less sensitive than regular rotation inputs. */
-  PRESS_ROTATION_WAIT_MS: 100,
   /** Minimum delta to register as a rotation event. The Nuimo is very sensitive and sends pretty precise rotation signals, so this filters out anything outside of a threshold */
   ROTATION_MINIMUM_DELTA: 0.005,
 };
@@ -57,7 +55,6 @@ export class Nuimo extends EventEmitter {
   isPressed: boolean;
   private longPress: PressTimer;
   private rotationDebouncer: Debouncer;
-  private pressRotationDebouncer: Debouncer;
 
   constructor() {
     super();
@@ -75,11 +72,6 @@ export class Nuimo extends EventEmitter {
       timer: undefined,
       isReady: true,
       WAIT_MS: sensitivity.ROTATION_WAIT_MS,
-    };
-    this.pressRotationDebouncer = {
-      timer: undefined,
-      isReady: true,
-      WAIT_MS: sensitivity.PRESS_ROTATION_WAIT_MS,
     };
 
     // Find and connect to the Nuimo
@@ -131,7 +123,9 @@ export class Nuimo extends EventEmitter {
         // Set up disconnect behavior
         this.device?.on('disconnect', () => {
           this.device?.removeAllListeners();
-          this.emit(NuimoEvents.DEVICE_DISCONNECTED, { id: this.device?.id });
+          this.emit(NuimoEvents.DEVICE_DISCONNECTED, {
+            id: this.device?.id,
+          });
         });
 
         // Emit success
@@ -199,15 +193,10 @@ export class Nuimo extends EventEmitter {
       this.longPress.isRunning = false;
 
       // Use debouncer
-      this.rotationDebouncer.isReady = false;
-      this.rotationDebouncer.timer = setTimeout(() => {
+      withDebouncer(this.rotationDebouncer, () => {
         if (delta < 0) {
           this.isPressed
-            ? this.emitWithDebouncer(
-                NuimoEvents.PRESS_COUNTERCLOCKWISE,
-                { delta },
-                this.pressRotationDebouncer
-              )
+            ? this.emit(NuimoEvents.PRESS_COUNTERCLOCKWISE, { delta })
             : this.emit(NuimoEvents.COUNTERCLOCKWISE, {
                 delta,
               });
@@ -215,36 +204,12 @@ export class Nuimo extends EventEmitter {
           if (this.device) this.device.rotation = 0;
         } else {
           this.isPressed
-            ? this.emitWithDebouncer(
-                NuimoEvents.PRESS_CLOCKWISE,
-                { delta },
-                this.pressRotationDebouncer
-              )
+            ? this.emit(NuimoEvents.PRESS_CLOCKWISE, { delta })
             : this.emit(NuimoEvents.CLOCKWISE, { delta });
           // Reset device.rotation each time because the library has a "clamp" built into the rotation (min/max) and I don't care about it
           if (this.device) this.device.rotation = 0;
         }
-        // Reset debouncer "isReady" flag for next input
-        this.rotationDebouncer.isReady = true;
-      }, this.rotationDebouncer.WAIT_MS);
+      });
     }
-  }
-
-  /**
-   * emitWithDebouncer
-   *
-   * @param event The event to emit when the debounce is ready
-   * @param data The data to send along with the event emitter
-   * @param debouncer The `Debouncer` object with `timer`, `isReady`, and `WAIT_MS`
-   */
-  private emitWithDebouncer(event: string, data: {}, debouncer: Debouncer) {
-    if (debouncer.isReady) {
-      this.emit(event, { data });
-    }
-    // Set up debouncer for future events
-    debouncer.isReady = false;
-    debouncer.timer = setTimeout(() => {
-      debouncer.isReady = true;
-    }, debouncer.WAIT_MS);
   }
 }

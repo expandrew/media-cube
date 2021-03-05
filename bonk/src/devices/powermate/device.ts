@@ -3,7 +3,7 @@ import { EventEmitter } from 'events';
 import HID from 'node-hid';
 import { clearTimeout, setTimeout } from 'timers';
 import usbDetect from 'usb-detection';
-import { Debouncer, PressTimer } from '../utils';
+import { Debouncer, PressTimer, withDebouncer } from '../utils';
 import { PowerMateEvents } from './events';
 
 /** For Raspbian, I have to use `libusb` for the HID driver via node-hid because PowerMate doesn't seem to actually register itself as a HID (it has its own driver, not usbhid or hid-generic, and it doesn't get a path like /dev/hidraw... so libusb seems to be my only option*/
@@ -27,8 +27,6 @@ const sensitivity = {
   MULTI_PRESS_MS: 500,
   /** Debounce "wait" milliseconds for rotation inputs to alter the "sensitivity" of the knob rotation inputs. A higher value here means it takes more turning to trigger the inputs */
   ROTATION_WAIT_MS: 100,
-  /** Debounce "wait" milliseconds for press rotation inputs. Press rotation should be even less sensitive than regular rotation inputs. */
-  PRESS_ROTATION_WAIT_MS: 100,
 };
 
 /** For storing and passing around LED-related values in a structured way */
@@ -54,7 +52,6 @@ export class PowerMate extends EventEmitter {
   private longPress: PressTimer;
   private multiPress: PressTimer;
   private rotationDebouncer: Debouncer;
-  private pressRotationDebouncer: Debouncer;
   private ledState: LedState;
 
   constructor() {
@@ -108,11 +105,6 @@ export class PowerMate extends EventEmitter {
       timer: undefined,
       isReady: true,
       WAIT_MS: sensitivity.ROTATION_WAIT_MS,
-    };
-    this.pressRotationDebouncer = {
-      timer: undefined,
-      isReady: true,
-      WAIT_MS: sensitivity.PRESS_ROTATION_WAIT_MS,
     };
     this.ledState = {
       isOn: true,
@@ -317,30 +309,19 @@ export class PowerMate extends EventEmitter {
         this.longPress.isRunning = false;
 
         // Use debouncer
-        this.rotationDebouncer.isReady = false;
-        this.rotationDebouncer.timer = setTimeout(() => {
+        withDebouncer(this.rotationDebouncer, () => {
           if (rotationInput > 128) {
             delta = -256 + rotationInput; // Counterclockwise rotation is sent starting at 255 so this converts it to a meaningful negative number
             this.isPressed
-              ? this.emitWithDebouncer(
-                  PowerMateEvents.PRESS_COUNTERCLOCKWISE,
-                  { delta },
-                  this.pressRotationDebouncer
-                )
+              ? this.emit(PowerMateEvents.PRESS_COUNTERCLOCKWISE, { delta })
               : this.emit(PowerMateEvents.COUNTERCLOCKWISE, { delta });
           } else {
             delta = rotationInput; // Clockwise rotation is sent starting at 1, so it will already be a meaningful positive number
             this.isPressed
-              ? this.emitWithDebouncer(
-                  PowerMateEvents.PRESS_CLOCKWISE,
-                  { delta },
-                  this.pressRotationDebouncer
-                )
+              ? this.emit(PowerMateEvents.PRESS_CLOCKWISE, { delta })
               : this.emit(PowerMateEvents.CLOCKWISE, { delta });
           }
-          // Reset debouncer "isReady" flag for next input
-          this.rotationDebouncer.isReady = true;
-        }, this.rotationDebouncer.WAIT_MS);
+        });
       }
     };
 
@@ -354,23 +335,5 @@ export class PowerMate extends EventEmitter {
 
     // Restart the read loop
     this.hid?.read(this.interpretData.bind(this));
-  }
-
-  /**
-   * emitWithDebouncer
-   *
-   * @param event The event to emit when the debounce is ready
-   * @param data The data to send along with the event emitter
-   * @param debouncer The `Debouncer` object with `timer`, `isReady`, and `WAIT_MS`
-   */
-  private emitWithDebouncer(event: string, data: {}, debouncer: Debouncer) {
-    if (debouncer.isReady) {
-      this.emit(event, { data });
-    }
-    // Set up debouncer for future events
-    debouncer.isReady = false;
-    debouncer.timer = setTimeout(() => {
-      debouncer.isReady = true;
-    }, debouncer.WAIT_MS);
   }
 }

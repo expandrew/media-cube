@@ -10,6 +10,23 @@ export type Debouncer = {
   WAIT_MS: number;
 };
 
+/**
+ * withDebouncer
+ *
+ * @param debouncer The `Debouncer` object with `timer`, `isReady`, and `WAIT_MS`
+ * @param fn The function to call when the debouncer is ready
+ */
+export const withDebouncer = (debouncer: Debouncer, fn: () => void) => {
+  if (debouncer.isReady) {
+    fn();
+  }
+  // Set up debouncer for future events
+  debouncer.isReady = false;
+  debouncer.timer = setTimeout(() => {
+    debouncer.isReady = true;
+  }, debouncer.WAIT_MS);
+};
+
 /** Timers for long/multi press events */
 export type PressTimer = {
   /** The count for number of presses within a given timeout (for double- and triple-press) */
