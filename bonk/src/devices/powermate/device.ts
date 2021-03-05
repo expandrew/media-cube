@@ -322,19 +322,15 @@ export class PowerMate extends EventEmitter {
           if (rotationInput > 128) {
             delta = -256 + rotationInput; // Counterclockwise rotation is sent starting at 255 so this converts it to a meaningful negative number
             this.isPressed
-              ? this.emitWithDebouncer(
-                  PowerMateEvents.PRESS_COUNTERCLOCKWISE,
-                  { delta },
-                  this.pressRotationDebouncer
+              ? this.withDebouncer(this.pressRotationDebouncer, () =>
+                  this.emit(PowerMateEvents.PRESS_COUNTERCLOCKWISE, { delta })
                 )
               : this.emit(PowerMateEvents.COUNTERCLOCKWISE, { delta });
           } else {
             delta = rotationInput; // Clockwise rotation is sent starting at 1, so it will already be a meaningful positive number
             this.isPressed
-              ? this.emitWithDebouncer(
-                  PowerMateEvents.PRESS_CLOCKWISE,
-                  { delta },
-                  this.pressRotationDebouncer
+              ? this.withDebouncer(this.pressRotationDebouncer, () =>
+                  this.emit(PowerMateEvents.PRESS_CLOCKWISE, { delta })
                 )
               : this.emit(PowerMateEvents.CLOCKWISE, { delta });
           }
@@ -357,15 +353,14 @@ export class PowerMate extends EventEmitter {
   }
 
   /**
-   * emitWithDebouncer
+   * withDebouncer
    *
-   * @param event The event to emit when the debounce is ready
-   * @param data The data to send along with the event emitter
    * @param debouncer The `Debouncer` object with `timer`, `isReady`, and `WAIT_MS`
+   * @param fn The function to call when the debouncer is ready
    */
-  private emitWithDebouncer(event: string, data: {}, debouncer: Debouncer) {
+  private withDebouncer(debouncer: Debouncer, fn: () => void) {
     if (debouncer.isReady) {
-      this.emit(event, { data });
+      fn();
     }
     // Set up debouncer for future events
     debouncer.isReady = false;
