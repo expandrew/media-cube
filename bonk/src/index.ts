@@ -23,31 +23,31 @@ sonos.on('isPlaying', () => powermate.setLed({ isOn: true })); // Turn on PowerM
 sonos.on('isPaused', () => powermate.setLed({ isOn: false })); // Turn off PowerMate LED when Sonos is paused
 
 /** Nuimo Inputs */
-nuimo.on('clockwise', () => callAndShowGlyph(sonos.volumeUp, 'VOLUME_UP'));
+nuimo.on('clockwise', () =>
+  sonos.volumeUp()?.then(() => nuimo.displayGlyph(NuimoGlyphs['VOLUME_UP']))
+);
 nuimo.on('counterclockwise', () =>
-  callAndShowGlyph(sonos.volumeDown, 'VOLUME_DOWN')
+  sonos.volumeDown()?.then(() => nuimo.displayGlyph(NuimoGlyphs['VOLUME_DOWN']))
 );
 nuimo.on('pressClockwise', () =>
-  callAndShowGlyph(sonos.groupVolumeUp, 'GROUP_VOLUME_UP')
+  sonos
+    .groupVolumeUp()
+    ?.then(() => nuimo.displayGlyph(NuimoGlyphs['GROUP_VOLUME_UP']))
 );
 nuimo.on('pressCounterclockwise', () =>
-  callAndShowGlyph(sonos.groupVolumeDown, 'GROUP_VOLUME_DOWN')
+  sonos
+    .groupVolumeDown()
+    ?.then(() => nuimo.displayGlyph(NuimoGlyphs['GROUP_VOLUME_DOWN']))
 );
 nuimo.on('singlePress', () =>
   sonos.isPlaying
-    ? callAndShowGlyph(sonos.pause, 'PAUSE')
-    : callAndShowGlyph(sonos.play, 'PLAY')
+    ? sonos.pause()?.then(() => nuimo.displayGlyph(NuimoGlyphs['PAUSE']))
+    : sonos.play()?.then(() => nuimo.displayGlyph(NuimoGlyphs['PLAY']))
 );
-nuimo.on('swipeRight', () => callAndShowGlyph(sonos.next, 'NEXT'));
-nuimo.on('swipeLeft', () => callAndShowGlyph(sonos.previous, 'PREVIOUS'));
+nuimo.on('swipeRight', () =>
+  sonos.next()?.then(() => nuimo.displayGlyph(NuimoGlyphs['NEXT']))
+);
+nuimo.on('swipeLeft', () =>
+  sonos.previous()?.then(() => nuimo.displayGlyph(NuimoGlyphs['PREVIOUS']))
+);
 nuimo.on('longTouch', () => nuimo.displayGlyph(NuimoGlyphs['WAKE_UP']));
-
-/** Helper for Nuimo to call a function then show a glyph from NuimoGlyphs */
-const callAndShowGlyph = (
-  fn: () => Promise<any> | undefined,
-  glyph: keyof NuimoGlyphs
-) => {
-  fn()
-    ?.then(() => nuimo.displayGlyph(NuimoGlyphs[glyph], { timeoutMs: 100 }))
-    .catch(() => nuimo.displayGlyph(NuimoGlyphs.ERROR));
-};
