@@ -3,7 +3,7 @@ import { EventEmitter } from 'events';
 import HID from 'node-hid';
 import { clearTimeout, setTimeout } from 'timers';
 import usbDetect from 'usb-detection';
-import { Debouncer, PressTimer } from '../utils';
+import { Debouncer, PressTimer, withDebouncer } from '../utils';
 import { PowerMateEvents } from './events';
 
 /** For Raspbian, I have to use `libusb` for the HID driver via node-hid because PowerMate doesn't seem to actually register itself as a HID (it has its own driver, not usbhid or hid-generic, and it doesn't get a path like /dev/hidraw... so libusb seems to be my only option*/
@@ -322,14 +322,14 @@ export class PowerMate extends EventEmitter {
           if (rotationInput > 128) {
             delta = -256 + rotationInput; // Counterclockwise rotation is sent starting at 255 so this converts it to a meaningful negative number
             this.isPressed
-              ? this.withDebouncer(this.pressRotationDebouncer, () =>
+              ? withDebouncer(this.pressRotationDebouncer, () =>
                   this.emit(PowerMateEvents.PRESS_COUNTERCLOCKWISE, { delta })
                 )
               : this.emit(PowerMateEvents.COUNTERCLOCKWISE, { delta });
           } else {
             delta = rotationInput; // Clockwise rotation is sent starting at 1, so it will already be a meaningful positive number
             this.isPressed
-              ? this.withDebouncer(this.pressRotationDebouncer, () =>
+              ? withDebouncer(this.pressRotationDebouncer, () =>
                   this.emit(PowerMateEvents.PRESS_CLOCKWISE, { delta })
                 )
               : this.emit(PowerMateEvents.CLOCKWISE, { delta });
@@ -350,22 +350,5 @@ export class PowerMate extends EventEmitter {
 
     // Restart the read loop
     this.hid?.read(this.interpretData.bind(this));
-  }
-
-  /**
-   * withDebouncer
-   *
-   * @param debouncer The `Debouncer` object with `timer`, `isReady`, and `WAIT_MS`
-   * @param fn The function to call when the debouncer is ready
-   */
-  private withDebouncer(debouncer: Debouncer, fn: () => void) {
-    if (debouncer.isReady) {
-      fn();
-    }
-    // Set up debouncer for future events
-    debouncer.isReady = false;
-    debouncer.timer = setTimeout(() => {
-      debouncer.isReady = true;
-    }, debouncer.WAIT_MS);
   }
 }

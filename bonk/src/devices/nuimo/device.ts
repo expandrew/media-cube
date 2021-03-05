@@ -6,7 +6,7 @@ import {
   Glyph,
   NuimoControlDevice,
 } from 'rocket-nuimo';
-import { Debouncer, PressTimer } from '../utils';
+import { Debouncer, PressTimer, withDebouncer } from '../utils';
 import { NuimoEvents } from './events';
 
 /** Shortcut to Debug('bonk:nuimo')() */
@@ -205,7 +205,7 @@ export class Nuimo extends EventEmitter {
       this.rotationDebouncer.timer = setTimeout(() => {
         if (delta < 0) {
           this.isPressed
-            ? this.withDebouncer(this.pressRotationDebouncer, () =>
+            ? withDebouncer(this.pressRotationDebouncer, () =>
                 this.emit(NuimoEvents.PRESS_COUNTERCLOCKWISE, { delta })
               )
             : this.emit(NuimoEvents.COUNTERCLOCKWISE, {
@@ -215,7 +215,7 @@ export class Nuimo extends EventEmitter {
           if (this.device) this.device.rotation = 0;
         } else {
           this.isPressed
-            ? this.withDebouncer(this.pressRotationDebouncer, () =>
+            ? withDebouncer(this.pressRotationDebouncer, () =>
                 this.emit(NuimoEvents.PRESS_CLOCKWISE, { delta })
               )
             : this.emit(NuimoEvents.CLOCKWISE, { delta });
@@ -226,22 +226,5 @@ export class Nuimo extends EventEmitter {
         this.rotationDebouncer.isReady = true;
       }, this.rotationDebouncer.WAIT_MS);
     }
-  }
-
-  /**
-   * withDebouncer
-   *
-   * @param debouncer The `Debouncer` object with `timer`, `isReady`, and `WAIT_MS`
-   * @param fn The function to call when the debouncer is ready
-   */
-  private withDebouncer(debouncer: Debouncer, fn: () => void) {
-    if (debouncer.isReady) {
-      fn();
-    }
-    // Set up debouncer for future events
-    debouncer.isReady = false;
-    debouncer.timer = setTimeout(() => {
-      debouncer.isReady = true;
-    }, debouncer.WAIT_MS);
   }
 }
