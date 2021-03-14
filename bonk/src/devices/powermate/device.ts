@@ -30,6 +30,10 @@ const sensitivity = {
   MULTI_PRESS_MS: 500,
   /** Debounce "wait" milliseconds for rotation inputs to alter the "sensitivity" of the knob rotation inputs. A higher value here means it takes more turning to trigger the inputs */
   ROTATION_WAIT_MS: 100,
+  /** How long the LED is on for a "flash" */
+  FLASH_TIME_MS: 100,
+  /** How long the LED is off between "flashes" */
+  FLASH_WAIT_MS: 50,
 };
 
 /** For storing and passing around LED-related values in a structured way */
@@ -171,6 +175,37 @@ export class PowerMate extends (EventEmitter as new () => TypedEmitter<
 
     // Update internal ledState
     this.ledState = ledState;
+  }
+
+  /**
+   * flashLed
+   *
+   * Flash the PowerMate LED a specified number of times
+   *
+   * @param count number of times to flash the LED
+   */
+  flashLed(count: number = 1) {
+    // Save current LED state
+    const before = this.ledState;
+
+    // Flash the LED
+    let flashing = setInterval(() => {
+      this.setLed({ isOn: true });
+      setTimeout(() => {
+        this.setLed({ isOn: false });
+      }, sensitivity.FLASH_WAIT_MS);
+    }, sensitivity.FLASH_TIME_MS);
+
+    // How long to flash for (count*(roundtrip flash/wait))
+    const totalTime =
+      count * (sensitivity.FLASH_TIME_MS + sensitivity.FLASH_WAIT_MS);
+
+    // Stop flashing after the correct amount of time
+    setTimeout(() => clearInterval(flashing), totalTime);
+
+    debug('flashLed', { count, before, totalTime });
+    // Set back to previous state
+    this.setLed(before);
   }
 
   /**
