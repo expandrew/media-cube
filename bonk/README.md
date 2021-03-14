@@ -32,9 +32,9 @@ It will map inputs and outputs from the following devices:
 
 - Clockwise/counterclockwise: Forward and back between functions
 - Press: Select function
-  - Function 1: (indicated by pulse `.`): Re-pair Nuimo
+  - Function 1: (indicated by pulse `.`): Start song radio?
   - Function 2: (indicated by pulse `..`): Toggle Sonos Group
-  - Function 3: (indicated by pulse `...`): _(not supported)_
+  - Function 3: (indicated by pulse `...`): Re-pair Nuimo
 - Long press: Back to Layer 1
 
 **Nuimo: (indicated by on-screen icons)**
