@@ -13,15 +13,17 @@ import { SonosEvents } from './events';
  * @todo: Possibly add default volume levels for each device and use when initializing?
  */
 const devices = {
-  PRIMARY: {
-    // One SL (Living Room)
+  ONE_SL: {
     ip: '10.0.1.16',
     uuid: 'RINCON_48A6B8126D8001400',
   },
-  SECONDARY: {
-    // Symfonisk Lamp (Bedroom)
+  SYMFONISK_LAMP: {
     ip: '10.0.1.17',
     uuid: 'RINCON_7828CA830FDC01400',
+  },
+  SYMFONISK_BOOKSHELF: {
+    ip: '10.0.1.18',
+    uuid: 'RINCON_542A1B61CD9201400',
   },
 };
 
@@ -58,11 +60,11 @@ export class Sonos extends (EventEmitter as new () => TypedEmitter<
 
       // Set up shortcut for primary device
       this.PRIMARY_DEVICE = this.manager.Devices.find(
-        d => d.Uuid === devices['PRIMARY'].uuid
+        d => d.Uuid === devices['SYMFONISK_BOOKSHELF'].uuid
       );
       // Set up shortcut for secondary device
       this.SECONDARY_DEVICE = this.manager.Devices.find(
-        d => d.Uuid === devices['SECONDARY'].uuid
+        d => d.Uuid === devices['SYMFONISK_LAMP'].uuid
       );
 
       // Get current play state and update isPlaying
