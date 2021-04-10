@@ -25,3 +25,11 @@ Start Home Assistant container with Docker Compose:
 ```bash
 docker-compose up -d
 ```
+
+## deCONZ
+
+I connect all the devices to a ConBee II gateway and manage it with deCONZ running on the Pi.
+
+To set things up with deCONZ, I use the [Phoscon app](https://phoscon.de/app) in the browser. It finds the gateway on my local network and can read/configure the devices.
+
+Using the [Hue Essentials app](https://www.hueessentials.com/) on the phone also works to set things up with deCONZ.
