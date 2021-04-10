@@ -3,8 +3,7 @@ services:
   deconz:
     container_name: deconz
     image: marthoc/deconz
-    ports:
-      - 8000:80
+    network_mode: host
     restart: always
     volumes:
       - /etc/localtime:/etc/localtime:ro
@@ -13,3 +12,5 @@ services:
       - /dev/ttyACM0
     environment:
       - DECONZ_DEVICE=/dev/ttyACM0
+      - DECONZ_WEB_PORT=8000
+      - DECONZ_WS_PORT=8443
