@@ -1,0 +1,10 @@
+version: "3"
+services:
+  homeassistant:
+    container_name: homeassistant
+    image: homeassistant/raspberrypi3-homeassistant:stable
+    volumes:
+      - /home/pi/MediaCube/home-assistant/config:/config
+      - /etc/localtime:/etc/localtime:ro
+    restart: unless-stopped
+    network_mode: host
