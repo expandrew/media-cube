@@ -9,6 +9,7 @@ Below is what I've set up:
 ### In use
 
 - [bonk](bonk/) (adapter library written in TypeScript to map inputs and outputs on assorted devices)
+- [deconz](deconz/) (software for the device that all my Zigbee light bulbs connect to)
 - [gandi-ldns](gandi-ldns/) (dynamic DNS updater to point a subdomain to my home IP for OpenVPN)
 - [home-assistant](home-assistant/) (my installation notes and configuration for the [Home Assistant](https://www.home-assistant.io/) automation framework)
 - [openvpn](openvpn/) (OpenVPN server for my home network)
