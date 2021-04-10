@@ -9,8 +9,14 @@ I use the "Container" installation method from [their instructions](https://www.
 Install dependencies:
 
 ```bash
+$ sudo apt-get install libffi-dev # pip3 needs this
+$ sudo apt install python3-pip # Docker Compose down below will need this
+```
+
+Install Docker and Docker Compose:
+
+```bash
 $ curl -sSL https://get.docker.com | sh # Install Docker
-$ sudo apt install python3-pip # Install pip3 to install Docker Compose
 $ sudo pip3 install docker-compose # Install Docker Compose
 ```
 
