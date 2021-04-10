@@ -33,7 +33,7 @@ Install Node.js `v14.15.3` on the Raspberry Pi:
 
 ```bash
 # If nvm isn't installed, install it:
-$ curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.3/install.sh | bash
+$ curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.38.0/install.sh | bash
 $ exec bash
 
 # Install Node.js v14.15.3
@@ -41,6 +41,12 @@ $ nvm install 14.15.3
 ```
 
 ### PowerMate
+
+Install drivers:
+
+```bash
+$ sudo apt-get install libusb-1.0-0-dev
+```
 
 Make a file at `/etc/udev/rules.d/95-powermate.rules` with these contents:
 
@@ -66,6 +72,15 @@ $ sudo apt-get install bluetooth bluez libbluetooth-dev libudev-dev
 
 # https://github.com/noble/noble#running-on-linux
 $ sudo setcap cap_net_raw+eip $(eval readlink -f `which node`)
+```
+
+### Install dependencies
+
+Install npm dependencies, and build `bonk`:
+
+```bash
+$ npm install
+$ npm run build
 ```
 
 ### pm2
