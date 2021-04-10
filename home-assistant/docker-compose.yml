@@ -6,5 +6,7 @@ services:
     volumes:
       - /home/pi/MediaCube/home-assistant/config:/config
       - /etc/localtime:/etc/localtime:ro
+    devices:
+      - /dev/ttyACM0
     restart: unless-stopped
     network_mode: host
