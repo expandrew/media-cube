@@ -4,6 +4,8 @@ services:
     container_name: deconz
     image: marthoc/deconz
     network_mode: host
+    ports:
+      - 80:8000
     restart: always
     volumes:
       - /etc/localtime:/etc/localtime:ro
