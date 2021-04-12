@@ -18,3 +18,15 @@ Start the container
 ```bash
 $ docker-compose up -d
 ```
+
+## Backups
+
+deCONZ has a solid backup feature, and I have a copy of my latest "good" configuration in the [`backups/`](backups/) folder.
+
+The backups include lights, groups, scenes, switches (and actions). It seems also to include configuration beyond what Phoscon can show (so things I set up with the Hue Essentials app get included in the backup, which is great).
+
+To restore a backup:
+
+- Open Phoscon
+- Settings > Gateway > Backup options > Load backup
+- Choose the file from the `backups/` folder
