@@ -17,7 +17,7 @@ $ ./openvpn-install.sh
 $ sudo cp ~/MediaCube/openvpn/ipp.txt /etc/openvpn/server/ipp.txt
 
 # Copy client configuration directory
-$ sudo mkdir -p /etc/openvpn/ccd && sudo cp -R ~/MediaCube/openvpn/ccd/ /etc/openvpn/server/ccd
+$ sudo cp -R ~/MediaCube/openvpn/ccd/ /etc/openvpn/
 
 # Copy server.conf file
 $ sudo cp ~/MediaCube/openvpn/server.conf.example /etc/openvpn/server/server.conf
