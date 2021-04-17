@@ -1,0 +1,3 @@
+AMW-MacBook,10.8.0.3
+AMW-MacBook-Air,10.8.0.4
+AMW-iPhone-12,10.8.0.5
