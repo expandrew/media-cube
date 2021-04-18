@@ -95,6 +95,21 @@ $ npm install -g pm2
 $ npm run pm2:start
 ```
 
+Set up startup scripts for `pm2` to automatically reload `bonk` when the Pi restarts:
+
+```bash
+# Make sure the app is running with pm2:
+$ npm run pm2:start
+# Once bonk is running, set up pm2's startup script:
+$ pm2 startup
+# Then execute the command it returns in its output
+$ sudo env PATH=$PATH:/home/pi/.nvm/versions/node/v14.15.3/bin /home/pi/.nvm/versions/node/v14.15.3/lib/node_modules/pm2/bin/pm2 startup systemd -u pi --hp /home/pi
+# Dump the process list to a file so it will be there when the Pi restarts:
+$ pm2 save
+```
+
+To remove startup script, run `pm2 unstartup`.
+
 ## Development
 
 The library is bootstrapped from [TSDX](https://github.com/formium/tsdx).
