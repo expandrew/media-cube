@@ -10,18 +10,28 @@ import { SonosEvents } from './events';
  * `PRIMARY` is the main speaker (and acts as the group coordinator when grouped)
  * `SECONDARY` is the speaker that joins/leaves the group when `Sonos.toggleGroup()` is called
  *
+ * Note: to get UUIDs, go to http://10.0.1.16:1400/support/review on the network (pick any Sonos IP) and they will show
+ *
  * @todo: Possibly add default volume levels for each device and use when initializing?
+ * @todo: Handle more than 2 speakers (and stereo pairs) gracefully 🥴
  */
 const devices = {
   ONE_SL: {
+    // Bedroom
     ip: '10.0.1.16',
     uuid: 'RINCON_48A6B8126D8001400',
   },
-  SYMFONISK_LAMP: {
+  ROAM: {
+    ip: '10.0.1.19',
+    uuid: 'RINCON_542A1B4AAAD801400',
+  },
+  SYMFONISK_BOOKSHELF_2: {
+    // Media Cube (L) - stereo pair
     ip: '10.0.1.17',
-    uuid: 'RINCON_7828CA830FDC01400',
+    uuid: 'RINCON_347E5C3D432001400',
   },
   SYMFONISK_BOOKSHELF: {
+    // Media Cube (R) - stereo pair
     ip: '10.0.1.18',
     uuid: 'RINCON_542A1B61CD9201400',
   },
@@ -64,7 +74,7 @@ export class Sonos extends (EventEmitter as new () => TypedEmitter<
       );
       // Set up shortcut for secondary device
       this.SECONDARY_DEVICE = this.manager.Devices.find(
-        d => d.Uuid === devices['SYMFONISK_LAMP'].uuid
+        d => d.Uuid === devices['ONE_SL'].uuid
       );
 
       // Get current play state and update isPlaying
