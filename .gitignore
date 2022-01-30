@@ -4,3 +4,7 @@ node_modules
 *.conf
 *.pyc
 .env
+
+# For network .conf files
+!network/**
+
