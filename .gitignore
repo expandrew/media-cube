@@ -5,6 +5,6 @@ node_modules
 *.pyc
 .env
 
-# For network .conf files
-!network/**
+# For go-links network .conf files
+!go-links/**
 

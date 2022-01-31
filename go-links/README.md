@@ -1,8 +1,8 @@
-# Network
+# go-links
 
 I run some tricks on my local network to make shortcuts to services I use.
 
-This is so I don't have to remember what IPs, ports, and paths each of my services runs on.
+I created "go links" so I don't have to remember what IPs, ports, and paths each of my services runs on.
 
 ## Setup
 
@@ -26,8 +26,8 @@ Once connected, the VPN clients should get their DNS from the Pi-hole.
 Copy the dnsmasq configuration files and restart Pihole DNS:
 
 ```bash
-sudo cp ~/MediaCube/network/dnsmasq/internal.conf /etc/dnsmasq.d/internal.conf
-sudo cp ~/MediaCube/network/dnsmasq/internal.list /etc/pihole/internal.list
+sudo cp ~/MediaCube/go-links/dnsmasq/internal.conf /etc/dnsmasq.d/internal.conf
+sudo cp ~/MediaCube/go-links/dnsmasq/internal.list /etc/pihole/internal.list
 pihole restartdns
 ```
 
@@ -63,8 +63,8 @@ Configure nginx:
 
 ```bash
 # Replace the nginx configuration
-sudo cp -a ~/MediaCube/network/nginx/nginxconfig.io/. /etc/nginx/nginxconfig.io
-sudo cp ~/MediaCube/network/nginx/nginx.conf /etc/nginx/nginx.conf
+sudo cp -a ~/MediaCube/go-links/nginx/nginxconfig.io/. /etc/nginx/nginxconfig.io
+sudo cp ~/MediaCube/go-links/nginx/nginx.conf /etc/nginx/nginx.conf
 ```
 
 Restart nginx:
@@ -91,7 +91,7 @@ There's a little [index page](nginx/index.html) available on the internal networ
 
 ## Meta
 
-- Anything that is a subdomain of `go.` is mapped to a local service. These subdomains don't work on the public internet.
+- `go.` doesn't work on the public internet, only on my internal network.
 - `go.` also stands for "Grown Ocean," the name of my local network.
 - This article helped me a lot with understanding dnsmasq: [Internal Domains with DNSMasq and Pi-Hole](https://dev.to/stjohnjohnson/internal-domains-with-dnsmasq-and-pi-hole-4cof)
 - This article helped me succinctly change the Pi-hole port: [pi-hole: change default web admin port](https://jdsworld.com/tech-support/pi-hole-dns-change-default-web-port/)
