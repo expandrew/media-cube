@@ -4,22 +4,23 @@ I run some tricks on my local network to make shortcuts to services I use.
 
 I created "go links" so I don't have to remember what IPs, ports, and paths each of my services runs on.
 
+| Path                             | Destination                               |
+| -------------------------------- | ----------------------------------------- |
+| `go.expandrew.com/modem`         | Zoom 5341J cable modem                    |
+| `go.expandrew.com/phoscon`       | [Phoscon for my ZigBee lights](../deconz) |
+| `go.expandrew.com/photos`        | Synology Photos on AMW-NAS                |
+| `go.expandrew.com/pihole`        | Pi-hole admin console                     |
+| `go.expandrew.com/nas`           | Synology DSM on AMW-NAS                   |
+| `go.expandrew.com/syncthing-mba` | Syncthing UI on AMW-MBA                   |
+| `go.expandrew.com/syncthing-nas` | Syncthing UI on AMW-NAS                   |
+
 ## Setup
 
 To set everything up:
 
-1. [Forward VPN port on router](#router)
 1. [Configure dnsmasq on Pi-hole](#dnsmasq)
 1. [Change Pi-hole's web port](#pi-hole-web-port)
 1. [Set up and start nginx service](#nginx)
-
-### Router
-
-Make sure [dynamic DNS](../gandi-ldns) is set up to point `go.expandrew.com` to my home IP
-
-Next, on the router, manually forward port 1194 UDP to the [OpenVPN server](../openvpn). Finish the other setup steps for OpenVPN on that README, too.
-
-Once connected, the VPN clients should get their DNS from the Pi-hole.
 
 ### dnsmasq
 
@@ -73,17 +74,7 @@ Restart nginx:
 sudo systemctl restart nginx
 ```
 
-nginx should now be proxying these paths to the destinations below:
-
-| Path                             | Destination                               |
-| -------------------------------- | ----------------------------------------- |
-| `go.expandrew.com/modem`         | Zoom 5341J cable modem                    |
-| `go.expandrew.com/phoscon`       | [Phoscon for my ZigBee lights](../deconz) |
-| `go.expandrew.com/photos`        | Synology Photos on AMW-NAS                |
-| `go.expandrew.com/pihole`        | Pi-hole admin console                     |
-| `go.expandrew.com/nas`           | Synology DSM on AMW-NAS                   |
-| `go.expandrew.com/syncthing-mba` | Syncthing UI on AMW-MBA                   |
-| `go.expandrew.com/syncthing-nas` | Syncthing UI on AMW-NAS                   |
+nginx should now be proxying the shortcut paths to the destinations listed at the top of this README.
 
 There's a little [index page](nginx/index.html) available on the internal network at [`http://go.expandrew.com`](http://go.expandrew.com) that has a list of the available paths
 
