@@ -2,7 +2,7 @@
 
 I run some tricks on my local network to make shortcuts to services I use.
 
-I got tired of remembering the IPs, ports, and paths for the services I have. I could've just bookmarked everything, but
+This is so I don't have to remember what IPs, ports, and paths each of my services runs on.
 
 ## Setup
 
@@ -34,22 +34,9 @@ pihole restartdns
 Verify that the configuration worked:
 
 ```bash
-dig @127.0.0.1 media-cube.go.expandrew.com +short
+dig @127.0.0.1 go.expandrew.com +short
 10.0.1.10
 ```
-
-Pi-hole DNS uses dnsmasq to point the subdomains below to nginx:
-
-| Subdomain           | Destination                               |
-| ------------------- | ----------------------------------------- |
-| `media-cube.go.`    | Media Cube Raspberry Pi                   |
-| `modem.go.`         | Zoom 5341J cable modem                    |
-| `phoscon.go.`       | [Phoscon for my ZigBee lights](../deconz) |
-| `photos.go.`        | Synology Photos on AMW-NAS                |
-| `pihole.go.`        | Pi-hole admin console                     |
-| `nas.go.`           | Synology DSM on AMW-NAS                   |
-| `syncthing-mba.go.` | Syncthing UI on AMW-MBA                   |
-| `syncthing-nas.go.` | Syncthing UI on AMW-NAS                   |
 
 ### Pi-hole web port
 
@@ -75,13 +62,8 @@ sudo apt-get install nginx
 Configure nginx:
 
 ```bash
-# Disable the default configuration (remove symlink)
-sudo rm /etc/nginx/sites-enabled/default
-
 # Replace the nginx configuration
 sudo cp -a ~/MediaCube/network/nginx/nginxconfig.io/. /etc/nginx/nginxconfig.io
-sudo cp -a ~/MediaCube/network/nginx/sites-available/. /etc/nginx/sites-available
-sudo cp -a ~/MediaCube/network/nginx/sites-enabled/. /etc/nginx/sites-enabled
 sudo cp ~/MediaCube/network/nginx/nginx.conf /etc/nginx/nginx.conf
 ```
 
@@ -90,6 +72,18 @@ Restart nginx:
 ```bash
 sudo systemctl restart nginx
 ```
+
+nginx should now be proxying these paths to the destinations below:
+
+| Path                             | Destination                               |
+| -------------------------------- | ----------------------------------------- |
+| `go.expandrew.com/modem`         | Zoom 5341J cable modem                    |
+| `go.expandrew.com/phoscon`       | [Phoscon for my ZigBee lights](../deconz) |
+| `go.expandrew.com/photos`        | Synology Photos on AMW-NAS                |
+| `go.expandrew.com/pihole`        | Pi-hole admin console                     |
+| `go.expandrew.com/nas`           | Synology DSM on AMW-NAS                   |
+| `go.expandrew.com/syncthing-mba` | Syncthing UI on AMW-MBA                   |
+| `go.expandrew.com/syncthing-nas` | Syncthing UI on AMW-NAS                   |
 
 ---
 

@@ -1,17 +1,4 @@
 # (Copy this file to /etc/pihole/internal.list)
 
-# Synology NAS (AMW-NAS)
-10.0.1.2        nas.go.expandrew.com
-10.0.1.2        photos.go.expandrew.com
-10.0.1.2        syncthing-nas.go.expandrew.com
-
-# MacBook Air (AMW-MBA)
-10.0.1.3        syncthing-mba.go.expandrew.com
-
-# Raspberry Pi (AMW-Media-Cube)
-10.0.1.10       media-cube.go.expandrew.com
-10.0.1.10       pihole.go.expandrew.com
-10.0.1.10       phoscon.go.expandrew.com
-
-# Modem
-192.168.100.1   modem.go.expandrew.com
+# Send everything to Media Cube
+10.0.1.10       go.expandrew.com
