@@ -85,6 +85,8 @@ nginx should now be proxying these paths to the destinations below:
 | `go.expandrew.com/syncthing-mba` | Syncthing UI on AMW-MBA                   |
 | `go.expandrew.com/syncthing-nas` | Syncthing UI on AMW-NAS                   |
 
+There's a little [index page](nginx/index.html) available on the internal network at [`http://go.expandrew.com`](http://go.expandrew.com) that has a list of the available paths
+
 ---
 
 ## Meta
