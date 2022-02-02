@@ -9,7 +9,7 @@ I created "go links" so I don't have to remember what IPs, ports, and paths each
 | `go.expandrew.com/modem`         | Zoom 5341J cable modem                    |
 | `go.expandrew.com/phoscon`       | [Phoscon for my ZigBee lights](../deconz) |
 | `go.expandrew.com/photos`        | Synology Photos on AMW-NAS                |
-| `go.expandrew.com/pihole`        | Pi-hole admin console                     |
+| `go.expandrew.com/pi-hole`       | Pi-hole admin console                     |
 | `go.expandrew.com/nas`           | Synology DSM on AMW-NAS                   |
 | `go.expandrew.com/syncthing-mba` | Syncthing UI on AMW-MBA                   |
 | `go.expandrew.com/syncthing-nas` | Syncthing UI on AMW-NAS                   |
@@ -24,7 +24,7 @@ To set everything up:
 
 ### dnsmasq
 
-Copy the dnsmasq configuration files and restart Pihole DNS:
+Copy the dnsmasq configuration files and restart Pi-hole DNS:
 
 ```bash
 sudo cp ~/MediaCube/go-links/dnsmasq/internal.conf /etc/dnsmasq.d/internal.conf
