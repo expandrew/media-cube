@@ -4,16 +4,16 @@ I run some tricks on my local network to make shortcuts to services I use.
 
 I created "go links" so I don't have to remember what IPs, ports, and paths each of my services runs on.
 
-| Path                              | Destination                               |
-| --------------------------------- | ----------------------------------------- |
-| `go.expandrew.com/home-assistant` | Home Assistant dashboard                  |
-| `go.expandrew.com/modem`          | Zoom 5341J cable modem                    |
-| `go.expandrew.com/phoscon`        | [Phoscon for my ZigBee lights](../deconz) |
-| `go.expandrew.com/photos`         | Synology Photos on AMW-NAS                |
-| `go.expandrew.com/pi-hole`        | Pi-hole admin console                     |
-| `go.expandrew.com/nas`            | Synology DSM on AMW-NAS                   |
-| `go.expandrew.com/syncthing-mba`  | Syncthing UI on AMW-MBA                   |
-| `go.expandrew.com/syncthing-nas`  | Syncthing UI on AMW-NAS                   |
+| Path                              | Destination                                   |
+| --------------------------------- | --------------------------------------------- |
+| `go.expandrew.com/home-assistant` | [Home Assistant dashboard](../home-assistant) |
+| `go.expandrew.com/modem`          | Zoom 5341J cable modem                        |
+| `go.expandrew.com/phoscon`        | [Phoscon for my ZigBee lights](../deconz)     |
+| `go.expandrew.com/photos`         | Synology Photos on AMW-NAS                    |
+| `go.expandrew.com/pi-hole`        | [Pi-hole admin console](../pi-hole)           |
+| `go.expandrew.com/nas`            | Synology DSM on AMW-NAS                       |
+| `go.expandrew.com/syncthing-mba`  | Syncthing UI on AMW-MBA                       |
+| `go.expandrew.com/syncthing-nas`  | Syncthing UI on AMW-NAS                       |
 
 ## Setup
 
@@ -51,6 +51,8 @@ sudo cp /etc/lighttpd/lighttpd.conf /etc/lighttpd/lighttpd.conf.backup
 sudo sed -ie "s/= 80/= 8090/g" /etc/lighttpd/lighttpd.conf
 sudo /etc/init.d/lighttpd restart
 ```
+
+⚠️ Note: this port change will apparently get wiped out anytime Pi-hole gets an update, so I should find a better way to do this (or just remember to re-run this when I update Pi-hole)
 
 ### nginx
 
