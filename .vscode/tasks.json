@@ -1,0 +1,21 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "command": "ssh pi@go.expandrew.com",
+      "detail": "Connect to AMW-Media-Cube Raspberry Pi via SSH",
+      "group": "build",
+      "label": "📡 Connect to pi@go.expandrew.com (SSH)",
+      "type": "shell",
+      "problemMatcher": []
+    },
+    {
+      "command": "cat ~/.ssh/id_ed25519.pub | ssh pi@go.expandrew.com \"sudo cat >> ~/.ssh/authorized_keys\"",
+      "detail": "Add my SSH public key to Raspberry Pi so I don't have to type password to connect",
+      "group": "none",
+      "label": "🔑 Add SSH public key to pi@go.expandrew.com",
+      "type": "shell",
+      "problemMatcher": []
+    }
+  ]
+}
