@@ -4,3 +4,7 @@ node_modules
 *.conf
 *.pyc
 .env
+
+# For go-links network .conf files
+!go-links/**
+

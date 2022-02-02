@@ -1,0 +1,7 @@
+# (Copy this file to /etc/pihole/internal.list)
+
+# Raspberry Pi
+10.0.1.10       go.expandrew.com
+
+# AMW-NAS
+10.0.1.2        photos.expandrew.com
