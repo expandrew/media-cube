@@ -60,6 +60,14 @@ sudo apt-get update
 sudo apt-get install nginx
 ```
 
+Install and configure `certbot` for SSL:
+
+```bash
+sudo apt install python-certbot-nginx
+sudo certbot --domain go.expandrew.com --manual --preferred-challenges dns certonly
+# Open Gandi DNS records and add the TXT record it tells you to add
+```
+
 Configure nginx:
 
 ```bash
@@ -86,3 +94,5 @@ There's a little [index page](nginx/index.html) available on the internal networ
 - `go.` also stands for "Grown Ocean," the name of my local network.
 - This article helped me a lot with understanding dnsmasq: [Internal Domains with DNSMasq and Pi-Hole](https://dev.to/stjohnjohnson/internal-domains-with-dnsmasq-and-pi-hole-4cof)
 - This article helped me succinctly change the Pi-hole port: [pi-hole: change default web admin port](https://jdsworld.com/tech-support/pi-hole-dns-change-default-web-port/)
+- This article helped me use `certbot`: [Update: Using Free Let’s Encrypt SSL/TLS Certificates with NGINX](https://www.nginx.com/blog/using-free-ssltls-certificates-from-lets-encrypt-with-nginx/)
+- This article helped me set up `certbot` to use DNS TXT records instead of HTTP: [How to use Let's Encrypt DNS challenge validation?](https://serverfault.com/questions/750902/how-to-use-lets-encrypt-dns-challenge-validation)
