@@ -90,6 +90,20 @@ nginx should now be proxying the shortcut paths to the destinations listed at th
 There's a little [index page](nginx/index.html) available on the internal network at [`http://go.expandrew.com`](http://go.expandrew.com) that has a list of the available paths
 
 ---
+## In development
+
+I usually test the configs before I commit them to reduce the lag time of committing, pushing, pulling on the Pi, running the command, etc. To do this, I edit the file in VS Code locally, save it, copy the entire contents, open an SSH connection to the Pi, do `sudo vi ...` to the path of where this config file lives on the Pi, immediately clear the file by typing `dG` in Vim, then paste the contents of what I copied from VS Code and save it `:wq!`, then restart the appropriate service
+
+- nginx: open `nginx.conf`: `sudo vi /etc/nginx/nginx.conf`
+- nginx: restart: `sudo systemctl restart nginx`
+- Pi-hole: edit internal dnsmasq list: `sudo vi /etc/pihole/internal.list`
+- Pi-hole DNS's restart command: `pihole restartdns`
+- Home Assistant: edit configuration file: `sudo vi ~/MediaCube/home-assistant/config/configuration.yaml`
+- Home Assistant's restart command: `cd ~/MediaCube/home-assistant && docker-compose restart`
+- deCONZ's restart command: `cd ~/MediaCube/deconz && docker-compose restart`
+
+---
+
 
 ## Meta
 
